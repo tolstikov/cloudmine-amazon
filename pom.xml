@@ -305,6 +305,7 @@
                     <project>${appengine.app.id}</project>
                     <version>${appengine.app.version}</version>
                     <promote>false</promote>
+                    <stage.appEngineDirectory>${project.build.directory}/appengine</stage.appEngineDirectory>
                 </configuration>
                 <executions>
                     <execution>
