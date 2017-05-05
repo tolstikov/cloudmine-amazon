@@ -1,0 +1,27 @@
+runtime: java
+env: flex
+
+handlers:
+- url: /.*
+  script: this field is required, but ignored
+
+service: cloudmine-amazon
+
+runtime_config:
+   jdk: openjdk8
+   server: jetty9
+
+automatic_scaling:
+  min_num_instances: 6
+  max_num_instances: 20
+  cool_down_period_sec: 60
+  cpu_utilization:
+    target_utilization: 0.5
+
+resources:
+  cpu: 1
+  memory_gb: 3
+
+endpoints_api_service:
+  name: ${endpoints.service.name}
+  config_id: ${endpoints.service.version}
