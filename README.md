@@ -277,4 +277,5 @@ To build client library:
 
 # Changelog
 
+* 1.0.1 - Added `amazon.sts.callerIdentity.get`
 * 1.0.0 - Initial release

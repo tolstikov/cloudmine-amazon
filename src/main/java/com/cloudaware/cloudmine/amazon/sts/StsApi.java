@@ -2,6 +2,8 @@ package com.cloudaware.cloudmine.amazon.sts;
 
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.model.AssumeRoleResult;
+import com.amazonaws.services.securitytoken.model.GetCallerIdentityRequest;
+import com.amazonaws.services.securitytoken.model.GetCallerIdentityResult;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
@@ -62,4 +64,20 @@ public final class StsApi {
         }
     }
 
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "callerIdentity.get",
+            path = "{partition}/caller-identity"
+    )
+    public CallerIdentityResponse asd(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AWSSecurityTokenService> clientWrapper = new AmazonClientHelper(credentials).getSts(partition)) {
+            final GetCallerIdentityResult result = clientWrapper.getClient().getCallerIdentity(new GetCallerIdentityRequest());
+            return new CallerIdentityResponse(result.getUserId(), result.getAccount(), result.getArn());
+        } catch (Throwable t) {
+            return new CallerIdentityResponse(AmazonResponse.parse(t));
+        }
+    }
 }
