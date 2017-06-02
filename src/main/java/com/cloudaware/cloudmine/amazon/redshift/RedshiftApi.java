@@ -3,6 +3,10 @@ package com.cloudaware.cloudmine.amazon.redshift;
 import com.amazonaws.services.redshift.AmazonRedshift;
 import com.amazonaws.services.redshift.model.CreateTagsRequest;
 import com.amazonaws.services.redshift.model.DeleteTagsRequest;
+import com.amazonaws.services.redshift.model.DescribeClusterParameterGroupsRequest;
+import com.amazonaws.services.redshift.model.DescribeClusterParameterGroupsResult;
+import com.amazonaws.services.redshift.model.DescribeClusterSecurityGroupsRequest;
+import com.amazonaws.services.redshift.model.DescribeClusterSecurityGroupsResult;
 import com.amazonaws.services.redshift.model.DescribeClusterSnapshotsRequest;
 import com.amazonaws.services.redshift.model.DescribeClusterSnapshotsResult;
 import com.amazonaws.services.redshift.model.DescribeClustersRequest;
@@ -204,6 +208,48 @@ public final class RedshiftApi {
             return new AmazonResponse();
         } catch (Throwable t) {
             return new AmazonResponse(AmazonResponse.parse(t));
+        }
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "parameterGroups.list",
+            path = "{region}/parameter-groups"
+    )
+    public ParameterGroupResponse parameterGroupsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AmazonRedshift> clientWrapper = new AmazonClientHelper(credentials).getRedshift(region)) {
+            final DescribeClusterParameterGroupsResult result = clientWrapper.getClient().describeClusterParameterGroups(
+                    new DescribeClusterParameterGroupsRequest()
+                            .withMarker(page)
+            );
+            return new ParameterGroupResponse(result.getParameterGroups(), result.getMarker());
+        } catch (Throwable t) {
+            return new ParameterGroupResponse(AmazonResponse.parse(t));
+        }
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "securityGroups.list",
+            path = "{region}/security-groups"
+    )
+    public SecurityGroupResponse securityGroupsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AmazonRedshift> clientWrapper = new AmazonClientHelper(credentials).getRedshift(region)) {
+            final DescribeClusterSecurityGroupsResult result = clientWrapper.getClient().describeClusterSecurityGroups(
+                    new DescribeClusterSecurityGroupsRequest()
+                            .withMarker(page)
+            );
+            return new SecurityGroupResponse(result.getClusterSecurityGroups(), result.getMarker());
+        } catch (Throwable t) {
+            return new SecurityGroupResponse(AmazonResponse.parse(t));
         }
     }
 
