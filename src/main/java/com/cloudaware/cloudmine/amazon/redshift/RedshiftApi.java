@@ -61,7 +61,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeClustersRequest.class, ClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClustersResult result = client.describeClusters(request.withMarker(page));
             response.setClusters(result.getClusters());
@@ -78,7 +78,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeClusterSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterSnapshotsResult result = client.describeClusterSnapshots(request.withMarker(page));
             response.setSnapshots(result.getSnapshots());
@@ -95,7 +95,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeReservedNodesRequest.class, ReservedNodesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReservedNodesResult result = client.describeReservedNodes(request.withMarker(page));
             response.setReservedNodes(result.getReservedNodes());
@@ -112,7 +112,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withMarker(page));
             response.setEvents(result.getEvents());
@@ -130,7 +130,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("arn") final String arn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTagsResult result = client.describeTags(request.withMarker(page));
             response.setTags(result.getTaggedResources());
@@ -147,7 +147,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final TagsRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(CreateTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
             final List<Tag> tags = Lists.newArrayList();
             for (final String key : request.getTags().keySet()) {
@@ -170,7 +170,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final TagsRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DeleteTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
             client.deleteTags(r.withResourceName(request.getArn()).withTagKeys(request.getTags().keySet()));
         });
@@ -185,7 +185,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeClusterParameterGroupsRequest.class, ParameterGroupResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterParameterGroupsResult result = client.describeClusterParameterGroups(request.withMarker(page));
             response.setParameterGroups(result.getParameterGroups());
@@ -202,7 +202,7 @@ public final class RedshiftApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRedshiftCaller.get(DescribeClusterSecurityGroupsRequest.class, SecurityGroupResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterSecurityGroupsResult result = client.describeClusterSecurityGroups(request.withMarker(page));
             response.setSecurityGroups(result.getClusterSecurityGroups());

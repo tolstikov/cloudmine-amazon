@@ -46,7 +46,7 @@ public final class WorkspacesApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonWorkspacesCaller.get(DescribeWorkspacesRequest.class, WorkspacesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeWorkspacesResult result = client.describeWorkspaces(request.withNextToken(page));
             response.setWorkspaces(result.getWorkspaces());
@@ -63,7 +63,7 @@ public final class WorkspacesApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonWorkspacesCaller.get(DescribeWorkspaceDirectoriesRequest.class, WorkspaceDirectoriesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeWorkspaceDirectoriesResult result = client.describeWorkspaceDirectories(request.withNextToken(page));
             response.setWorkspaceDirectories(result.getDirectories());
@@ -80,7 +80,7 @@ public final class WorkspacesApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonWorkspacesCaller.get(DescribeWorkspaceBundlesRequest.class, WorkspaceBundlesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeWorkspaceBundlesResult result = client.describeWorkspaceBundles(request.withNextToken(page));
             response.setWorkspaceBundles(result.getBundles());

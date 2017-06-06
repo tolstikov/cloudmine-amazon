@@ -48,7 +48,7 @@ public final class DirectConnectApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("connectionId") @Nullable final String connectionId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectConnectCaller.get(DescribeConnectionsRequest.class, ConnectionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeConnectionsResult result = client.describeConnections(request.withConnectionId(connectionId));
             response.setConnections(result.getConnections());
@@ -64,7 +64,7 @@ public final class DirectConnectApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("interconnectId") @Nullable final String interconnectId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectConnectCaller.get(DescribeInterconnectsRequest.class, InterconnectsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeInterconnectsResult result = client.describeInterconnects(request.withInterconnectId(interconnectId));
             response.setInterconnects(result.getInterconnects());
@@ -80,7 +80,7 @@ public final class DirectConnectApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("interconnectId") final String interconnectId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectConnectCaller.get(DescribeConnectionsOnInterconnectRequest.class, ConnectionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeConnectionsOnInterconnectResult result = client.describeConnectionsOnInterconnect(request.withInterconnectId(interconnectId));
             response.setConnections(result.getConnections());
@@ -97,7 +97,7 @@ public final class DirectConnectApi {
             @Named("region") final String region,
             @Named("connectionId") @Nullable final String connectionId,
             @Named("virtualInterfaceId") @Nullable final String virtualInterfaceId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectConnectCaller.get(DescribeVirtualInterfacesRequest.class, VirtualInterfacesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVirtualInterfacesResult result = client.describeVirtualInterfaces(
                     request

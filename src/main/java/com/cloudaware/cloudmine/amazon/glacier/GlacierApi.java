@@ -42,7 +42,7 @@ public final class GlacierApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonGlacierCaller.get(ListVaultsRequest.class, VaultsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListVaultsResult result = client.listVaults(
                     request

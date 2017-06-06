@@ -42,7 +42,7 @@ public final class StsApi {
             @Named("credentials") final String credentials,
             @Named("partition") final String partition,
             final AssumeRoleRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStsCaller.get(com.amazonaws.services.securitytoken.model.AssumeRoleRequest.class, AssumeRoleResponse.class, credentials, partition)
                 .execute((client, assumeRoleRequest, response) -> {
             final AssumeRoleResult result = client.assumeRole(
@@ -68,7 +68,7 @@ public final class StsApi {
     public CallerIdentityResponse asd(
             @Named("credentials") final String credentials,
             @Named("partition") final String partition
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStsCaller.get(GetCallerIdentityRequest.class, CallerIdentityResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetCallerIdentityResult result = client.getCallerIdentity(request);
             response.setUserId(result.getUserId());

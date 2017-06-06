@@ -44,7 +44,7 @@ public final class CloudWatchApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final MetricStatisticsRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudWatchCaller.get(GetMetricStatisticsRequest.class, DatapointsResponse.class, credentials, region).execute((client, r, response) -> {
             final GetMetricStatisticsResult result = client.getMetricStatistics(
                     r.withNamespace(request.getNamespace())
@@ -68,7 +68,7 @@ public final class CloudWatchApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudWatchCaller.get(DescribeAlarmsRequest.class, MetricAlarmsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAlarmsResult result = client.describeAlarms(
                     request.withNextToken(page)

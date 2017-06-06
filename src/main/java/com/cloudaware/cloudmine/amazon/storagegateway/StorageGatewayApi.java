@@ -63,7 +63,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(ListGatewaysRequest.class, GatewaysResponse.class, credentials, region).execute((client, request, response) -> {
             final ListGatewaysResult result = client.listGateways(request.withMarker(page));
             response.setGateways(result.getGateways());
@@ -80,7 +80,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeBandwidthRateLimitRequest.class, BandwidthRateLimitResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeBandwidthRateLimitResult result = client.describeBandwidthRateLimit(request.withGatewayARN(gatewayArn));
             response.setAverageUploadRateLimitInBitsPerSec(result.getAverageUploadRateLimitInBitsPerSec());
@@ -97,7 +97,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(ListLocalDisksRequest.class, LocalDisksResponse.class, credentials, region).execute((client, request, response) -> {
             final ListLocalDisksResult result = client.listLocalDisks(request.withGatewayARN(gatewayArn));
             response.setDisks(result.getDisks());
@@ -114,7 +114,7 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(ListVolumesRequest.class, VolumesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListVolumesResult result = client.listVolumes(request.withGatewayARN(gatewayArn).withMarker(page));
             response.setVolumes(result.getVolumeInfos());
@@ -131,7 +131,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("volumeArn") final List<String> volumeArns
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeCachediSCSIVolumesRequest.class, CachedVolumesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeCachediSCSIVolumesResult result = client.describeCachediSCSIVolumes(request.withVolumeARNs(volumeArns));
             response.setCachedVolumes(result.getCachediSCSIVolumes());
@@ -147,7 +147,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("volumeArn") final List<String> volumeArns
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeStorediSCSIVolumesRequest.class, StoredVolumesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStorediSCSIVolumesResult result = client.describeStorediSCSIVolumes(request.withVolumeARNs(volumeArns));
             response.setStoredVolumes(result.getStorediSCSIVolumes());
@@ -163,7 +163,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(ListVolumeRecoveryPointsRequest.class, VolumeRecoveryPointsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListVolumeRecoveryPointsResult result = client.listVolumeRecoveryPoints(request.withGatewayARN(gatewayArn));
             response.setVolumeRecoveryPoints(result.getVolumeRecoveryPointInfos());
@@ -180,7 +180,7 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeTapesRequest.class, TapesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTapesResult result = client.describeTapes(request.withGatewayARN(gatewayArn).withMarker(page));
             response.setTapes(result.getTapes());
@@ -198,7 +198,7 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeTapeRecoveryPointsRequest.class, TapeRecoveryPointsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTapeRecoveryPointsResult result = client.describeTapeRecoveryPoints(request.withGatewayARN(gatewayArn).withMarker(page));
             response.setTapeRecoveryPoints(result.getTapeRecoveryPointInfos());
@@ -215,7 +215,7 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeTapeArchivesRequest.class, TapeArchivesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTapeArchivesResult result = client.describeTapeArchives(request.withMarker(page));
             response.setTapeArchives(result.getTapeArchives());
@@ -233,7 +233,7 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonStorageGatewayCaller.get(DescribeVTLDevicesRequest.class, VtlDevicesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVTLDevicesResult result = client.describeVTLDevices(request.withMarker(page));
             response.setVtlDevices(result.getVTLDevices());

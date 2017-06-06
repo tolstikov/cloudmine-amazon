@@ -73,7 +73,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             @Named("stackName") @Nullable final String stackName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(DescribeStacksRequest.class, StacksResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStacksResult result = client.describeStacks(
                     request
@@ -94,7 +94,7 @@ public final class CloudFormationApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("stackName") final String stackName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(GetTemplateRequest.class, StackTemplateResponse.class, credentials, region).execute((client, request, response) -> {
             final GetTemplateResult result = client.getTemplate(request.withStackName(stackName));
             response.setTemplateBody(result.getTemplateBody());
@@ -110,7 +110,7 @@ public final class CloudFormationApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final StackRequest stackRequest
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(CreateStackRequest.class, StackIdResponse.class, credentials, region).execute((client, request, response) -> {
             request.withCapabilities(stackRequest.getCapabilities());
             request.withDisableRollback(stackRequest.getDisableRollback());
@@ -136,7 +136,7 @@ public final class CloudFormationApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("stackName") final String stackName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(DeleteStackRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             client.deleteStack(request.withStackName(stackName));
         });
@@ -152,7 +152,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             @Named("stackName") final String stackName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(DescribeStackEventsRequest.class, StackEventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStackEventsResult result = client.describeStackEvents(
                     request
@@ -174,7 +174,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             @Named("stackName") final String stackName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(ListStackResourcesRequest.class, StackResourcesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListStackResourcesResult result = client.listStackResources(
                     request
@@ -196,7 +196,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             @Named("stackName") final String stackName,
             @Named("logicalResourceId") final String logicalResourceId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFormationCaller.get(DescribeStackResourceRequest.class, StackResourceResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStackResourceResult result = client.describeStackResource(
                     request

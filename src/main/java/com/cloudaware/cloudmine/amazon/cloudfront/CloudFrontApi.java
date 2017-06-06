@@ -55,7 +55,7 @@ public final class CloudFrontApi {
     public DistributionsResponse distributionsList(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(ListDistributionsRequest.class, DistributionsResponse.class, credentials).execute((client, request, response) -> {
             final ListDistributionsResult result = client.listDistributions(
                     request
@@ -74,7 +74,7 @@ public final class CloudFrontApi {
     public DistributionResponse distributionsGet(
             @Named("credentials") final String credentials,
             @Named("id") final String id
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(GetDistributionRequest.class, DistributionResponse.class, credentials).execute((client, request, response) -> {
             final GetDistributionResult result = client.getDistribution(request.withId(id));
             response.setDistribution(result.getDistribution());
@@ -89,7 +89,7 @@ public final class CloudFrontApi {
     public StreamingDistributionsResponse streamingDistributionsList(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(ListStreamingDistributionsRequest.class, StreamingDistributionsResponse.class, credentials).execute((client, request, response) -> {
             final ListStreamingDistributionsResult result = client.listStreamingDistributions(request.withMarker(page));
             response.setStreamingDistributions(result.getStreamingDistributionList().getItems());
@@ -105,7 +105,7 @@ public final class CloudFrontApi {
     public StreamingDistributionResponse streamingDistributionsGet(
             @Named("credentials") final String credentials,
             @Named("id") final String id
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(GetStreamingDistributionRequest.class, StreamingDistributionResponse.class, credentials).execute((client, request, response) -> {
             final GetStreamingDistributionResult result = client.getStreamingDistribution(request.withId(id));
             response.setStreamingDistribution(result.getStreamingDistribution());
@@ -121,7 +121,7 @@ public final class CloudFrontApi {
             @Named("credentials") final String credentials,
             @Named("distributionId") final String distributionId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(ListInvalidationsRequest.class, InvalidationsResponse.class, credentials).execute((client, request, response) -> {
             final ListInvalidationsResult result = client.listInvalidations(
                     request
@@ -142,7 +142,7 @@ public final class CloudFrontApi {
             @Named("credentials") final String credentials,
             @Named("distributionId") final String distributionId,
             @Named("id") final String id
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(GetInvalidationRequest.class, InvalidationResponse.class, credentials).execute((client, request, response) -> {
             final GetInvalidationResult result = client.getInvalidation(
                     request
@@ -161,7 +161,7 @@ public final class CloudFrontApi {
     public OriginAccessIdentitiesResponse originAccessIdentitiesList(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(ListCloudFrontOriginAccessIdentitiesRequest.class, OriginAccessIdentitiesResponse.class, credentials).execute((client, request, response) -> {
             final ListCloudFrontOriginAccessIdentitiesResult result = client.listCloudFrontOriginAccessIdentities(request.withMarker(page));
             response.setOriginAccessIdentitySummaries(result.getCloudFrontOriginAccessIdentityList().getItems());
@@ -177,7 +177,7 @@ public final class CloudFrontApi {
     public OriginAccessIdentityResponse originAccessIdentitiesGet(
             @Named("credentials") final String credentials,
             @Named("id") final String id
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonCloudFrontCaller.get(GetCloudFrontOriginAccessIdentityRequest.class, OriginAccessIdentityResponse.class, credentials).execute((client, request, response) -> {
             final GetCloudFrontOriginAccessIdentityResult result = client.getCloudFrontOriginAccessIdentity(request.withId(id));
             response.setOriginAccessIdentity(result.getCloudFrontOriginAccessIdentity());

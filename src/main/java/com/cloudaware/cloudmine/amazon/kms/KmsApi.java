@@ -54,7 +54,7 @@ public final class KmsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListAliasesResult result = client.listAliases(request.withMarker(page));
             response.setAliases(result.getAliases());
@@ -71,7 +71,7 @@ public final class KmsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(ListKeysRequest.class, KeysResponse.class, credentials, region).execute((client, request, response) -> {
             final ListKeysResult result = client.listKeys(request.withMarker(page));
             response.setKeys(result.getKeys());
@@ -88,7 +88,7 @@ public final class KmsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("keyId") final String keyId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(DescribeKeyRequest.class, KeyResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeKeyResult result = client.describeKey(request.withKeyId(keyId));
             response.setKey(result.getKeyMetadata());
@@ -105,7 +105,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("keyId") final String keyId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(ListGrantsRequest.class, GrantsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListGrantsResult result = client.listGrants(
                     request
@@ -127,7 +127,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("keyId") final String keyId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(ListKeyPoliciesRequest.class, PoliciesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListKeyPoliciesResult result = client.listKeyPolicies(
                     request
@@ -149,7 +149,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("keyId") final String keyId,
             @Named("policyName") final String policyName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(GetKeyPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
             final GetKeyPolicyResult result = client.getKeyPolicy(
                     request
@@ -169,7 +169,7 @@ public final class KmsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("keyId") final String keyId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonKmsCaller.get(GetKeyRotationStatusRequest.class, RotationStatusResponse.class, credentials, region).execute((client, request, response) -> {
             final GetKeyRotationStatusResult result = client.getKeyRotationStatus(
                     request

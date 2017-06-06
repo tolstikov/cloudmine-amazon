@@ -49,7 +49,7 @@ public final class SnsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSnsCaller.get(ListTopicsRequest.class, TopicsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTopicsResult result = client.listTopics(request.withNextToken(page));
             response.setTopics(result.getTopics());
@@ -66,7 +66,7 @@ public final class SnsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("topicArn") final String topicArn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSnsCaller.get(GetTopicAttributesRequest.class, AttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final GetTopicAttributesResult result = client.getTopicAttributes(request.withTopicArn(topicArn));
             response.setAttributes(result.getAttributes());
@@ -83,7 +83,7 @@ public final class SnsApi {
             @Named("region") final String region,
             @Named("topicArn") final String topicArn,
             final PublishRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSnsCaller.get(com.amazonaws.services.sns.model.PublishRequest.class, PublishResponse.class, credentials, region).execute((client, r, response) -> {
             final PublishResult result = client.publish(
                     r
@@ -108,7 +108,7 @@ public final class SnsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSnsCaller.get(ListSubscriptionsRequest.class, SubscriptionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListSubscriptionsResult result = client.listSubscriptions(request.withNextToken(page));
             response.setSubscriptions(result.getSubscriptions());
@@ -125,7 +125,7 @@ public final class SnsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("subscriptionArn") final String subscriptionArn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSnsCaller.get(GetSubscriptionAttributesRequest.class, AttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final GetSubscriptionAttributesResult result = client.getSubscriptionAttributes(request.withSubscriptionArn(subscriptionArn));
             response.setAttributes(result.getAttributes());

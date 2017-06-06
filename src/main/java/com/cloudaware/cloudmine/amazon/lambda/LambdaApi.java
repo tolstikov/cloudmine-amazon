@@ -52,7 +52,7 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonLambdaCaller.get(ListFunctionsRequest.class, FunctionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListFunctionsResult result = client.listFunctions(request.withMarker(page));
             response.setFunctions(result.getFunctions());
@@ -69,7 +69,7 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("functionName") final String functionName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonLambdaCaller.get(GetFunctionRequest.class, FunctionResponse.class, credentials, region).execute((client, request, response) -> {
             final GetFunctionResult result = client.getFunction(request.withFunctionName(functionName));
             response.setConfiguration(result.getConfiguration());
@@ -87,7 +87,7 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("functionName") final String functionName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonLambdaCaller.get(ListVersionsByFunctionRequest.class, VersionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListVersionsByFunctionResult result = client.listVersionsByFunction(
                     request
@@ -109,7 +109,7 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("functionName") final String functionName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonLambdaCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListAliasesResult result = client.listAliases(
                     request
@@ -130,7 +130,7 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("functionName") final String functionName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonLambdaCaller.get(GetPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
             final GetPolicyResult result = client.getPolicy(
                     request
@@ -149,7 +149,7 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonLambdaCaller.get(ListEventSourceMappingsRequest.class, EventSourceMappingsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListEventSourceMappingsResult result = client.listEventSourceMappings(
                     request

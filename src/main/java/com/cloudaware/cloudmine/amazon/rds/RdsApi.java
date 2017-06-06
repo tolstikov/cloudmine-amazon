@@ -75,7 +75,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBInstancesRequest.class, DbInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBInstancesResult result = client.describeDBInstances(request.withMarker(page));
             response.setDbInstances(result.getDBInstances());
@@ -92,7 +92,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBParameterGroupsRequest.class, DbParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBParameterGroupsResult result = client.describeDBParameterGroups(request.withMarker(page));
             response.setDbParameterGroups(result.getDBParameterGroups());
@@ -109,7 +109,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBSecurityGroupsRequest.class, DbSecurityGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBSecurityGroupsResult result = client.describeDBSecurityGroups(request.withMarker(page));
             response.setDbSecurityGroups(result.getDBSecurityGroups());
@@ -126,7 +126,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBSubnetGroupsRequest.class, DbSubnetGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBSubnetGroupsResult result = client.describeDBSubnetGroups(request.withMarker(page));
             response.setDbSubnetGroups(result.getDBSubnetGroups());
@@ -143,7 +143,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBSnapshotsRequest.class, DbSnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBSnapshotsResult result = client.describeDBSnapshots(request.withMarker(page));
             response.setDbSnapshots(result.getDBSnapshots());
@@ -160,7 +160,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("dbSnapshotId") final String dbSnapshotId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBSnapshotAttributesRequest.class, DbSnapshotAttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final DBSnapshotAttributesResult result = client.describeDBSnapshotAttributes(request.withDBSnapshotIdentifier(dbSnapshotId));
             response.setDbSnapshotAttributes(result.getDBSnapshotAttributes());
@@ -176,7 +176,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBClustersRequest.class, DbClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBClustersResult result = client.describeDBClusters(request.withMarker(page));
             response.setDbClusters(result.getDBClusters());
@@ -193,7 +193,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBClusterSnapshotsRequest.class, DbClusterSnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBClusterSnapshotsResult result = client.describeDBClusterSnapshots(request.withMarker(page));
             response.setDbClusterSnapshots(result.getDBClusterSnapshots());
@@ -210,7 +210,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("dbClusterSnapshotId") final String dbClusterSnapshotId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBClusterSnapshotAttributesRequest.class, DbClusterSnapshotAttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final DBClusterSnapshotAttributesResult result = client.describeDBClusterSnapshotAttributes(request.withDBClusterSnapshotIdentifier(dbClusterSnapshotId));
             response.setDbClusterSnapshotAttributes(result.getDBClusterSnapshotAttributes());
@@ -226,7 +226,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeDBClusterParameterGroupsRequest.class, DbClusterParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBClusterParameterGroupsResult result = client.describeDBClusterParameterGroups(request.withMarker(page));
             response.setDbClusterParameterGroups(result.getDBClusterParameterGroups());
@@ -243,7 +243,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeReservedDBInstancesRequest.class, ReservedDbInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReservedDBInstancesResult result = client.describeReservedDBInstances(request.withMarker(page));
             response.setReservedDbInstances(result.getReservedDBInstances());
@@ -261,7 +261,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("durationInMinutes") @Nullable final Integer durationInMinutes,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withDuration(durationInMinutes).withMarker(page));
             response.setEvents(result.getEvents());
@@ -277,7 +277,7 @@ public final class RdsApi {
     public AccountQuotasResponse accountAttributesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(DescribeAccountAttributesRequest.class, AccountQuotasResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAccountAttributesResult result = client.describeAccountAttributes(request);
             response.setAccountQuotas(result.getAccountQuotas());
@@ -293,7 +293,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("arn") final String arn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTagsForResourceResult result = client.listTagsForResource(request);
             response.setTags(result.getTagList());
@@ -309,7 +309,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final TagsRequest tagsRequest
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(AddTagsToResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             final List<com.amazonaws.services.rds.model.Tag> tags = Lists.newArrayList();
             for (final Map.Entry<String, String> e : tagsRequest.getTags().entrySet()) {
@@ -332,7 +332,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final RemoveTagsRequest tagsRequest
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonRdsCaller.get(RemoveTagsFromResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             client.removeTagsFromResource(
                     request.withTagKeys(tagsRequest.getTagKeys())

@@ -51,7 +51,7 @@ public final class OrganizationsApi {
     )
     public OrganizationResponse organizationGet(
             @Named("credentials") final String credentials
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(DescribeOrganizationRequest.class, OrganizationResponse.class, credentials).execute((client, request, response) -> {
             final DescribeOrganizationResult result = client.describeOrganization(request);
             response.setOrganization(result.getOrganization());
@@ -66,7 +66,7 @@ public final class OrganizationsApi {
     public RootsResponse rootslist(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(ListRootsRequest.class, RootsResponse.class, credentials).execute((client, request, response) -> {
             final ListRootsResult result = client.listRoots(request.withNextToken(page));
             response.setRoots(result.getRoots());
@@ -82,7 +82,7 @@ public final class OrganizationsApi {
     public AccountsResponse accountsList(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(ListAccountsRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
             final ListAccountsResult result = client.listAccounts(request.withNextToken(page));
             response.setAccounts(result.getAccounts());
@@ -98,7 +98,7 @@ public final class OrganizationsApi {
     public AccountCreateResponse accountsCreate(
             @Named("credentials") final String credentials,
             final AccountRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(CreateAccountRequest.class, AccountCreateResponse.class, credentials).execute((client, r, response) -> {
             final CreateAccountResult result = client.createAccount(
                     r
@@ -119,7 +119,7 @@ public final class OrganizationsApi {
     public AccountCreateResponse accountsCreateStatus(
             @Named("credentials") final String credentials,
             @Named("requestId") final String requestId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(DescribeCreateAccountStatusRequest.class, AccountCreateResponse.class, credentials).execute((client, request, response) -> {
             final DescribeCreateAccountStatusResult result = client.describeCreateAccountStatus(request.withCreateAccountRequestId(requestId));
             response.setCreateAccountStatus(result.getCreateAccountStatus());
@@ -135,7 +135,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("parentId") final String parentId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(ListAccountsForParentRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
             final ListAccountsForParentResult result = client.listAccountsForParent(
                     request
@@ -156,7 +156,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("filter") final String filter,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(ListPoliciesRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
             final ListPoliciesResult result = client.listPolicies(
                     request
@@ -178,7 +178,7 @@ public final class OrganizationsApi {
             @Named("targetId") final String targetId,
             @Named("filter") final String filter,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(ListPoliciesForTargetRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
             final ListPoliciesForTargetResult result = client.listPoliciesForTarget(
                     request
@@ -199,7 +199,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("parentId") final String parentId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonOrganizationsCaller.get(ListOrganizationalUnitsForParentRequest.class, OrganizationalUnitsResponse.class, credentials).execute((client, request, response) -> {
             final ListOrganizationalUnitsForParentResult result = client.listOrganizationalUnitsForParent(
                     request

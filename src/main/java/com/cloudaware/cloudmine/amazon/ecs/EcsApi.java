@@ -61,7 +61,7 @@ public final class EcsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(ListClustersRequest.class, ArnsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListClustersResult result = client.listClusters(
                     request.withNextToken(page)
@@ -80,7 +80,7 @@ public final class EcsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("arn") final List<String> arns
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(DescribeClustersRequest.class, ClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClustersResult result = client.describeClusters(
                     request.withClusters(arns)
@@ -99,7 +99,7 @@ public final class EcsApi {
             @Named("region") final String region,
             @Named("clusterArn") final String clusterArn,
             @Named("arn") final List<String> arns
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(DescribeContainerInstancesRequest.class, ContainerInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeContainerInstancesResult result = client.describeContainerInstances(
                     request.withCluster(clusterArn)
@@ -119,7 +119,7 @@ public final class EcsApi {
             @Named("region") final String region,
             @Named("clusterArn") final String clusterArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(ListContainerInstancesRequest.class, ArnsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListContainerInstancesResult result = client.listContainerInstances(
                     request
@@ -141,7 +141,7 @@ public final class EcsApi {
             @Named("region") final String region,
             @Named("clusterArn") final String clusterArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(ListServicesRequest.class, ArnsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListServicesResult result = client.listServices(
                     request
@@ -163,7 +163,7 @@ public final class EcsApi {
             @Named("region") final String region,
             @Named("clusterArn") final String clusterArn,
             @Named("arn") final List<String> arns
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(DescribeServicesRequest.class, ServicesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeServicesResult result = client.describeServices(
                     request
@@ -184,7 +184,7 @@ public final class EcsApi {
             @Named("region") final String region,
             @Named("clusterArn") final String clusterArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(ListTasksRequest.class, ArnsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTasksResult result = client.listTasks(
                     request
@@ -206,7 +206,7 @@ public final class EcsApi {
             @Named("region") final String region,
             @Named("clusterArn") final String clusterArn,
             @Named("arn") final List<String> arns
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(DescribeTasksRequest.class, TasksResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTasksResult result = client.describeTasks(request);
             response.setTasks(result.getTasks());
@@ -222,7 +222,7 @@ public final class EcsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(ListTaskDefinitionsRequest.class, ArnsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTaskDefinitionsResult result = client.listTaskDefinitions(request.withNextToken(page));
             response.setArns(result.getTaskDefinitionArns());
@@ -239,7 +239,7 @@ public final class EcsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("arn") final String arn
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEcsCaller.get(DescribeTaskDefinitionRequest.class, TaskDefinitionResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTaskDefinitionResult result = client.describeTaskDefinition(request.withTaskDefinition(arn));
             response.setTaskDefinition(result.getTaskDefinition());

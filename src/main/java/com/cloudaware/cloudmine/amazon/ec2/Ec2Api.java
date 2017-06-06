@@ -103,7 +103,7 @@ public final class Ec2Api {
     public AccountAttributesResponse accountAttributesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeAccountAttributesRequest.class, AccountAttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAccountAttributesResult result = client.describeAccountAttributes(request);
             response.setAccountAttributes(result.getAccountAttributes());
@@ -118,7 +118,7 @@ public final class Ec2Api {
     public DhcpOptionsResponse dhcpOptionsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeDhcpOptionsRequest.class, DhcpOptionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDhcpOptionsResult result = client.describeDhcpOptions(request);
             response.setDhcpOptions(result.getDhcpOptions());
@@ -133,7 +133,7 @@ public final class Ec2Api {
     public ElasticIpsResponse elasticIpsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeAddressesRequest.class, ElasticIpsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAddressesResult result = client.describeAddresses(request);
             response.setElasticIps(result.getAddresses());
@@ -149,7 +149,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeFlowLogsRequest.class, FlowLogsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeFlowLogsResult result = client.describeFlowLogs(request.withNextToken(page));
             response.setFlowLogs(result.getFlowLogs());
@@ -166,7 +166,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("owner") final String owner
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeImagesRequest.class, ImagesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeImagesResult result = client.describeImages(request.withOwners(owner));
             response.setImages(result.getImages());
@@ -183,7 +183,7 @@ public final class Ec2Api {
             @Named("region") final String region,
             @Named("imageId") final String imageId,
             @Named("attributeName") final String attributeName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeImageAttributeRequest.class, ImageAttributeResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeImageAttributeResult result = client.describeImageAttribute(request);
             response.setImageAttribute(result.getImageAttribute());
@@ -200,7 +200,7 @@ public final class Ec2Api {
             @Named("region") final String region,
             @Named("instanceId") final String instanceId,
             @Named("attributeName") final String attributeName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeInstanceAttributeRequest.class, InstanceAttributeResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeInstanceAttributeResult result = client.describeInstanceAttribute(
                     request
@@ -221,7 +221,7 @@ public final class Ec2Api {
             @Named("region") final String region,
             @Named("instanceId") @Nullable final List<String> instanceIds,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeInstancesRequest.class, InstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeInstancesResult result = client.describeInstances(
                     request
@@ -242,7 +242,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final InstancesRequest request
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(RunInstancesRequest.class, ReservationResponse.class, credentials, region).execute((client, runInstancesRequest, response) -> {
             runInstancesRequest.setImageId(request.getImageId());
             runInstancesRequest.setMinCount(request.getMinCount());
@@ -282,7 +282,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("instanceId") final String instanceId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(StartInstancesRequest.class, InstanceStateChangeResponse.class, credentials, region).execute((client, request, response) -> {
             final StartInstancesResult result = client.startInstances(
                     request
@@ -301,7 +301,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("instanceId") final String instanceId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(StopInstancesRequest.class, InstanceStateChangeResponse.class, credentials, region).execute((client, request, response) -> {
             final StopInstancesResult result = client.stopInstances(
                     request
@@ -320,7 +320,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("instanceId") final String instanceId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(RebootInstancesRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             client.rebootInstances(request.withInstanceIds(instanceId));
         });
@@ -335,7 +335,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeInstanceStatusRequest.class, InstanceStatusesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeInstanceStatusResult result = client.describeInstanceStatus(request.withNextToken(page));
             response.setInstanceStatuses(result.getInstanceStatuses());
@@ -351,7 +351,7 @@ public final class Ec2Api {
     public InternetGatewaysResponse internetGatewaysList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeInternetGatewaysRequest.class, InternetGatewaysResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeInternetGatewaysResult result = client.describeInternetGateways(request);
             response.setInternetGateways(result.getInternetGateways());
@@ -367,7 +367,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("keyName") @Nullable final List<String> keyNames
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeKeyPairsRequest.class, KeyPairsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeKeyPairsResult result = client.describeKeyPairs(request.withKeyNames(keyNames));
             response.setKeyPairs(result.getKeyPairs());
@@ -383,7 +383,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("keyName") final String keyName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(CreateKeyPairRequest.class, KeyPairResponse.class, credentials, region).execute((client, request, response) -> {
             final CreateKeyPairResult result = client.createKeyPair(request.withKeyName(keyName));
             response.setKeyPair(result.getKeyPair());
@@ -398,7 +398,7 @@ public final class Ec2Api {
     public NetworkAclsResponse networkAclsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeNetworkAclsRequest.class, NetworkAclsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeNetworkAclsResult result = client.describeNetworkAcls(request);
             response.setNetworkAcls(result.getNetworkAcls());
@@ -413,7 +413,7 @@ public final class Ec2Api {
     public NetworkInterfacesResponse networkInterfacesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeNetworkInterfacesRequest.class, NetworkInterfacesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeNetworkInterfacesResult result = client.describeNetworkInterfaces(request);
             response.setNetworkInterfaces(result.getNetworkInterfaces());
@@ -428,7 +428,7 @@ public final class Ec2Api {
     public PlacementGroupsResponse placementGroupsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribePlacementGroupsRequest.class, PlacementGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribePlacementGroupsResult result = client.describePlacementGroups(request);
             response.setPlacementGroups(result.getPlacementGroups());
@@ -443,7 +443,7 @@ public final class Ec2Api {
     public ReservedInstancesResponse reservedInstancesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeReservedInstancesRequest.class, ReservedInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReservedInstancesResult result = client.describeReservedInstances(request);
             response.setReservedInstances(result.getReservedInstances());
@@ -458,7 +458,7 @@ public final class Ec2Api {
     public RouteTablesResponse routeTablesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeRouteTablesRequest.class, RouteTablesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeRouteTablesResult result = client.describeRouteTables(request);
             response.setRouteTables(result.getRouteTables());
@@ -473,7 +473,7 @@ public final class Ec2Api {
     public SecurityGroupsResponse securityGroupsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeSecurityGroupsRequest.class, SecurityGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSecurityGroupsResult result = client.describeSecurityGroups(request);
             response.setSecurityGroups(result.getSecurityGroups());
@@ -490,7 +490,7 @@ public final class Ec2Api {
             @Named("region") final String region,
             @Named("owner") final String owner,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSnapshotsResult result = client.describeSnapshots(
                     request
@@ -510,7 +510,7 @@ public final class Ec2Api {
     public SubnetsResponse subnetsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeSubnetsRequest.class, SubnetsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSubnetsResult result = client.describeSubnets(request);
             response.setSubnets(result.getSubnets());
@@ -527,7 +527,7 @@ public final class Ec2Api {
             @Named("region") final String region,
             @Named("snapshotId") final String snapshotId,
             @Named("attributeName") final String attributeName
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeSnapshotAttributeRequest.class, SnapshotAttributeResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSnapshotAttributeResult result = client.describeSnapshotAttribute(request.withSnapshotId(snapshotId).withAttribute(attributeName));
             response.setCreateVolumePermissions(result.getCreateVolumePermissions());
@@ -543,7 +543,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final TagsRequest tagsRequest
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(CreateTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             request.withResources(tagsRequest.getResources());
             request.withTags(tagsRequest.getTags());
@@ -560,7 +560,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             final TagsRequest tagsRequest
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DeleteTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             request.withResources(tagsRequest.getResources());
             request.withTags(tagsRequest.getTags());
@@ -577,7 +577,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeVolumesRequest.class, VolumesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVolumesResult result = client.describeVolumes(request.withNextToken(page));
             response.setVolumes(result.getVolumes());
@@ -594,7 +594,7 @@ public final class Ec2Api {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeVolumeStatusRequest.class, VolumeStatusesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVolumeStatusResult result = client.describeVolumeStatus(request.withNextToken(page));
             response.setVolumeStatuses(result.getVolumeStatuses());
@@ -610,7 +610,7 @@ public final class Ec2Api {
     public VpcsResponse vpcsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeVpcsRequest.class, VpcsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVpcsResult result = client.describeVpcs(request);
             response.setVpcs(result.getVpcs());
@@ -625,7 +625,7 @@ public final class Ec2Api {
     public VpnConnectionsResponse vpnConnectionsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeVpnConnectionsRequest.class, VpnConnectionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVpnConnectionsResult result = client.describeVpnConnections(request);
             response.setVpnConnections(result.getVpnConnections());
@@ -640,7 +640,7 @@ public final class Ec2Api {
     public VpnGatewaysResponse vpnGatewaysList(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonEc2Caller.get(DescribeVpnGatewaysRequest.class, VpnGatewaysResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVpnGatewaysResult result = client.describeVpnGateways(request);
             response.setVpnGateways(result.getVpnGateways());

@@ -59,7 +59,7 @@ public final class DirectoryServiceApi {
             @Named("region") final String region,
             @Named("directoryId") @Nullable final List<String> directoryIds,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(DescribeDirectoriesRequest.class, DirectoriesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDirectoriesResult result = client.describeDirectories(
                     request
@@ -81,7 +81,7 @@ public final class DirectoryServiceApi {
             @Named("region") final String region,
             @Named("directoryId") final String directoryId,
             @Named("remoteDomainName") @Nullable final List<String> remoteDomainNames
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(DescribeConditionalForwardersRequest.class, ConditionalForwardersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeConditionalForwardersResult result = client.describeConditionalForwarders(
                     request
@@ -102,7 +102,7 @@ public final class DirectoryServiceApi {
             @Named("region") final String region,
             @Named("directoryId") final String directoryId,
             @Named("topicName") @Nullable final List<String> topicNames
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(DescribeEventTopicsRequest.class, EventTopicsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventTopicsResult result = client.describeEventTopics(
                     request
@@ -124,7 +124,7 @@ public final class DirectoryServiceApi {
             @Named("directoryId") final String directoryId,
             @Named("snapshotId") @Nullable final List<String> snapshotIds,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(DescribeSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSnapshotsResult result = client.describeSnapshots(
                     request
@@ -148,7 +148,7 @@ public final class DirectoryServiceApi {
             @Named("directoryId") final String directoryId,
             @Named("trustId") @Nullable final List<String> trustIds,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(DescribeTrustsRequest.class, TrustsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTrustsResult result = client.describeTrusts(
                     request
@@ -169,7 +169,7 @@ public final class DirectoryServiceApi {
     public DirectoryLimitsResponse directoryLimitsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(GetDirectoryLimitsRequest.class, DirectoryLimitsResponse.class, credentials, region).execute((client, request, response) -> {
             final GetDirectoryLimitsResult result = client.getDirectoryLimits(request);
             response.setDirectoryLimits(result.getDirectoryLimits());
@@ -185,7 +185,7 @@ public final class DirectoryServiceApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("directoryId") final String directoryId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(GetSnapshotLimitsRequest.class, SnapshotLimitsResponse.class, credentials, region).execute((client, request, response) -> {
             final GetSnapshotLimitsResult result = client.getSnapshotLimits(request.withDirectoryId(directoryId));
             response.setSnapshotLimits(result.getSnapshotLimits());
@@ -202,7 +202,7 @@ public final class DirectoryServiceApi {
             @Named("region") final String region,
             @Named("directoryId") final String directoryId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(ListIpRoutesRequest.class, IpRoutesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListIpRoutesResult result = client.listIpRoutes(
                     request
@@ -224,7 +224,7 @@ public final class DirectoryServiceApi {
             @Named("region") final String region,
             @Named("directoryId") final String directoryId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(ListSchemaExtensionsRequest.class, SchemaExtensionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListSchemaExtensionsResult result = client.listSchemaExtensions(
                     request
@@ -246,7 +246,7 @@ public final class DirectoryServiceApi {
             @Named("region") final String region,
             @Named("directoryId") final String directoryId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonDirectoryServiceCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTagsForResourceResult result = client.listTagsForResource(
                     request

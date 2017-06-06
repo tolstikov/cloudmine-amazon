@@ -7,13 +7,13 @@ public class AmazonCaller<T, RqT extends AmazonWebServiceRequest, RsT extends Am
     private final Class<RqT> requestClass;
     private final Class<RsT> responseClass;
     private final String endpointPrefix;
-    private final AmazonClientCreate<T> clientCreate;
+    private final AmazonClientCreator<T> clientCreator;
 
-    public AmazonCaller(final Class<RqT> requestClass, final Class<RsT> responseClass, final String endpointPrefix, final AmazonClientCreate<T> clientCreate) {
+    public AmazonCaller(final Class<RqT> requestClass, final Class<RsT> responseClass, final String endpointPrefix, final AmazonClientCreator<T> clientCreator) {
         this.requestClass = requestClass;
         this.responseClass = responseClass;
         this.endpointPrefix = endpointPrefix;
-        this.clientCreate = clientCreate;
+        this.clientCreator = clientCreator;
     }
 
     private static String convertToAction(final Class<?> requestClass) {
@@ -29,9 +29,14 @@ public class AmazonCaller<T, RqT extends AmazonWebServiceRequest, RsT extends Am
 
     public final RsT execute(
             final AmazonCall<T, RqT, RsT> call
-    ) throws AmazonUnparsedException, IllegalAccessException, InstantiationException {
-        final RsT response = responseClass.newInstance();
-        try (ClientWrapper<T> clientWrapper = clientCreate.create()) {
+    ) throws AmazonUnparsedException {
+        final RsT response;
+        try {
+            response = responseClass.newInstance();
+        } catch (IllegalAccessException | InstantiationException ex) {
+            throw new AmazonUnparsedException(ex);
+        }
+        try (ClientWrapper<T> clientWrapper = clientCreator.create()) {
             call.call(clientWrapper.getClient(), requestClass.newInstance(), response);
         } catch (Throwable t) {
             response.setException(AmazonResponse.parse(t, endpointPrefix + ":" + convertToAction(requestClass)));

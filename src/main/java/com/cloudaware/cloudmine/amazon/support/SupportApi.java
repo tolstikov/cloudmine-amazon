@@ -45,7 +45,7 @@ public final class SupportApi {
             @Named("credentials") final String credentials,
             @Named("includeResolved") @Nullable final Boolean includeResolved,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSupportCaller.get(DescribeCasesRequest.class, CasesResponse.class, credentials).execute((client, request, response) -> {
             final DescribeCasesResult result = client.describeCases(request.withIncludeResolvedCases(includeResolved).withNextToken(page));
             response.setCases(result.getCases());
@@ -60,7 +60,7 @@ public final class SupportApi {
     )
     public TrustedAdvisorChecksResponse trustedAdvisorChecksList(
             @Named("credentials") final String credentials
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSupportCaller.get(DescribeTrustedAdvisorChecksRequest.class, TrustedAdvisorChecksResponse.class, credentials).execute((client, request, response) -> {
             final DescribeTrustedAdvisorChecksResult result = client.describeTrustedAdvisorChecks(request.withLanguage("en"));
             response.setTrustedAdvisorChecks(result.getChecks());
@@ -75,7 +75,7 @@ public final class SupportApi {
     public TrustedAdvisorCheckResultResponse trustedAdvisorChecksResultsGet(
             @Named("credentials") final String credentials,
             @Named("checkId") final String checkId
-    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+    ) throws AmazonUnparsedException {
         return AmazonSupportCaller.get(DescribeTrustedAdvisorCheckResultRequest.class, TrustedAdvisorCheckResultResponse.class, credentials).execute((client, request, response) -> {
             final DescribeTrustedAdvisorCheckResultResult result = client.describeTrustedAdvisorCheckResult(request.withCheckId(checkId));
             response.setTrustedAdvisorCheckResult(result.getResult());
