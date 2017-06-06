@@ -1,6 +1,5 @@
 package com.cloudaware.cloudmine.amazon.storagegateway;
 
-import com.amazonaws.services.storagegateway.AWSStorageGateway;
 import com.amazonaws.services.storagegateway.model.DescribeBandwidthRateLimitRequest;
 import com.amazonaws.services.storagegateway.model.DescribeBandwidthRateLimitResult;
 import com.amazonaws.services.storagegateway.model.DescribeCachediSCSIVolumesRequest;
@@ -15,7 +14,6 @@ import com.amazonaws.services.storagegateway.model.DescribeTapesRequest;
 import com.amazonaws.services.storagegateway.model.DescribeTapesResult;
 import com.amazonaws.services.storagegateway.model.DescribeVTLDevicesRequest;
 import com.amazonaws.services.storagegateway.model.DescribeVTLDevicesResult;
-import com.amazonaws.services.storagegateway.model.Disk;
 import com.amazonaws.services.storagegateway.model.ListGatewaysRequest;
 import com.amazonaws.services.storagegateway.model.ListGatewaysResult;
 import com.amazonaws.services.storagegateway.model.ListLocalDisksRequest;
@@ -24,11 +22,7 @@ import com.amazonaws.services.storagegateway.model.ListVolumeRecoveryPointsReque
 import com.amazonaws.services.storagegateway.model.ListVolumeRecoveryPointsResult;
 import com.amazonaws.services.storagegateway.model.ListVolumesRequest;
 import com.amazonaws.services.storagegateway.model.ListVolumesResult;
-import com.amazonaws.services.storagegateway.model.VolumeRecoveryPointInfo;
-import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
-import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
-import com.cloudaware.cloudmine.amazon.ClientWrapper;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.Api;
@@ -36,7 +30,6 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -70,16 +63,12 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final ListGatewaysResult result = clientWrapper.getClient().listGateways(
-                    new ListGatewaysRequest()
-                            .withMarker(page)
-            );
-            return new GatewaysResponse(result.getGateways(), result.getMarker());
-        } catch (Throwable t) {
-            return new GatewaysResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(ListGatewaysRequest.class, GatewaysResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListGatewaysResult result = client.listGateways(request.withMarker(page));
+            response.setGateways(result.getGateways());
+            response.setNextPage(result.getMarker());
+        });
     }
 
     @ApiMethod(
@@ -91,13 +80,12 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeBandwidthRateLimitResult result = clientWrapper.getClient().describeBandwidthRateLimit(new DescribeBandwidthRateLimitRequest().withGatewayARN(gatewayArn));
-            return new BandwidthRateLimitResponse(result.getAverageUploadRateLimitInBitsPerSec(), result.getAverageDownloadRateLimitInBitsPerSec());
-        } catch (Throwable t) {
-            return new BandwidthRateLimitResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeBandwidthRateLimitRequest.class, BandwidthRateLimitResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeBandwidthRateLimitResult result = client.describeBandwidthRateLimit(request.withGatewayARN(gatewayArn));
+            response.setAverageUploadRateLimitInBitsPerSec(result.getAverageUploadRateLimitInBitsPerSec());
+            response.setAverageDownloadRateLimitInBitsPerSec(result.getAverageDownloadRateLimitInBitsPerSec());
+        });
     }
 
     @ApiMethod(
@@ -109,15 +97,11 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final List<Disk> out = Lists.newArrayList();
-            final ListLocalDisksResult result = clientWrapper.getClient().listLocalDisks(new ListLocalDisksRequest().withGatewayARN(gatewayArn));
-            out.addAll(result.getDisks());
-            return new LocalDisksResponse(out);
-        } catch (Throwable t) {
-            return new LocalDisksResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(ListLocalDisksRequest.class, LocalDisksResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListLocalDisksResult result = client.listLocalDisks(request.withGatewayARN(gatewayArn));
+            response.setDisks(result.getDisks());
+        });
     }
 
     @ApiMethod(
@@ -130,17 +114,12 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final ListVolumesResult result = clientWrapper.getClient().listVolumes(
-                    new ListVolumesRequest()
-                            .withGatewayARN(gatewayArn)
-                            .withMarker(page)
-            );
-            return new VolumesResponse(result.getVolumeInfos(), result.getMarker());
-        } catch (Throwable t) {
-            return new VolumesResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(ListVolumesRequest.class, VolumesResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListVolumesResult result = client.listVolumes(request.withGatewayARN(gatewayArn).withMarker(page));
+            response.setVolumes(result.getVolumeInfos());
+            response.setNextPage(result.getMarker());
+        });
     }
 
     @ApiMethod(
@@ -152,15 +131,11 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("volumeArn") final List<String> volumeArns
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeCachediSCSIVolumesResult result = clientWrapper.getClient().describeCachediSCSIVolumes(
-                    new DescribeCachediSCSIVolumesRequest().withVolumeARNs(volumeArns)
-            );
-            return new CachedVolumesResponse(result.getCachediSCSIVolumes());
-        } catch (Throwable t) {
-            return new CachedVolumesResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeCachediSCSIVolumesRequest.class, CachedVolumesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeCachediSCSIVolumesResult result = client.describeCachediSCSIVolumes(request.withVolumeARNs(volumeArns));
+            response.setCachedVolumes(result.getCachediSCSIVolumes());
+        });
     }
 
     @ApiMethod(
@@ -172,15 +147,11 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("volumeArn") final List<String> volumeArns
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeStorediSCSIVolumesResult result = clientWrapper.getClient().describeStorediSCSIVolumes(
-                    new DescribeStorediSCSIVolumesRequest().withVolumeARNs(volumeArns)
-            );
-            return new StoredVolumesResponse(result.getStorediSCSIVolumes());
-        } catch (Throwable t) {
-            return new StoredVolumesResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeStorediSCSIVolumesRequest.class, StoredVolumesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeStorediSCSIVolumesResult result = client.describeStorediSCSIVolumes(request.withVolumeARNs(volumeArns));
+            response.setStoredVolumes(result.getStorediSCSIVolumes());
+        });
     }
 
     @ApiMethod(
@@ -192,16 +163,11 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final List<VolumeRecoveryPointInfo> out = Lists.newArrayList();
-            final ListVolumeRecoveryPointsResult result = clientWrapper.getClient().listVolumeRecoveryPoints(
-                    new ListVolumeRecoveryPointsRequest().withGatewayARN(gatewayArn));
-            out.addAll(result.getVolumeRecoveryPointInfos());
-            return new VolumeRecoveryPointsResponse(out);
-        } catch (Throwable t) {
-            return new VolumeRecoveryPointsResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(ListVolumeRecoveryPointsRequest.class, VolumeRecoveryPointsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListVolumeRecoveryPointsResult result = client.listVolumeRecoveryPoints(request.withGatewayARN(gatewayArn));
+            response.setVolumeRecoveryPoints(result.getVolumeRecoveryPointInfos());
+        });
     }
 
     @ApiMethod(
@@ -214,17 +180,12 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeTapesResult result = clientWrapper.getClient().describeTapes(
-                    new DescribeTapesRequest()
-                            .withGatewayARN(gatewayArn)
-                            .withMarker(page)
-            );
-            return new TapesResponse(result.getTapes(), result.getMarker());
-        } catch (Throwable t) {
-            return new TapesResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeTapesRequest.class, TapesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeTapesResult result = client.describeTapes(request.withGatewayARN(gatewayArn).withMarker(page));
+            response.setTapes(result.getTapes());
+            response.setNextPage(result.getMarker());
+        });
     }
 
     @ApiMethod(
@@ -237,17 +198,12 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeTapeRecoveryPointsResult result = clientWrapper.getClient().describeTapeRecoveryPoints(
-                    new DescribeTapeRecoveryPointsRequest()
-                            .withGatewayARN(gatewayArn)
-                            .withMarker(page)
-            );
-            return new TapeRecoveryPointsResponse(result.getTapeRecoveryPointInfos(), result.getMarker());
-        } catch (Throwable t) {
-            return new TapeRecoveryPointsResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeTapeRecoveryPointsRequest.class, TapeRecoveryPointsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeTapeRecoveryPointsResult result = client.describeTapeRecoveryPoints(request.withGatewayARN(gatewayArn).withMarker(page));
+            response.setTapeRecoveryPoints(result.getTapeRecoveryPointInfos());
+            response.setNextPage(result.getMarker());
+        });
     }
 
     @ApiMethod(
@@ -259,16 +215,12 @@ public final class StorageGatewayApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeTapeArchivesResult result = clientWrapper.getClient().describeTapeArchives(
-                    new DescribeTapeArchivesRequest()
-                            .withMarker(page)
-            );
-            return new TapeArchivesResponse(result.getTapeArchives(), result.getMarker());
-        } catch (Throwable t) {
-            return new TapeArchivesResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeTapeArchivesRequest.class, TapeArchivesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeTapeArchivesResult result = client.describeTapeArchives(request.withMarker(page));
+            response.setTapeArchives(result.getTapeArchives());
+            response.setNextPage(result.getMarker());
+        });
     }
 
     @ApiMethod(
@@ -281,16 +233,11 @@ public final class StorageGatewayApi {
             @Named("region") final String region,
             @Named("gatewayArn") final String gatewayArn,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSStorageGateway> clientWrapper = new AmazonClientHelper(credentials).getStorageGateway(region)) {
-            final DescribeVTLDevicesResult result = clientWrapper.getClient().describeVTLDevices(
-                    new DescribeVTLDevicesRequest()
-                            .withGatewayARN(gatewayArn)
-                            .withMarker(page)
-            );
-            return new VtlDevicesResponse(result.getVTLDevices(), result.getMarker());
-        } catch (Throwable t) {
-            return new VtlDevicesResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonStorageGatewayCaller.get(DescribeVTLDevicesRequest.class, VtlDevicesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeVTLDevicesResult result = client.describeVTLDevices(request.withMarker(page));
+            response.setVtlDevices(result.getVTLDevices());
+            response.setNextPage(result.getMarker());
+        });
     }
 }

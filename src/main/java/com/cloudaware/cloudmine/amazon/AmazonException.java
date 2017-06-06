@@ -10,9 +10,11 @@ import java.util.Map;
  * Time: 16:27
  */
 public final class AmazonException {
-    private Category category;
-    private String className;
-    private String message;
+
+    private final Category category;
+    private final String action;
+    private final String className;
+    private final String message;
     private String requestId;
     private String errorCode;
     private AmazonServiceException.ErrorType errorType;
@@ -21,8 +23,9 @@ public final class AmazonException {
     private String serviceName;
     private Map<String, String> httpHeaders;
 
-    public AmazonException(final Category category, final AmazonServiceException ex) {
+    public AmazonException(final Category category, final String action, final AmazonServiceException ex) {
         this.category = category;
+        this.action = action;
         this.className = ex.getClass().getName();
         this.message = ex.getMessage();
         this.requestId = ex.getRequestId();
@@ -34,14 +37,19 @@ public final class AmazonException {
         this.httpHeaders = ex.getHttpHeaders();
     }
 
-    public AmazonException(final Category category, final String className, final String message) {
+    public AmazonException(final Category category, final String action, final String className, final String message) {
         this.category = category;
+        this.action = action;
         this.className = className;
         this.message = message;
     }
 
     public Category getCategory() {
         return category;
+    }
+
+    public String getAction() {
+        return action;
     }
 
     public String getClassName() {

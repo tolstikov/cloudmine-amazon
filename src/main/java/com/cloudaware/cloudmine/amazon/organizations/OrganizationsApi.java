@@ -1,11 +1,11 @@
 package com.cloudaware.cloudmine.amazon.organizations;
 
-import com.amazonaws.services.organizations.AWSOrganizations;
 import com.amazonaws.services.organizations.model.CreateAccountRequest;
 import com.amazonaws.services.organizations.model.CreateAccountResult;
 import com.amazonaws.services.organizations.model.DescribeCreateAccountStatusRequest;
 import com.amazonaws.services.organizations.model.DescribeCreateAccountStatusResult;
 import com.amazonaws.services.organizations.model.DescribeOrganizationRequest;
+import com.amazonaws.services.organizations.model.DescribeOrganizationResult;
 import com.amazonaws.services.organizations.model.ListAccountsForParentRequest;
 import com.amazonaws.services.organizations.model.ListAccountsForParentResult;
 import com.amazonaws.services.organizations.model.ListAccountsRequest;
@@ -18,10 +18,7 @@ import com.amazonaws.services.organizations.model.ListPoliciesRequest;
 import com.amazonaws.services.organizations.model.ListPoliciesResult;
 import com.amazonaws.services.organizations.model.ListRootsRequest;
 import com.amazonaws.services.organizations.model.ListRootsResult;
-import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
-import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
-import com.cloudaware.cloudmine.amazon.ClientWrapper;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.Api;
@@ -54,16 +51,11 @@ public final class OrganizationsApi {
     )
     public OrganizationResponse organizationGet(
             @Named("credentials") final String credentials
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            return new OrganizationResponse(
-                    clientWrapper.getClient()
-                            .describeOrganization(new DescribeOrganizationRequest())
-                            .getOrganization()
-            );
-        } catch (Throwable t) {
-            return new OrganizationResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(DescribeOrganizationRequest.class, OrganizationResponse.class, credentials).execute((client, request, response) -> {
+            final DescribeOrganizationResult result = client.describeOrganization(request);
+            response.setOrganization(result.getOrganization());
+        });
     }
 
     @ApiMethod(
@@ -74,16 +66,12 @@ public final class OrganizationsApi {
     public RootsResponse rootslist(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final ListRootsResult result = clientWrapper.getClient().listRoots(
-                    new ListRootsRequest()
-                            .withNextToken(page)
-            );
-            return new RootsResponse(result.getRoots(), result.getNextToken());
-        } catch (Throwable t) {
-            return new RootsResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(ListRootsRequest.class, RootsResponse.class, credentials).execute((client, request, response) -> {
+            final ListRootsResult result = client.listRoots(request.withNextToken(page));
+            response.setRoots(result.getRoots());
+            response.setNextPage(result.getNextToken());
+        });
     }
 
     @ApiMethod(
@@ -94,16 +82,12 @@ public final class OrganizationsApi {
     public AccountsResponse accountsList(
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final ListAccountsResult result = clientWrapper.getClient().listAccounts(
-                    new ListAccountsRequest()
-                            .withNextToken(page)
-            );
-            return new AccountsResponse(result.getAccounts(), result.getNextToken());
-        } catch (Throwable t) {
-            return new AccountsResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(ListAccountsRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
+            final ListAccountsResult result = client.listAccounts(request.withNextToken(page));
+            response.setAccounts(result.getAccounts());
+            response.setNextPage(result.getNextToken());
+        });
     }
 
     @ApiMethod(
@@ -114,20 +98,17 @@ public final class OrganizationsApi {
     public AccountCreateResponse accountsCreate(
             @Named("credentials") final String credentials,
             final AccountRequest request
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final CreateAccountResult result = clientWrapper.getClient().createAccount(
-                    new CreateAccountRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(CreateAccountRequest.class, AccountCreateResponse.class, credentials).execute((client, r, response) -> {
+            final CreateAccountResult result = client.createAccount(
+                    r
                             .withAccountName(request.getAccountName())
                             .withEmail(request.getEmail())
                             .withRoleName(request.getRoleName())
                             .withIamUserAccessToBilling(request.getIamUserAccessToBilling())
-
             );
-            return new AccountCreateResponse(result.getCreateAccountStatus());
-        } catch (Throwable t) {
-            return new AccountCreateResponse(AmazonResponse.parse(t));
-        }
+            response.setCreateAccountStatus(result.getCreateAccountStatus());
+        });
     }
 
     @ApiMethod(
@@ -138,15 +119,11 @@ public final class OrganizationsApi {
     public AccountCreateResponse accountsCreateStatus(
             @Named("credentials") final String credentials,
             @Named("requestId") final String requestId
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final DescribeCreateAccountStatusResult result = clientWrapper.getClient().describeCreateAccountStatus(new DescribeCreateAccountStatusRequest()
-                    .withCreateAccountRequestId(requestId)
-            );
-            return new AccountCreateResponse(result.getCreateAccountStatus());
-        } catch (Throwable t) {
-            return new AccountCreateResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(DescribeCreateAccountStatusRequest.class, AccountCreateResponse.class, credentials).execute((client, request, response) -> {
+            final DescribeCreateAccountStatusResult result = client.describeCreateAccountStatus(request.withCreateAccountRequestId(requestId));
+            response.setCreateAccountStatus(result.getCreateAccountStatus());
+        });
     }
 
     @ApiMethod(
@@ -158,17 +135,16 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("parentId") final String parentId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final ListAccountsForParentResult result = clientWrapper.getClient().listAccountsForParent(
-                    new ListAccountsForParentRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(ListAccountsForParentRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
+            final ListAccountsForParentResult result = client.listAccountsForParent(
+                    request
                             .withParentId(parentId)
                             .withNextToken(page)
             );
-            return new AccountsResponse(result.getAccounts(), result.getNextToken());
-        } catch (Throwable t) {
-            return new AccountsResponse(AmazonResponse.parse(t));
-        }
+            response.setAccounts(result.getAccounts());
+            response.setNextPage(result.getNextToken());
+        });
     }
 
     @ApiMethod(
@@ -180,17 +156,16 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("filter") final String filter,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final ListPoliciesResult result = clientWrapper.getClient().listPolicies(
-                    new ListPoliciesRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(ListPoliciesRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
+            final ListPoliciesResult result = client.listPolicies(
+                    request
                             .withFilter(filter)
                             .withNextToken(page)
             );
-            return new PoliciesResponse(result.getPolicies(), result.getNextToken());
-        } catch (Throwable t) {
-            return new PoliciesResponse(AmazonResponse.parse(t));
-        }
+            response.setPolicies(result.getPolicies());
+            response.setNextPage(result.getNextToken());
+        });
     }
 
     @ApiMethod(
@@ -203,18 +178,16 @@ public final class OrganizationsApi {
             @Named("targetId") final String targetId,
             @Named("filter") final String filter,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final ListPoliciesForTargetResult result = clientWrapper.getClient().listPoliciesForTarget(
-                    new ListPoliciesForTargetRequest()
-                            .withTargetId(targetId)
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(ListPoliciesForTargetRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
+            final ListPoliciesForTargetResult result = client.listPoliciesForTarget(
+                    request
                             .withFilter(filter)
                             .withNextToken(page)
             );
-            return new PoliciesResponse(result.getPolicies(), result.getNextToken());
-        } catch (Throwable t) {
-            return new PoliciesResponse(AmazonResponse.parse(t));
-        }
+            response.setPolicies(result.getPolicies());
+            response.setNextPage(result.getNextToken());
+        });
     }
 
     @ApiMethod(
@@ -226,16 +199,15 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("parentId") final String parentId,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSOrganizations> clientWrapper = new AmazonClientHelper(credentials).getOrganizations()) {
-            final ListOrganizationalUnitsForParentResult result = clientWrapper.getClient().listOrganizationalUnitsForParent(
-                    new ListOrganizationalUnitsForParentRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonOrganizationsCaller.get(ListOrganizationalUnitsForParentRequest.class, OrganizationalUnitsResponse.class, credentials).execute((client, request, response) -> {
+            final ListOrganizationalUnitsForParentResult result = client.listOrganizationalUnitsForParent(
+                    request
                             .withParentId(parentId)
                             .withNextToken(page)
             );
-            return new OrganizationalUnitsResponse(result.getOrganizationalUnits(), result.getNextToken());
-        } catch (Throwable t) {
-            return new OrganizationalUnitsResponse(AmazonResponse.parse(t));
-        }
+            response.setOrganizationalUnits(result.getOrganizationalUnits());
+            response.setNextPage(result.getNextToken());
+        });
     }
 }

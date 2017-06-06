@@ -1,12 +1,8 @@
 package com.cloudaware.cloudmine.amazon.glacier;
 
-import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.model.ListVaultsRequest;
 import com.amazonaws.services.glacier.model.ListVaultsResult;
-import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
-import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
-import com.cloudaware.cloudmine.amazon.ClientWrapper;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.Api;
@@ -36,6 +32,7 @@ import com.google.api.server.spi.config.Nullable;
         apiKeyRequired = AnnotationBoolean.TRUE
 )
 public final class GlacierApi {
+
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "vaults.list",
@@ -45,16 +42,15 @@ public final class GlacierApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AmazonGlacier> clientWrapper = new AmazonClientHelper(credentials).getGlacier(region)) {
-            final ListVaultsResult result = clientWrapper.getClient().listVaults(
-                    new ListVaultsRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonGlacierCaller.get(ListVaultsRequest.class, VaultsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListVaultsResult result = client.listVaults(
+                    request
                             .withAccountId("-")
                             .withMarker(page)
             );
-            return new VaultsResponse(result.getVaultList(), result.getMarker());
-        } catch (Throwable t) {
-            return new VaultsResponse(AmazonResponse.parse(t));
-        }
+            response.setVaults(result.getVaultList());
+            response.setNextPage(result.getMarker());
+        });
     }
 }

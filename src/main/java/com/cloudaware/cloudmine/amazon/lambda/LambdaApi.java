@@ -1,9 +1,9 @@
 package com.cloudaware.cloudmine.amazon.lambda;
 
-import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.model.GetFunctionRequest;
 import com.amazonaws.services.lambda.model.GetFunctionResult;
 import com.amazonaws.services.lambda.model.GetPolicyRequest;
+import com.amazonaws.services.lambda.model.GetPolicyResult;
 import com.amazonaws.services.lambda.model.ListAliasesRequest;
 import com.amazonaws.services.lambda.model.ListAliasesResult;
 import com.amazonaws.services.lambda.model.ListEventSourceMappingsRequest;
@@ -12,10 +12,7 @@ import com.amazonaws.services.lambda.model.ListFunctionsRequest;
 import com.amazonaws.services.lambda.model.ListFunctionsResult;
 import com.amazonaws.services.lambda.model.ListVersionsByFunctionRequest;
 import com.amazonaws.services.lambda.model.ListVersionsByFunctionResult;
-import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
-import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
-import com.cloudaware.cloudmine.amazon.ClientWrapper;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.Api;
@@ -55,16 +52,12 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSLambda> clientWrapper = new AmazonClientHelper(credentials).getLambda(region)) {
-            final ListFunctionsResult result = clientWrapper.getClient().listFunctions(
-                    new ListFunctionsRequest()
-                            .withMarker(page)
-            );
-            return new FunctionsResponse(result.getFunctions(), result.getNextMarker());
-        } catch (Throwable t) {
-            return new FunctionsResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonLambdaCaller.get(ListFunctionsRequest.class, FunctionsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListFunctionsResult result = client.listFunctions(request.withMarker(page));
+            response.setFunctions(result.getFunctions());
+            response.setNextPage(result.getNextMarker());
+        });
     }
 
     @ApiMethod(
@@ -76,13 +69,12 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("functionName") final String functionName
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSLambda> clientWrapper = new AmazonClientHelper(credentials).getLambda(region)) {
-            final GetFunctionResult result = clientWrapper.getClient().getFunction(new GetFunctionRequest().withFunctionName(functionName));
-            return new FunctionResponse(result.getConfiguration(), result.getCode());
-        } catch (Throwable t) {
-            return new FunctionResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonLambdaCaller.get(GetFunctionRequest.class, FunctionResponse.class, credentials, region).execute((client, request, response) -> {
+            final GetFunctionResult result = client.getFunction(request.withFunctionName(functionName));
+            response.setConfiguration(result.getConfiguration());
+            response.setCode(result.getCode());
+        });
     }
 
     @ApiMethod(
@@ -95,17 +87,16 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("functionName") final String functionName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSLambda> clientWrapper = new AmazonClientHelper(credentials).getLambda(region)) {
-            final ListVersionsByFunctionResult result = clientWrapper.getClient().listVersionsByFunction(
-                    new ListVersionsByFunctionRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonLambdaCaller.get(ListVersionsByFunctionRequest.class, VersionsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListVersionsByFunctionResult result = client.listVersionsByFunction(
+                    request
                             .withFunctionName(functionName)
                             .withMarker(page)
             );
-            return new VersionsResponse(result.getVersions(), result.getNextMarker());
-        } catch (Throwable t) {
-            return new VersionsResponse(AmazonResponse.parse(t));
-        }
+            response.setVerions(result.getVersions());
+            response.setNextPage(result.getNextMarker());
+        });
     }
 
     @ApiMethod(
@@ -118,17 +109,16 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("functionName") final String functionName,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSLambda> clientWrapper = new AmazonClientHelper(credentials).getLambda(region)) {
-            final ListAliasesResult result = clientWrapper.getClient().listAliases(
-                    new ListAliasesRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonLambdaCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListAliasesResult result = client.listAliases(
+                    request
                             .withFunctionName(functionName)
                             .withMarker(page)
             );
-            return new AliasesResponse(result.getAliases(), result.getNextMarker());
-        } catch (Throwable t) {
-            return new AliasesResponse(AmazonResponse.parse(t));
-        }
+            response.setAliases(result.getAliases());
+            response.setNextPage(result.getNextMarker());
+        });
     }
 
     @ApiMethod(
@@ -140,12 +130,14 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("functionName") final String functionName
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSLambda> clientWrapper = new AmazonClientHelper(credentials).getLambda(region)) {
-            return new PolicyResponse(clientWrapper.getClient().getPolicy(new GetPolicyRequest().withFunctionName(functionName)).getPolicy());
-        } catch (Throwable t) {
-            return new PolicyResponse(AmazonResponse.parse(t));
-        }
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonLambdaCaller.get(GetPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
+            final GetPolicyResult result = client.getPolicy(
+                    request
+                            .withFunctionName(functionName)
+            );
+            response.setPolicy(result.getPolicy());
+        });
     }
 
     @ApiMethod(
@@ -157,15 +149,14 @@ public final class LambdaApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
-    ) throws AmazonUnparsedException {
-        try (ClientWrapper<AWSLambda> clientWrapper = new AmazonClientHelper(credentials).getLambda(region)) {
-            final ListEventSourceMappingsResult result = clientWrapper.getClient().listEventSourceMappings(
-                    new ListEventSourceMappingsRequest()
+    ) throws AmazonUnparsedException, InstantiationException, IllegalAccessException {
+        return AmazonLambdaCaller.get(ListEventSourceMappingsRequest.class, EventSourceMappingsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListEventSourceMappingsResult result = client.listEventSourceMappings(
+                    request
                             .withMarker(page)
             );
-            return new EventSourceMappingsResponse(result.getEventSourceMappings(), result.getNextMarker());
-        } catch (Throwable t) {
-            return new EventSourceMappingsResponse(AmazonResponse.parse(t));
-        }
+            response.setEventSourceMappings(result.getEventSourceMappings());
+            response.setNextPage(result.getNextMarker());
+        });
     }
 }
