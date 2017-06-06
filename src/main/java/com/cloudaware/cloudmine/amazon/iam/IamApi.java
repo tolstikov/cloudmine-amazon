@@ -101,7 +101,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListUsersRequest.class, UsersResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListUsersRequest.class, UsersResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListUsersResult result = client.listUsers(request.withMarker(page));
             response.setUsers(result.getUsers());
             response.setNextPage(result.getMarker());
@@ -117,7 +117,7 @@ public final class IamApi {
             @Named("credentials") final String credentials,
             @Named("partition") final String partition
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetUserRequest.class, UserResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetUserRequest.class, UserResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetUserResult result = client.getUser(request);
             response.setUser(result.getUser());
         });
@@ -133,7 +133,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("userName") final String userName
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetUserRequest.class, UserResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetUserRequest.class, UserResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetUserResult result = client.getUser(request.withUserName(userName));
             response.setUser(result.getUser());
         });
@@ -150,7 +150,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListGroupsForUserRequest.class, GroupsResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListGroupsForUserRequest.class, GroupsResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListGroupsForUserResult result = client.listGroupsForUser(request.withMarker(page));
             response.setGroups(result.getGroups());
             response.setNextPage(result.getMarker());
@@ -168,7 +168,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListAccessKeysRequest.class, AccessKeysResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListAccessKeysRequest.class, AccessKeysResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListAccessKeysResult result = client.listAccessKeys(request.withUserName(userName).withMarker(page));
             response.setAccessKeys(result.getAccessKeyMetadata());
             response.setNextPage(result.getMarker());
@@ -185,7 +185,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListGroupsRequest.class, GroupsResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListGroupsRequest.class, GroupsResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListGroupsResult result = client.listGroups(request.withMarker(page));
             response.setGroups(result.getGroups());
             response.setNextPage(result.getMarker());
@@ -202,7 +202,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListRolesRequest.class, RolesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListRolesRequest.class, RolesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListRolesResult result = client.listRoles(request.withMarker(page));
             response.setRoles(result.getRoles());
             response.setNextPage(result.getMarker());
@@ -219,7 +219,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("accessKeyId") final String accessKeyId
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetAccessKeyLastUsedRequest.class, AccessKeyLastUsedResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetAccessKeyLastUsedRequest.class, AccessKeyLastUsedResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetAccessKeyLastUsedResult result = client.getAccessKeyLastUsed(request.withAccessKeyId(accessKeyId));
             response.setAccessKeyLastUsed(
                     result != null && result.getAccessKeyLastUsed() != null
@@ -239,7 +239,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("userName") final String userName
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(CreateAccessKeyRequest.class, AccessKeyResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(CreateAccessKeyRequest.class, AccessKeyResponse.class, credentials, partition).execute((client, request, response) -> {
             final CreateAccessKeyResult result = client.createAccessKey(request.withUserName(userName));
             response.setAccessKey(result.getAccessKey());
         });
@@ -255,7 +255,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListServerCertificatesRequest.class, ServerCertificatesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListServerCertificatesRequest.class, ServerCertificatesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListServerCertificatesResult result = client.listServerCertificates(request.withMarker(page));
             response.setServerCertificates(result.getServerCertificateMetadataList());
             response.setNextPage(result.getMarker());
@@ -272,7 +272,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("serverCertificateName") final String serverCertificateName
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetServerCertificateRequest.class, ServerCertificateResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetServerCertificateRequest.class, ServerCertificateResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetServerCertificateResult result = client.getServerCertificate(request.withServerCertificateName(serverCertificateName));
             response.setServerCertificate(result.getServerCertificate());
         });
@@ -289,7 +289,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListSigningCertificatesRequest.class, SigningCertificatesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListSigningCertificatesRequest.class, SigningCertificatesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListSigningCertificatesResult result = client.listSigningCertificates(
                     request
                             .withUserName(userName)
@@ -311,7 +311,7 @@ public final class IamApi {
             @Named("groupName") final String groupName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListGroupPoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListGroupPoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListGroupPoliciesResult result = client.listGroupPolicies(
                     request
                             .withMarker(page)
@@ -332,7 +332,7 @@ public final class IamApi {
             @Named("groupName") final String groupName,
             @Named("policyName") final String policyName
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetGroupPolicyRequest.class, PolicyResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetGroupPolicyRequest.class, PolicyResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetGroupPolicyResult result = client.getGroupPolicy(
                     request
                             .withGroupName(groupName)
@@ -353,7 +353,7 @@ public final class IamApi {
             @Named("groupName") final String groupName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListAttachedGroupPoliciesRequest.class, AttachedPoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListAttachedGroupPoliciesRequest.class, AttachedPoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListAttachedGroupPoliciesResult result = client.listAttachedGroupPolicies(
                     request
                             .withGroupName(groupName)
@@ -374,7 +374,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("userName") final String userName
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetLoginProfileRequest.class, LoginProfileResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetLoginProfileRequest.class, LoginProfileResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetLoginProfileResult result = client.getLoginProfile(
                     request.withUserName(userName)
             );
@@ -393,7 +393,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListMFADevicesRequest.class, MfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListMFADevicesRequest.class, MfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListMFADevicesResult result = client.listMFADevices(
                     request.withMarker(page)
             );
@@ -411,7 +411,7 @@ public final class IamApi {
             @Named("credentials") final String credentials,
             @Named("partition") final String partition
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetAccountPasswordPolicyRequest.class, PasswordPolicyResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetAccountPasswordPolicyRequest.class, PasswordPolicyResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetAccountPasswordPolicyResult result = client.getAccountPasswordPolicy(request);
             response.setPasswordPolicy(result.getPasswordPolicy());
         });
@@ -429,7 +429,7 @@ public final class IamApi {
             @Named("onlyAttached") @Nullable final Boolean onlyAttached,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListPoliciesRequest.class, PoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListPoliciesRequest.class, PoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListPoliciesResult result = client.listPolicies(
                     request
                             .withScope(scope)
@@ -452,7 +452,7 @@ public final class IamApi {
             @Named("policyArn") final String policyArn,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListPolicyVersionsRequest.class, PolicyVersionsResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListPolicyVersionsRequest.class, PolicyVersionsResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListPolicyVersionsResult result = client.listPolicyVersions(
                     request
                             .withPolicyArn(policyArn)
@@ -474,7 +474,7 @@ public final class IamApi {
             @Named("policyArn") final String policyArn,
             @Named("versionId") final String versionId
     ) throws UnsupportedEncodingException, AmazonUnparsedException {
-        return AmazonIamCaller.get(GetPolicyVersionRequest.class, PolicyVersionResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetPolicyVersionRequest.class, PolicyVersionResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetPolicyVersionResult result = client.getPolicyVersion(
                     request
                             .withPolicyArn(policyArn)
@@ -495,7 +495,7 @@ public final class IamApi {
             @Named("roleName") final String roleName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListRolePoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListRolePoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListRolePoliciesResult result = client.listRolePolicies(
                     request
                             .withRoleName(roleName)
@@ -517,7 +517,7 @@ public final class IamApi {
             @Named("roleName") final String roleName,
             @Named("policyName") final String policyName
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetRolePolicyRequest.class, PolicyResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetRolePolicyRequest.class, PolicyResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetRolePolicyResult result = client.getRolePolicy(
                     request
                             .withRoleName(roleName)
@@ -538,7 +538,7 @@ public final class IamApi {
             @Named("roleName") final String roleName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListAttachedRolePoliciesRequest.class, AttachedPoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListAttachedRolePoliciesRequest.class, AttachedPoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListAttachedRolePoliciesResult result = client.listAttachedRolePolicies(
                     request
                             .withRoleName(roleName)
@@ -558,7 +558,7 @@ public final class IamApi {
             @Named("credentials") final String credentials,
             @Named("partition") final String partition
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListSAMLProvidersRequest.class, SamlProvidersResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListSAMLProvidersRequest.class, SamlProvidersResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListSAMLProvidersResult result = client.listSAMLProviders(request);
             response.setSamlProviders(result.getSAMLProviderList());
         });
@@ -574,7 +574,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("arn") final String arn
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(GetSAMLProviderRequest.class, SamlProviderResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetSAMLProviderRequest.class, SamlProviderResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetSAMLProviderResult result = client.getSAMLProvider(request.withSAMLProviderArn(arn));
             response.setMetadataDocument(result.getSAMLMetadataDocument());
             response.setCreateDate(result.getCreateDate());
@@ -593,7 +593,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListUserPoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListUserPoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListUserPoliciesResult result = client.listUserPolicies(request.withMarker(page));
             response.setPolicyNames(result.getPolicyNames());
             response.setNextPage(result.getMarker());
@@ -611,7 +611,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("policyName") final String policyName
     ) throws UnsupportedEncodingException, AmazonUnparsedException {
-        return AmazonIamCaller.get(GetUserPolicyRequest.class, PolicyResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(GetUserPolicyRequest.class, PolicyResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetUserPolicyResult result = client.getUserPolicy(request.withUserName(userName).withPolicyName(policyName));
             response.setPolicyDocument(result.getPolicyDocument());
         });
@@ -628,7 +628,7 @@ public final class IamApi {
             @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListAttachedUserPoliciesRequest.class, AttachedPoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListAttachedUserPoliciesRequest.class, AttachedPoliciesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListAttachedUserPoliciesResult result = client.listAttachedUserPolicies(
                     request
                             .withUserName(userName)
@@ -649,7 +649,7 @@ public final class IamApi {
             @Named("partition") final String partition,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonIamCaller.get(ListVirtualMFADevicesRequest.class, VirtualMfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
+        return IamCaller.get(ListVirtualMFADevicesRequest.class, VirtualMfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListVirtualMFADevicesResult result = client.listVirtualMFADevices(
                     request
                             .withMarker(page)

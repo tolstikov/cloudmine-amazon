@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonOrganizationsCaller {
+final class OrganizationsCaller {
 
-    private AmazonOrganizationsCaller() {
+    private OrganizationsCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AWSOrganizations, RqT, RsT> get(

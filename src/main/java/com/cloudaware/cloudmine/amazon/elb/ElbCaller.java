@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonElbCaller {
+final class ElbCaller {
 
-    private AmazonElbCaller() {
+    private ElbCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AmazonElasticLoadBalancing, RqT, RsT> get(

@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonRedshiftCaller {
+final class RedshiftCaller {
 
-    private AmazonRedshiftCaller() {
+    private RedshiftCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AmazonRedshift, RqT, RsT> get(

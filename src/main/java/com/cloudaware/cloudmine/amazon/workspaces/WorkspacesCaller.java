@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonWorkspacesCaller {
+final class WorkspacesCaller {
 
-    private AmazonWorkspacesCaller() {
+    private WorkspacesCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AmazonWorkspaces, RqT, RsT> get(

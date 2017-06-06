@@ -28,7 +28,7 @@ public class AmazonCaller<T, RqT extends AmazonWebServiceRequest, RsT extends Am
     }
 
     public final RsT execute(
-            final AmazonCall<T, RqT, RsT> call
+            final AmazonCallable<T, RqT, RsT> callable
     ) throws AmazonUnparsedException {
         final RsT response;
         try {
@@ -37,7 +37,7 @@ public class AmazonCaller<T, RqT extends AmazonWebServiceRequest, RsT extends Am
             throw new AmazonUnparsedException(ex);
         }
         try (ClientWrapper<T> clientWrapper = clientCreator.create()) {
-            call.call(clientWrapper.getClient(), requestClass.newInstance(), response);
+            callable.call(clientWrapper.getClient(), requestClass.newInstance(), response);
         } catch (Throwable t) {
             response.setException(AmazonResponse.parse(t, endpointPrefix + ":" + convertToAction(requestClass)));
         }

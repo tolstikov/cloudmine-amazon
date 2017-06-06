@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonKmsCaller {
+final class KmsCaller {
 
-    private AmazonKmsCaller() {
+    private KmsCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AWSKMS, RqT, RsT> get(

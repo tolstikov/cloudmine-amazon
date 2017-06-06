@@ -55,7 +55,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListAliasesResult result = client.listAliases(request.withMarker(page));
             response.setAliases(result.getAliases());
             response.setNextPage(result.getNextMarker());
@@ -72,7 +72,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(ListKeysRequest.class, KeysResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(ListKeysRequest.class, KeysResponse.class, credentials, region).execute((client, request, response) -> {
             final ListKeysResult result = client.listKeys(request.withMarker(page));
             response.setKeys(result.getKeys());
             response.setNextPage(result.getNextMarker());
@@ -89,7 +89,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("keyId") final String keyId
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(DescribeKeyRequest.class, KeyResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(DescribeKeyRequest.class, KeyResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeKeyResult result = client.describeKey(request.withKeyId(keyId));
             response.setKey(result.getKeyMetadata());
         });
@@ -106,7 +106,7 @@ public final class KmsApi {
             @Named("keyId") final String keyId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(ListGrantsRequest.class, GrantsResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(ListGrantsRequest.class, GrantsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListGrantsResult result = client.listGrants(
                     request
                             .withKeyId(keyId)
@@ -128,7 +128,7 @@ public final class KmsApi {
             @Named("keyId") final String keyId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(ListKeyPoliciesRequest.class, PoliciesResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(ListKeyPoliciesRequest.class, PoliciesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListKeyPoliciesResult result = client.listKeyPolicies(
                     request
                             .withKeyId(keyId)
@@ -150,7 +150,7 @@ public final class KmsApi {
             @Named("keyId") final String keyId,
             @Named("policyName") final String policyName
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(GetKeyPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(GetKeyPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
             final GetKeyPolicyResult result = client.getKeyPolicy(
                     request
                             .withKeyId(keyId)
@@ -170,7 +170,7 @@ public final class KmsApi {
             @Named("region") final String region,
             @Named("keyId") final String keyId
     ) throws AmazonUnparsedException {
-        return AmazonKmsCaller.get(GetKeyRotationStatusRequest.class, RotationStatusResponse.class, credentials, region).execute((client, request, response) -> {
+        return KmsCaller.get(GetKeyRotationStatusRequest.class, RotationStatusResponse.class, credentials, region).execute((client, request, response) -> {
             final GetKeyRotationStatusResult result = client.getKeyRotationStatus(
                     request
                             .withKeyId(keyId)

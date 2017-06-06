@@ -68,7 +68,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeCacheClustersRequest.class, CacheClustersResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeCacheClustersRequest.class, CacheClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeCacheClustersResult result = client.describeCacheClusters(
                     request
                             .withShowCacheNodeInfo(true)
@@ -89,7 +89,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSnapshotsResult result = client.describeSnapshots(
                     request
                             .withMarker(page)
@@ -109,7 +109,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(
                     request
                             .withMarker(page)
@@ -129,7 +129,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeCacheParameterGroupsRequest.class, ParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeCacheParameterGroupsRequest.class, ParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeCacheParameterGroupsResult result = client.describeCacheParameterGroups(
                     request
                             .withMarker(page)
@@ -149,7 +149,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeReplicationGroupsRequest.class, ReplicationGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeReplicationGroupsRequest.class, ReplicationGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReplicationGroupsResult result = client.describeReplicationGroups(
                     request
                             .withMarker(page)
@@ -169,7 +169,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeReservedCacheNodesRequest.class, ReservedNodesResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeReservedCacheNodesRequest.class, ReservedNodesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReservedCacheNodesResult result = client.describeReservedCacheNodes(
                     request
                             .withMarker(page)
@@ -189,7 +189,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeCacheSecurityGroupsRequest.class, CacheSecurityGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeCacheSecurityGroupsRequest.class, CacheSecurityGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeCacheSecurityGroupsResult result = client.describeCacheSecurityGroups(
                     request
                             .withMarker(page)
@@ -209,7 +209,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(DescribeCacheSubnetGroupsRequest.class, SubnetGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(DescribeCacheSubnetGroupsRequest.class, SubnetGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeCacheSubnetGroupsResult result = client.describeCacheSubnetGroups(
                     request
                             .withMarker(page)
@@ -229,7 +229,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             @Named("arn") final String arn
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElastiCacheCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTagsForResourceResult result = client.listTagsForResource(request.withResourceName(arn));
             final Map<String, String> out = Maps.newHashMap();
             if (result != null && result.getTagList().size() > 0) {
@@ -252,7 +252,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(AddTagsToResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, addTagsToResourceRequest, response) -> {
+        return ElastiCacheCaller.get(AddTagsToResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, addTagsToResourceRequest, response) -> {
             final List<Tag> tags = Lists.newArrayList();
             for (final String key : request.getTags().keySet()) {
                 final Tag tag = new Tag();
@@ -279,7 +279,7 @@ public final class ElastiCacheApi {
             @Named("region") final String region,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonElastiCacheCaller.get(RemoveTagsFromResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, removeTagsFromResourceRequest, response) -> {
+        return ElastiCacheCaller.get(RemoveTagsFromResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, removeTagsFromResourceRequest, response) -> {
             client.removeTagsFromResource(
                     removeTagsFromResourceRequest
                             .withResourceName(request.getArn())

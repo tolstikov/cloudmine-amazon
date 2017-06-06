@@ -62,7 +62,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeClustersRequest.class, ClustersResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeClustersRequest.class, ClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClustersResult result = client.describeClusters(request.withMarker(page));
             response.setClusters(result.getClusters());
             response.setNextPage(result.getMarker());
@@ -79,7 +79,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeClusterSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeClusterSnapshotsRequest.class, SnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterSnapshotsResult result = client.describeClusterSnapshots(request.withMarker(page));
             response.setSnapshots(result.getSnapshots());
             response.setNextPage(result.getMarker());
@@ -96,7 +96,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeReservedNodesRequest.class, ReservedNodesResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeReservedNodesRequest.class, ReservedNodesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReservedNodesResult result = client.describeReservedNodes(request.withMarker(page));
             response.setReservedNodes(result.getReservedNodes());
             response.setNextPage(result.getMarker());
@@ -113,7 +113,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withMarker(page));
             response.setEvents(result.getEvents());
             response.setNextPage(result.getMarker());
@@ -131,7 +131,7 @@ public final class RedshiftApi {
             @Named("arn") final String arn,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTagsResult result = client.describeTags(request.withMarker(page));
             response.setTags(result.getTaggedResources());
             response.setNextPage(result.getMarker());
@@ -148,7 +148,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(CreateTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+        return RedshiftCaller.get(CreateTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
             final List<Tag> tags = Lists.newArrayList();
             for (final String key : request.getTags().keySet()) {
                 final Tag tag = new Tag();
@@ -171,7 +171,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DeleteTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+        return RedshiftCaller.get(DeleteTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
             client.deleteTags(r.withResourceName(request.getArn()).withTagKeys(request.getTags().keySet()));
         });
     }
@@ -186,7 +186,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeClusterParameterGroupsRequest.class, ParameterGroupResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeClusterParameterGroupsRequest.class, ParameterGroupResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterParameterGroupsResult result = client.describeClusterParameterGroups(request.withMarker(page));
             response.setParameterGroups(result.getParameterGroups());
             response.setNextPage(result.getMarker());
@@ -203,7 +203,7 @@ public final class RedshiftApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRedshiftCaller.get(DescribeClusterSecurityGroupsRequest.class, SecurityGroupResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeClusterSecurityGroupsRequest.class, SecurityGroupResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterSecurityGroupsResult result = client.describeClusterSecurityGroups(request.withMarker(page));
             response.setSecurityGroups(result.getClusterSecurityGroups());
             response.setNextPage(result.getMarker());

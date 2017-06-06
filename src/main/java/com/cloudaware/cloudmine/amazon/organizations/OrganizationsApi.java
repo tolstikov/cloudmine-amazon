@@ -52,7 +52,7 @@ public final class OrganizationsApi {
     public OrganizationResponse organizationGet(
             @Named("credentials") final String credentials
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(DescribeOrganizationRequest.class, OrganizationResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(DescribeOrganizationRequest.class, OrganizationResponse.class, credentials).execute((client, request, response) -> {
             final DescribeOrganizationResult result = client.describeOrganization(request);
             response.setOrganization(result.getOrganization());
         });
@@ -67,7 +67,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(ListRootsRequest.class, RootsResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(ListRootsRequest.class, RootsResponse.class, credentials).execute((client, request, response) -> {
             final ListRootsResult result = client.listRoots(request.withNextToken(page));
             response.setRoots(result.getRoots());
             response.setNextPage(result.getNextToken());
@@ -83,7 +83,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(ListAccountsRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(ListAccountsRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
             final ListAccountsResult result = client.listAccounts(request.withNextToken(page));
             response.setAccounts(result.getAccounts());
             response.setNextPage(result.getNextToken());
@@ -99,7 +99,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             final AccountRequest request
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(CreateAccountRequest.class, AccountCreateResponse.class, credentials).execute((client, r, response) -> {
+        return OrganizationsCaller.get(CreateAccountRequest.class, AccountCreateResponse.class, credentials).execute((client, r, response) -> {
             final CreateAccountResult result = client.createAccount(
                     r
                             .withAccountName(request.getAccountName())
@@ -120,7 +120,7 @@ public final class OrganizationsApi {
             @Named("credentials") final String credentials,
             @Named("requestId") final String requestId
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(DescribeCreateAccountStatusRequest.class, AccountCreateResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(DescribeCreateAccountStatusRequest.class, AccountCreateResponse.class, credentials).execute((client, request, response) -> {
             final DescribeCreateAccountStatusResult result = client.describeCreateAccountStatus(request.withCreateAccountRequestId(requestId));
             response.setCreateAccountStatus(result.getCreateAccountStatus());
         });
@@ -136,7 +136,7 @@ public final class OrganizationsApi {
             @Named("parentId") final String parentId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(ListAccountsForParentRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(ListAccountsForParentRequest.class, AccountsResponse.class, credentials).execute((client, request, response) -> {
             final ListAccountsForParentResult result = client.listAccountsForParent(
                     request
                             .withParentId(parentId)
@@ -157,7 +157,7 @@ public final class OrganizationsApi {
             @Named("filter") final String filter,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(ListPoliciesRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(ListPoliciesRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
             final ListPoliciesResult result = client.listPolicies(
                     request
                             .withFilter(filter)
@@ -179,7 +179,7 @@ public final class OrganizationsApi {
             @Named("filter") final String filter,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(ListPoliciesForTargetRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(ListPoliciesForTargetRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
             final ListPoliciesForTargetResult result = client.listPoliciesForTarget(
                     request
                             .withFilter(filter)
@@ -200,7 +200,7 @@ public final class OrganizationsApi {
             @Named("parentId") final String parentId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonOrganizationsCaller.get(ListOrganizationalUnitsForParentRequest.class, OrganizationalUnitsResponse.class, credentials).execute((client, request, response) -> {
+        return OrganizationsCaller.get(ListOrganizationalUnitsForParentRequest.class, OrganizationalUnitsResponse.class, credentials).execute((client, request, response) -> {
             final ListOrganizationalUnitsForParentResult result = client.listOrganizationalUnitsForParent(
                     request
                             .withParentId(parentId)

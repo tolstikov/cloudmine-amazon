@@ -56,7 +56,7 @@ public final class ElasticBeanstalkApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeApplicationsRequest.class, ApplicationsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeApplicationsRequest.class, ApplicationsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeApplicationsResult result = client.describeApplications(request);
             response.setApplications(result.getApplications());
         });
@@ -72,7 +72,7 @@ public final class ElasticBeanstalkApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeApplicationVersionsRequest.class, ApplicationVersionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeApplicationVersionsRequest.class, ApplicationVersionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeApplicationVersionsResult result = client.describeApplicationVersions(request.withNextToken(page));
             response.setApplicationVersions(result.getApplicationVersions());
             response.setNextPage(result.getNextToken());
@@ -88,7 +88,7 @@ public final class ElasticBeanstalkApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeConfigurationOptionsRequest.class, ConfigurationOptionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeConfigurationOptionsRequest.class, ConfigurationOptionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeConfigurationOptionsResult result = client.describeConfigurationOptions(request);
             response.setConfigurationOptions(result.getOptions());
         });
@@ -106,7 +106,7 @@ public final class ElasticBeanstalkApi {
             @Named("templateName") @Nullable final String templateName,
             @Named("environmentName") @Nullable final String environmentName
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeConfigurationSettingsRequest.class, ConfigurationSettingsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeConfigurationSettingsRequest.class, ConfigurationSettingsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeConfigurationSettingsResult result = client.describeConfigurationSettings(
                     request
                             .withApplicationName(applicationName)
@@ -126,7 +126,7 @@ public final class ElasticBeanstalkApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeEnvironmentsRequest.class, EnvironmentsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeEnvironmentsRequest.class, EnvironmentsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEnvironmentsResult result = client.describeEnvironments(request);
             response.setEnvironments(result.getEnvironments());
         });
@@ -142,7 +142,7 @@ public final class ElasticBeanstalkApi {
             @Named("region") final String region,
             @Named("environmentId") final String environmentId
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeEnvironmentResourcesRequest.class, EnvironmentResourcesResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeEnvironmentResourcesRequest.class, EnvironmentResourcesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEnvironmentResourcesResult result = client.describeEnvironmentResources(request.withEnvironmentId(environmentId));
             response.setEnvironmentResources(result.getEnvironmentResources());
         });
@@ -158,7 +158,7 @@ public final class ElasticBeanstalkApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withNextToken(page));
             response.setEvents(result.getEvents());
             response.setNextPage(result.getNextToken());
@@ -174,7 +174,7 @@ public final class ElasticBeanstalkApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonElasticBeanstalkCaller.get(ListAvailableSolutionStacksRequest.class, SolutionStacksResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElasticBeanstalkCaller.get(ListAvailableSolutionStacksRequest.class, SolutionStacksResponse.class, credentials, region).execute((client, request, response) -> {
             final ListAvailableSolutionStacksResult result = client.listAvailableSolutionStacks(request);
             response.setSolutionStacks(result.getSolutionStackDetails());
         });

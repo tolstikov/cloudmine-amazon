@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonStorageGatewayCaller {
+final class StorageGatewayCaller {
 
-    private AmazonStorageGatewayCaller() {
+    private StorageGatewayCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AWSStorageGateway, RqT, RsT> get(

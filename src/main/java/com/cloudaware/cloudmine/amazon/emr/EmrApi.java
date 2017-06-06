@@ -63,7 +63,7 @@ public final class EmrApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(ListClustersRequest.class, ClustersResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(ListClustersRequest.class, ClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final ListClustersResult result = client.listClusters(request.withMarker(page));
             response.setClusters(result.getClusters());
             response.setNextPage(result.getMarker());
@@ -80,7 +80,7 @@ public final class EmrApi {
             @Named("region") final String region,
             @Named("clusterId") final String clusterId
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(DescribeClusterRequest.class, ClusterResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(DescribeClusterRequest.class, ClusterResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterResult result = client.describeCluster(request.withClusterId(clusterId));
             response.setCluster(result.getCluster());
         });
@@ -97,7 +97,7 @@ public final class EmrApi {
             @Named("clusterId") final String clusterId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(ListBootstrapActionsRequest.class, BootstrapActionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(ListBootstrapActionsRequest.class, BootstrapActionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListBootstrapActionsResult result = client.listBootstrapActions(
                     request
                             .withClusterId(clusterId)
@@ -119,7 +119,7 @@ public final class EmrApi {
             @Named("clusterId") final String clusterId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(ListInstanceGroupsRequest.class, InstanceGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(ListInstanceGroupsRequest.class, InstanceGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListInstanceGroupsResult result = client.listInstanceGroups(
                     request
                             .withClusterId(clusterId)
@@ -141,7 +141,7 @@ public final class EmrApi {
             @Named("clusterId") final String clusterId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(ListInstancesRequest.class, InstancesResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(ListInstancesRequest.class, InstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListInstancesResult result = client.listInstances(
                     request
                             .withClusterId(clusterId)
@@ -163,7 +163,7 @@ public final class EmrApi {
             @Named("clusterId") final String clusterId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(ListStepsRequest.class, StepsResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(ListStepsRequest.class, StepsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListStepsResult result = client.listSteps(
                     request
                             .withClusterId(clusterId)
@@ -185,7 +185,7 @@ public final class EmrApi {
             @Named("clusterId") final String clusterId,
             @Named("stepId") final String stepId
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(DescribeStepRequest.class, StepResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(DescribeStepRequest.class, StepResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStepResult result = client.describeStep(
                     request
                             .withClusterId(clusterId)
@@ -205,7 +205,7 @@ public final class EmrApi {
             @Named("region") final String region,
             final JobFlowRunRequest request
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(RunJobFlowRequest.class, JobFlowRunResponse.class, credentials, region).execute((client, runJobFlowRequest, response) -> {
+        return EmrCaller.get(RunJobFlowRequest.class, JobFlowRunResponse.class, credentials, region).execute((client, runJobFlowRequest, response) -> {
             runJobFlowRequest.setName(request.getName());
             runJobFlowRequest.setLogUri(request.getLogUri());
             runJobFlowRequest.setAdditionalInfo(request.getAdditionalInfo());
@@ -240,7 +240,7 @@ public final class EmrApi {
             @Named("region") final String region,
             @Named("jobFlowId") final List<String> jobFlowId
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(TerminateJobFlowsRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(TerminateJobFlowsRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             client.terminateJobFlows(request.withJobFlowIds(jobFlowId));
         });
     }
@@ -256,7 +256,7 @@ public final class EmrApi {
             @Named("jobFlowId") final String jobFlowId,
             final StepsRequest steps
     ) throws AmazonUnparsedException {
-        return AmazonEmrCaller.get(AddJobFlowStepsRequest.class, StepIdsResponse.class, credentials, region).execute((client, request, response) -> {
+        return EmrCaller.get(AddJobFlowStepsRequest.class, StepIdsResponse.class, credentials, region).execute((client, request, response) -> {
             final AddJobFlowStepsResult result = client.addJobFlowSteps(
                     request
                             .withJobFlowId(jobFlowId)

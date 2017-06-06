@@ -57,7 +57,7 @@ public final class CloudSearchApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(ListDomainNamesRequest.class, DomainNamesResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(ListDomainNamesRequest.class, DomainNamesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListDomainNamesResult result = client.listDomainNames(request);
             response.setDomainNames(result.getDomainNames());
         });
@@ -72,7 +72,7 @@ public final class CloudSearchApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeDomainsRequest.class, DomainsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeDomainsRequest.class, DomainsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDomainsResult result = client.describeDomains(request);
             response.setDomains(result.getDomainStatusList());
         });
@@ -88,7 +88,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeSuggestersRequest.class, SuggestersResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeSuggestersRequest.class, SuggestersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSuggestersResult result = client.describeSuggesters(request);
             response.setSuggesters(result.getSuggesters());
         });
@@ -104,7 +104,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeExpressionsRequest.class, ExpressionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeExpressionsRequest.class, ExpressionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeExpressionsResult result = client.describeExpressions(request.withDomainName(domainName));
             response.setExpressions(result.getExpressions());
         });
@@ -120,7 +120,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeAnalysisSchemesRequest.class, AnalysisSchemesResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeAnalysisSchemesRequest.class, AnalysisSchemesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAnalysisSchemesResult result = client.describeAnalysisSchemes(request.withDomainName(domainName));
             response.setAnalysisSchemes(result.getAnalysisSchemes());
         });
@@ -136,7 +136,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeIndexFieldsRequest.class, IndexFieldsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeIndexFieldsRequest.class, IndexFieldsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeIndexFieldsResult result = client.describeIndexFields(request.withDomainName(domainName));
             response.setIndexFields(result.getIndexFields());
         });
@@ -152,7 +152,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeScalingParametersRequest.class, ScalingParametersResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeScalingParametersRequest.class, ScalingParametersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeScalingParametersResult result = client.describeScalingParameters(request.withDomainName(domainName));
             response.setScalingParameters(result.getScalingParameters());
         });
@@ -168,7 +168,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeServiceAccessPoliciesRequest.class, AccessPoliciesResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeServiceAccessPoliciesRequest.class, AccessPoliciesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeServiceAccessPoliciesResult result = client.describeServiceAccessPolicies(request.withDomainName(domainName));
             response.setAccessPolicies(result.getAccessPolicies());
         });
@@ -184,7 +184,7 @@ public final class CloudSearchApi {
             @Named("region") final String region,
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
-        return AmazonCloudSearchCaller.get(DescribeAvailabilityOptionsRequest.class, AvailabilityOptionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudSearchCaller.get(DescribeAvailabilityOptionsRequest.class, AvailabilityOptionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAvailabilityOptionsResult result = client.describeAvailabilityOptions(request.withDomainName(domainName));
             response.setAvailabilityOptions(result.getAvailabilityOptions());
         });

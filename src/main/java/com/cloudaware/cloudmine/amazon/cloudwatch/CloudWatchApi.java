@@ -45,7 +45,7 @@ public final class CloudWatchApi {
             @Named("region") final String region,
             final MetricStatisticsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonCloudWatchCaller.get(GetMetricStatisticsRequest.class, DatapointsResponse.class, credentials, region).execute((client, r, response) -> {
+        return CloudWatchCaller.get(GetMetricStatisticsRequest.class, DatapointsResponse.class, credentials, region).execute((client, r, response) -> {
             final GetMetricStatisticsResult result = client.getMetricStatistics(
                     r.withNamespace(request.getNamespace())
                             .withMetricName(request.getMetric())
@@ -69,7 +69,7 @@ public final class CloudWatchApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonCloudWatchCaller.get(DescribeAlarmsRequest.class, MetricAlarmsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudWatchCaller.get(DescribeAlarmsRequest.class, MetricAlarmsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAlarmsResult result = client.describeAlarms(
                     request.withNextToken(page)
             );

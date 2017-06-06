@@ -62,7 +62,7 @@ public final class ElbApi {
             @Named("loadBalancerName") @Nullable final List<String> loadBalancerNames,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(DescribeLoadBalancersRequest.class, LoadBalancersResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElbCaller.get(DescribeLoadBalancersRequest.class, LoadBalancersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeLoadBalancersResult result = client.describeLoadBalancers(
                     request
                             .withLoadBalancerNames(loadBalancerNames)
@@ -84,7 +84,7 @@ public final class ElbApi {
             @Named("loadBalancerName") final String loadBalancerName,
             @Named("instanceId") final Collection<String> instanceIds
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(DescribeInstanceHealthRequest.class, InstanceStatesResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElbCaller.get(DescribeInstanceHealthRequest.class, InstanceStatesResponse.class, credentials, region).execute((client, request, response) -> {
             final List<Instance> instances = Lists.newArrayList();
             for (final String instanceId : instanceIds) {
                 instances.add(new Instance(instanceId));
@@ -108,7 +108,7 @@ public final class ElbApi {
             @Named("region") final String region,
             @Named("loadBalancerName") final String loadBalancerName
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(DescribeLoadBalancerAttributesRequest.class, LoadBalancerAttributesResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElbCaller.get(DescribeLoadBalancerAttributesRequest.class, LoadBalancerAttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeLoadBalancerAttributesResult result = client.describeLoadBalancerAttributes(
                     request
                             .withLoadBalancerName(loadBalancerName)
@@ -127,7 +127,7 @@ public final class ElbApi {
             @Named("region") final String region,
             @Named("loadBalancerName") final List<String> loadBalancerNames
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(DescribeTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElbCaller.get(DescribeTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTagsResult result = client.describeTags(
                     request
                             .withLoadBalancerNames(loadBalancerNames)
@@ -146,7 +146,7 @@ public final class ElbApi {
             @Named("region") final String region,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, addTagsRequest, response) -> {
+        return ElbCaller.get(AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, addTagsRequest, response) -> {
             addTagsRequest.withLoadBalancerNames(request.getLoadBalancerNames());
             final List<Tag> tags = Lists.newArrayList();
             for (final String key : request.getTags().keySet()) {
@@ -168,7 +168,7 @@ public final class ElbApi {
             @Named("region") final String region,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, removeTagsRequest, response) -> {
+        return ElbCaller.get(RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, removeTagsRequest, response) -> {
             removeTagsRequest.withLoadBalancerNames(request.getLoadBalancerNames());
             final List<TagKeyOnly> tags = Lists.newArrayList();
             for (final String key : request.getTags().keySet()) {
@@ -190,7 +190,7 @@ public final class ElbApi {
             @Named("region") final String region,
             @Named("loadBalancerName") @Nullable final String loadBalancerName
     ) throws AmazonUnparsedException {
-        return AmazonElbCaller.get(DescribeLoadBalancerPoliciesRequest.class, PoliciesResponse.class, credentials, region).execute((client, request, response) -> {
+        return ElbCaller.get(DescribeLoadBalancerPoliciesRequest.class, PoliciesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeLoadBalancerPoliciesResult result = client.describeLoadBalancerPolicies(
                     request
                             .withLoadBalancerName(loadBalancerName)

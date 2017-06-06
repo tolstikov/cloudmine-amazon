@@ -49,7 +49,7 @@ public final class CloudTrailApi {
             @Named("pageSize") @Nullable final Integer pageSize,
             final LookupRequest lookupRequest
     ) throws AmazonUnparsedException {
-        return AmazonCloudTrailCaller.get(LookupEventsRequest.class, LookupResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudTrailCaller.get(LookupEventsRequest.class, LookupResponse.class, credentials, region).execute((client, request, response) -> {
             final LookupEventsResult result = client.lookupEvents(
                     request
                             .withNextToken(page)
@@ -69,7 +69,7 @@ public final class CloudTrailApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonCloudTrailCaller.get(DescribeTrailsRequest.class, TrailsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudTrailCaller.get(DescribeTrailsRequest.class, TrailsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTrailsResult result = client.describeTrails(request);
             response.setTrails(result.getTrailList());
         });
@@ -85,7 +85,7 @@ public final class CloudTrailApi {
             @Named("region") final String region,
             @Named("name") final String name
     ) throws AmazonUnparsedException {
-        return AmazonCloudTrailCaller.get(GetTrailStatusRequest.class, TrailStatusResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudTrailCaller.get(GetTrailStatusRequest.class, TrailStatusResponse.class, credentials, region).execute((client, request, response) -> {
             final GetTrailStatusResult result = client.getTrailStatus(
                     request.withName(name)
             );

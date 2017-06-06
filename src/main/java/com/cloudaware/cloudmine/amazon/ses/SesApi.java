@@ -61,7 +61,7 @@ public final class SesApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonSesCaller.get(GetSendStatisticsRequest.class, SendStatisticsResponse.class, credentials, region).execute((client, request, response) -> {
+        return SesCaller.get(GetSendStatisticsRequest.class, SendStatisticsResponse.class, credentials, region).execute((client, request, response) -> {
             final GetSendStatisticsResult result = client.getSendStatistics(request);
             response.setSendDataPoints(result.getSendDataPoints());
         });
@@ -77,7 +77,7 @@ public final class SesApi {
             @Named("region") final String region,
             final SendRequest request
     ) throws AmazonUnparsedException {
-        return AmazonSesCaller.get(SendRawEmailRequest.class, SendResponse.class, credentials, region).execute((client, r, response) -> {
+        return SesCaller.get(SendRawEmailRequest.class, SendResponse.class, credentials, region).execute((client, r, response) -> {
             final Session session = Session.getInstance(new Properties(), null);
             final MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.setFrom(new InternetAddress(request.getSource()));

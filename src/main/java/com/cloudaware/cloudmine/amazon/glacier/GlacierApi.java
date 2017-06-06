@@ -43,7 +43,7 @@ public final class GlacierApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonGlacierCaller.get(ListVaultsRequest.class, VaultsResponse.class, credentials, region).execute((client, request, response) -> {
+        return GlacierCaller.get(ListVaultsRequest.class, VaultsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListVaultsResult result = client.listVaults(
                     request
                             .withAccountId("-")

@@ -45,7 +45,7 @@ public final class DynamoDbApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonDynamoDbCaller.get(ListTablesRequest.class, TableNamesResponse.class, credentials, region).execute((client, request, response) -> {
+        return DynamoDbCaller.get(ListTablesRequest.class, TableNamesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTablesResult result = client.listTables(
                     request.withExclusiveStartTableName(page)
             );
@@ -64,7 +64,7 @@ public final class DynamoDbApi {
             @Named("region") final String region,
             @Named("tableName") final String tableName
     ) throws AmazonUnparsedException {
-        return AmazonDynamoDbCaller.get(DescribeTableRequest.class, TableResponse.class, credentials, region).execute((client, request, response) -> {
+        return DynamoDbCaller.get(DescribeTableRequest.class, TableResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeTableResult result = client.describeTable(
                     request.withTableName(tableName)
             );

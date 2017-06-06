@@ -53,7 +53,7 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonLambdaCaller.get(ListFunctionsRequest.class, FunctionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return LambdaCaller.get(ListFunctionsRequest.class, FunctionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListFunctionsResult result = client.listFunctions(request.withMarker(page));
             response.setFunctions(result.getFunctions());
             response.setNextPage(result.getNextMarker());
@@ -70,7 +70,7 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("functionName") final String functionName
     ) throws AmazonUnparsedException {
-        return AmazonLambdaCaller.get(GetFunctionRequest.class, FunctionResponse.class, credentials, region).execute((client, request, response) -> {
+        return LambdaCaller.get(GetFunctionRequest.class, FunctionResponse.class, credentials, region).execute((client, request, response) -> {
             final GetFunctionResult result = client.getFunction(request.withFunctionName(functionName));
             response.setConfiguration(result.getConfiguration());
             response.setCode(result.getCode());
@@ -88,7 +88,7 @@ public final class LambdaApi {
             @Named("functionName") final String functionName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonLambdaCaller.get(ListVersionsByFunctionRequest.class, VersionsResponse.class, credentials, region).execute((client, request, response) -> {
+        return LambdaCaller.get(ListVersionsByFunctionRequest.class, VersionsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListVersionsByFunctionResult result = client.listVersionsByFunction(
                     request
                             .withFunctionName(functionName)
@@ -110,7 +110,7 @@ public final class LambdaApi {
             @Named("functionName") final String functionName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonLambdaCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
+        return LambdaCaller.get(ListAliasesRequest.class, AliasesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListAliasesResult result = client.listAliases(
                     request
                             .withFunctionName(functionName)
@@ -131,7 +131,7 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("functionName") final String functionName
     ) throws AmazonUnparsedException {
-        return AmazonLambdaCaller.get(GetPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
+        return LambdaCaller.get(GetPolicyRequest.class, PolicyResponse.class, credentials, region).execute((client, request, response) -> {
             final GetPolicyResult result = client.getPolicy(
                     request
                             .withFunctionName(functionName)
@@ -150,7 +150,7 @@ public final class LambdaApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonLambdaCaller.get(ListEventSourceMappingsRequest.class, EventSourceMappingsResponse.class, credentials, region).execute((client, request, response) -> {
+        return LambdaCaller.get(ListEventSourceMappingsRequest.class, EventSourceMappingsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListEventSourceMappingsResult result = client.listEventSourceMappings(
                     request
                             .withMarker(page)

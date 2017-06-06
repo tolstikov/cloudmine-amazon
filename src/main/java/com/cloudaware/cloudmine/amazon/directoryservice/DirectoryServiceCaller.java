@@ -6,9 +6,9 @@ import com.cloudaware.cloudmine.amazon.AmazonCaller;
 import com.cloudaware.cloudmine.amazon.AmazonClientHelper;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
-final class AmazonDirectoryServiceCaller {
+final class DirectoryServiceCaller {
 
-    private AmazonDirectoryServiceCaller() {
+    private DirectoryServiceCaller() {
     }
 
     public static <RqT extends AmazonWebServiceRequest, RsT extends AmazonResponse> AmazonCaller<AWSDirectoryService, RqT, RsT> get(

@@ -1,6 +1,7 @@
 package com.cloudaware.cloudmine.amazon;
 
 import com.amazonaws.AmazonServiceException;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
@@ -10,18 +11,17 @@ import java.util.Map;
  * Time: 16:27
  */
 public final class AmazonException {
-
     private final Category category;
     private final String action;
     private final String className;
     private final String message;
-    private String requestId;
-    private String errorCode;
-    private AmazonServiceException.ErrorType errorType;
-    private String errorMessage;
-    private int statusCode;
-    private String serviceName;
-    private Map<String, String> httpHeaders;
+    private final String requestId;
+    private final String errorCode;
+    private final AmazonServiceException.ErrorType errorType;
+    private final String errorMessage;
+    private final int statusCode;
+    private final String serviceName;
+    private final Map<String, String> httpHeaders;
 
     public AmazonException(final Category category, final String action, final AmazonServiceException ex) {
         this.category = category;
@@ -42,6 +42,13 @@ public final class AmazonException {
         this.action = action;
         this.className = className;
         this.message = message;
+        this.requestId = null;
+        this.errorCode = null;
+        this.errorType = AmazonServiceException.ErrorType.Unknown;
+        this.errorMessage = null;
+        this.statusCode = -1;
+        this.serviceName = null;
+        this.httpHeaders = ImmutableMap.of();
     }
 
     public Category getCategory() {

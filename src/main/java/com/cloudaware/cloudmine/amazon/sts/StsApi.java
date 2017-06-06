@@ -43,7 +43,7 @@ public final class StsApi {
             @Named("partition") final String partition,
             final AssumeRoleRequest request
     ) throws AmazonUnparsedException {
-        return AmazonStsCaller.get(com.amazonaws.services.securitytoken.model.AssumeRoleRequest.class, AssumeRoleResponse.class, credentials, partition)
+        return StsCaller.get(com.amazonaws.services.securitytoken.model.AssumeRoleRequest.class, AssumeRoleResponse.class, credentials, partition)
                 .execute((client, assumeRoleRequest, response) -> {
             final AssumeRoleResult result = client.assumeRole(
                     assumeRoleRequest
@@ -69,7 +69,7 @@ public final class StsApi {
             @Named("credentials") final String credentials,
             @Named("partition") final String partition
     ) throws AmazonUnparsedException {
-        return AmazonStsCaller.get(GetCallerIdentityRequest.class, CallerIdentityResponse.class, credentials, partition).execute((client, request, response) -> {
+        return StsCaller.get(GetCallerIdentityRequest.class, CallerIdentityResponse.class, credentials, partition).execute((client, request, response) -> {
             final GetCallerIdentityResult result = client.getCallerIdentity(request);
             response.setUserId(result.getUserId());
             response.setAccount(result.getAccount());

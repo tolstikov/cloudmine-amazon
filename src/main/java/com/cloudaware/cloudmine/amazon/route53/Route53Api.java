@@ -54,7 +54,7 @@ public final class Route53Api {
             @Named("credentials") final String credentials,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRoute53Caller.get(ListHostedZonesRequest.class, HostedZonesResponse.class, credentials).execute((client, request, response) -> {
+        return Route53Caller.get(ListHostedZonesRequest.class, HostedZonesResponse.class, credentials).execute((client, request, response) -> {
             final ListHostedZonesResult result = client.listHostedZones(request.withMarker(page));
             response.setHostedZones(result.getHostedZones());
             response.setNextPage(result.getNextMarker());
@@ -71,7 +71,7 @@ public final class Route53Api {
             @Named("hostedZoneId") final String hostedZoneId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRoute53Caller.get(ListResourceRecordSetsRequest.class, ResourceRecordSetsResponse.class, credentials).execute((client, request, response) -> {
+        return Route53Caller.get(ListResourceRecordSetsRequest.class, ResourceRecordSetsResponse.class, credentials).execute((client, request, response) -> {
             request.withHostedZoneId(hostedZoneId);
             if (page != null) {
                 final String[] parts = page.split("::");
@@ -103,7 +103,7 @@ public final class Route53Api {
             @Named("resourceType") final String resourceType,
             @Named("resourceId") final String resourceId
     ) throws AmazonUnparsedException {
-        return AmazonRoute53Caller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials).execute((client, request, response) -> {
+        return Route53Caller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials).execute((client, request, response) -> {
             final ListTagsForResourceResult result = client.listTagsForResource(request.withResourceType(resourceType).withResourceId(resourceId));
             response.setTags(result.getResourceTagSet());
         });
@@ -120,7 +120,7 @@ public final class Route53Api {
             @Named("resourceId") final String resourceId,
             final TagsRequest request
     ) throws AmazonUnparsedException {
-        return AmazonRoute53Caller.get(ChangeTagsForResourceRequest.class, AmazonResponse.class, credentials).execute((client, r, response) -> {
+        return Route53Caller.get(ChangeTagsForResourceRequest.class, AmazonResponse.class, credentials).execute((client, r, response) -> {
             r.withResourceType(resourceType);
             r.withResourceId(resourceId);
             if (request.getAddTags() != null && request.getAddTags().size() > 0) {

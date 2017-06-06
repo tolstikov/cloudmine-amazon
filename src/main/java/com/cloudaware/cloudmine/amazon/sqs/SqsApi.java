@@ -42,7 +42,7 @@ public final class SqsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonSqsCaller.get(ListQueuesRequest.class, QueuesResponse.class, credentials, region).execute((client, request, response) -> {
+        return SqsCaller.get(ListQueuesRequest.class, QueuesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListQueuesResult result = client.listQueues(request);
             response.setQueueUrls(result.getQueueUrls());
         });
@@ -58,7 +58,7 @@ public final class SqsApi {
             @Named("region") final String region,
             @Named("queueUrl") final String queueUrl
     ) throws AmazonUnparsedException {
-        return AmazonSqsCaller.get(GetQueueAttributesRequest.class, AttributesResponse.class, credentials, region).execute((client, request, response) -> {
+        return SqsCaller.get(GetQueueAttributesRequest.class, AttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final GetQueueAttributesResult result = client.getQueueAttributes(request.withAttributeNames("All"));
             response.setAttributes(result.getAttributes());
         });

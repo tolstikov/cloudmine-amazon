@@ -48,7 +48,7 @@ public final class AutoScalingApi {
             @Named("groupName") @Nullable final List<String> groupNames,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonAutoScalingCaller.get(DescribeAutoScalingGroupsRequest.class, AutoScalingGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return AutoScalingCaller.get(DescribeAutoScalingGroupsRequest.class, AutoScalingGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAutoScalingGroupsResult result = client.describeAutoScalingGroups(
                     request
                             .withAutoScalingGroupNames(groupNames)
@@ -69,7 +69,7 @@ public final class AutoScalingApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonAutoScalingCaller.get(DescribeLaunchConfigurationsRequest.class, LaunchConfigurationsResponse.class, credentials, region).execute((client, request, response) -> {
+        return AutoScalingCaller.get(DescribeLaunchConfigurationsRequest.class, LaunchConfigurationsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeLaunchConfigurationsResult result = client.describeLaunchConfigurations(request.withNextToken(page));
             response.setLaunchConfigurations(result.getLaunchConfigurations());
             response.setNextPage(result.getNextToken());

@@ -74,7 +74,7 @@ public final class CloudFormationApi {
             @Named("stackName") @Nullable final String stackName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(DescribeStacksRequest.class, StacksResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(DescribeStacksRequest.class, StacksResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStacksResult result = client.describeStacks(
                     request
                             .withStackName(stackName)
@@ -95,7 +95,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             @Named("stackName") final String stackName
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(GetTemplateRequest.class, StackTemplateResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(GetTemplateRequest.class, StackTemplateResponse.class, credentials, region).execute((client, request, response) -> {
             final GetTemplateResult result = client.getTemplate(request.withStackName(stackName));
             response.setTemplateBody(result.getTemplateBody());
         });
@@ -111,7 +111,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             final StackRequest stackRequest
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(CreateStackRequest.class, StackIdResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(CreateStackRequest.class, StackIdResponse.class, credentials, region).execute((client, request, response) -> {
             request.withCapabilities(stackRequest.getCapabilities());
             request.withDisableRollback(stackRequest.getDisableRollback());
             request.withNotificationARNs(stackRequest.getNotificationArns());
@@ -137,7 +137,7 @@ public final class CloudFormationApi {
             @Named("region") final String region,
             @Named("stackName") final String stackName
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(DeleteStackRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(DeleteStackRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             client.deleteStack(request.withStackName(stackName));
         });
     }
@@ -153,7 +153,7 @@ public final class CloudFormationApi {
             @Named("stackName") final String stackName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(DescribeStackEventsRequest.class, StackEventsResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(DescribeStackEventsRequest.class, StackEventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStackEventsResult result = client.describeStackEvents(
                     request
                             .withStackName(stackName)
@@ -175,7 +175,7 @@ public final class CloudFormationApi {
             @Named("stackName") final String stackName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(ListStackResourcesRequest.class, StackResourcesResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(ListStackResourcesRequest.class, StackResourcesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListStackResourcesResult result = client.listStackResources(
                     request
                             .withStackName(stackName)
@@ -197,7 +197,7 @@ public final class CloudFormationApi {
             @Named("stackName") final String stackName,
             @Named("logicalResourceId") final String logicalResourceId
     ) throws AmazonUnparsedException {
-        return AmazonCloudFormationCaller.get(DescribeStackResourceRequest.class, StackResourceResponse.class, credentials, region).execute((client, request, response) -> {
+        return CloudFormationCaller.get(DescribeStackResourceRequest.class, StackResourceResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeStackResourceResult result = client.describeStackResource(
                     request
                             .withStackName(stackName)

@@ -76,7 +76,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBInstancesRequest.class, DbInstancesResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBInstancesRequest.class, DbInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBInstancesResult result = client.describeDBInstances(request.withMarker(page));
             response.setDbInstances(result.getDBInstances());
             response.setNextPage(result.getMarker());
@@ -93,7 +93,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBParameterGroupsRequest.class, DbParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBParameterGroupsRequest.class, DbParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBParameterGroupsResult result = client.describeDBParameterGroups(request.withMarker(page));
             response.setDbParameterGroups(result.getDBParameterGroups());
             response.setNextPage(result.getMarker());
@@ -110,7 +110,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBSecurityGroupsRequest.class, DbSecurityGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBSecurityGroupsRequest.class, DbSecurityGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBSecurityGroupsResult result = client.describeDBSecurityGroups(request.withMarker(page));
             response.setDbSecurityGroups(result.getDBSecurityGroups());
             response.setNextPage(result.getMarker());
@@ -127,7 +127,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBSubnetGroupsRequest.class, DbSubnetGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBSubnetGroupsRequest.class, DbSubnetGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBSubnetGroupsResult result = client.describeDBSubnetGroups(request.withMarker(page));
             response.setDbSubnetGroups(result.getDBSubnetGroups());
             response.setNextPage(result.getMarker());
@@ -144,7 +144,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBSnapshotsRequest.class, DbSnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBSnapshotsRequest.class, DbSnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBSnapshotsResult result = client.describeDBSnapshots(request.withMarker(page));
             response.setDbSnapshots(result.getDBSnapshots());
             response.setNextPage(result.getMarker());
@@ -161,7 +161,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("dbSnapshotId") final String dbSnapshotId
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBSnapshotAttributesRequest.class, DbSnapshotAttributesResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBSnapshotAttributesRequest.class, DbSnapshotAttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final DBSnapshotAttributesResult result = client.describeDBSnapshotAttributes(request.withDBSnapshotIdentifier(dbSnapshotId));
             response.setDbSnapshotAttributes(result.getDBSnapshotAttributes());
         });
@@ -177,7 +177,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBClustersRequest.class, DbClustersResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBClustersRequest.class, DbClustersResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBClustersResult result = client.describeDBClusters(request.withMarker(page));
             response.setDbClusters(result.getDBClusters());
             response.setNextPage(result.getMarker());
@@ -194,7 +194,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBClusterSnapshotsRequest.class, DbClusterSnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBClusterSnapshotsRequest.class, DbClusterSnapshotsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBClusterSnapshotsResult result = client.describeDBClusterSnapshots(request.withMarker(page));
             response.setDbClusterSnapshots(result.getDBClusterSnapshots());
             response.setNextPage(result.getMarker());
@@ -211,7 +211,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("dbClusterSnapshotId") final String dbClusterSnapshotId
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBClusterSnapshotAttributesRequest.class, DbClusterSnapshotAttributesResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBClusterSnapshotAttributesRequest.class, DbClusterSnapshotAttributesResponse.class, credentials, region).execute((client, request, response) -> {
             final DBClusterSnapshotAttributesResult result = client.describeDBClusterSnapshotAttributes(request.withDBClusterSnapshotIdentifier(dbClusterSnapshotId));
             response.setDbClusterSnapshotAttributes(result.getDBClusterSnapshotAttributes());
         });
@@ -227,7 +227,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeDBClusterParameterGroupsRequest.class, DbClusterParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeDBClusterParameterGroupsRequest.class, DbClusterParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBClusterParameterGroupsResult result = client.describeDBClusterParameterGroups(request.withMarker(page));
             response.setDbClusterParameterGroups(result.getDBClusterParameterGroups());
             response.setNextPage(result.getMarker());
@@ -244,7 +244,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeReservedDBInstancesRequest.class, ReservedDbInstancesResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeReservedDBInstancesRequest.class, ReservedDbInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeReservedDBInstancesResult result = client.describeReservedDBInstances(request.withMarker(page));
             response.setReservedDbInstances(result.getReservedDBInstances());
             response.setNextPage(result.getMarker());
@@ -262,7 +262,7 @@ public final class RdsApi {
             @Named("durationInMinutes") @Nullable final Integer durationInMinutes,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withDuration(durationInMinutes).withMarker(page));
             response.setEvents(result.getEvents());
             response.setNextPage(result.getMarker());
@@ -278,7 +278,7 @@ public final class RdsApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(DescribeAccountAttributesRequest.class, AccountQuotasResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(DescribeAccountAttributesRequest.class, AccountQuotasResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeAccountAttributesResult result = client.describeAccountAttributes(request);
             response.setAccountQuotas(result.getAccountQuotas());
         });
@@ -294,7 +294,7 @@ public final class RdsApi {
             @Named("region") final String region,
             @Named("arn") final String arn
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTagsForResourceResult result = client.listTagsForResource(request);
             response.setTags(result.getTagList());
         });
@@ -310,7 +310,7 @@ public final class RdsApi {
             @Named("region") final String region,
             final TagsRequest tagsRequest
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(AddTagsToResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(AddTagsToResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             final List<com.amazonaws.services.rds.model.Tag> tags = Lists.newArrayList();
             for (final Map.Entry<String, String> e : tagsRequest.getTags().entrySet()) {
                 tags.add(new com.amazonaws.services.rds.model.Tag().withKey(e.getKey()).withValue(e.getValue()));
@@ -333,7 +333,7 @@ public final class RdsApi {
             @Named("region") final String region,
             final RemoveTagsRequest tagsRequest
     ) throws AmazonUnparsedException {
-        return AmazonRdsCaller.get(RemoveTagsFromResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
+        return RdsCaller.get(RemoveTagsFromResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
             client.removeTagsFromResource(
                     request.withTagKeys(tagsRequest.getTagKeys())
                             .withResourceName(tagsRequest.getResourceArn())
