@@ -182,6 +182,7 @@ public final class OrganizationsApi {
         return OrganizationsCaller.get(ListPoliciesForTargetRequest.class, PoliciesResponse.class, credentials).execute((client, request, response) -> {
             final ListPoliciesForTargetResult result = client.listPoliciesForTarget(
                     request
+                            .withTargetId(targetId)
                             .withFilter(filter)
                             .withNextToken(page)
             );

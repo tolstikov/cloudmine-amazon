@@ -54,6 +54,7 @@ import java.util.List;
         apiKeyRequired = AnnotationBoolean.TRUE
 )
 public final class StorageGatewayApi {
+
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "gateways.list",
@@ -235,7 +236,7 @@ public final class StorageGatewayApi {
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return StorageGatewayCaller.get(DescribeVTLDevicesRequest.class, VtlDevicesResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeVTLDevicesResult result = client.describeVTLDevices(request.withMarker(page));
+            final DescribeVTLDevicesResult result = client.describeVTLDevices(request.withGatewayARN(gatewayArn).withMarker(page));
             response.setVtlDevices(result.getVTLDevices());
             response.setNextPage(result.getMarker());
         });

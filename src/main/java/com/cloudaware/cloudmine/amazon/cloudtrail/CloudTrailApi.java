@@ -4,6 +4,7 @@ import com.amazonaws.services.cloudtrail.model.DescribeTrailsRequest;
 import com.amazonaws.services.cloudtrail.model.DescribeTrailsResult;
 import com.amazonaws.services.cloudtrail.model.GetTrailStatusRequest;
 import com.amazonaws.services.cloudtrail.model.GetTrailStatusResult;
+import com.amazonaws.services.cloudtrail.model.LookupAttribute;
 import com.amazonaws.services.cloudtrail.model.LookupEventsRequest;
 import com.amazonaws.services.cloudtrail.model.LookupEventsResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
@@ -14,6 +15,9 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * User: urmuzov
@@ -50,6 +54,16 @@ public final class CloudTrailApi {
             final LookupRequest lookupRequest
     ) throws AmazonUnparsedException {
         return CloudTrailCaller.get(LookupEventsRequest.class, LookupResponse.class, credentials, region).execute((client, request, response) -> {
+            request.setStartTime(lookupRequest.getStartTime());
+            request.setEndTime(lookupRequest.getEndTime());
+            if (lookupRequest.getLookupAttributes() != null) {
+                final List<LookupAttribute> attributes = Lists.newArrayList();
+                for (final LookupRequest.Attribute attr : lookupRequest.getLookupAttributes()) {
+                    attributes.add(new LookupAttribute().withAttributeKey(attr.getAttributeKey()).withAttributeValue(attr.getAttributeValue()));
+                }
+                request.setLookupAttributes(attributes);
+            }
+
             final LookupEventsResult result = client.lookupEvents(
                     request
                             .withNextToken(page)

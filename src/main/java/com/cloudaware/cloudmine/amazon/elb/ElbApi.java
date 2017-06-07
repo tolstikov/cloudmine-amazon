@@ -92,6 +92,7 @@ public final class ElbApi {
 
             final DescribeInstanceHealthResult result = client.describeInstanceHealth(
                     request
+                            .withLoadBalancerName(loadBalancerName)
                             .withInstances(instances)
             );
             response.setInstanceStates(result.getInstanceStates());

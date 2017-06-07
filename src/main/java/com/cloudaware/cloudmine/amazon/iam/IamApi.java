@@ -151,7 +151,7 @@ public final class IamApi {
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return IamCaller.get(ListGroupsForUserRequest.class, GroupsResponse.class, credentials, partition).execute((client, request, response) -> {
-            final ListGroupsForUserResult result = client.listGroupsForUser(request.withMarker(page));
+            final ListGroupsForUserResult result = client.listGroupsForUser(request.withUserName(userName).withMarker(page));
             response.setGroups(result.getGroups());
             response.setNextPage(result.getMarker());
         });
@@ -314,6 +314,7 @@ public final class IamApi {
         return IamCaller.get(ListGroupPoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListGroupPoliciesResult result = client.listGroupPolicies(
                     request
+                            .withGroupName(groupName)
                             .withMarker(page)
             );
             response.setPolicyNames(result.getPolicyNames());
@@ -395,7 +396,7 @@ public final class IamApi {
     ) throws AmazonUnparsedException {
         return IamCaller.get(ListMFADevicesRequest.class, MfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListMFADevicesResult result = client.listMFADevices(
-                    request.withMarker(page)
+                    request.withUserName(userName).withMarker(page)
             );
             response.setMfaDevices(result.getMFADevices());
             response.setNextPage(result.getMarker());
@@ -594,7 +595,7 @@ public final class IamApi {
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return IamCaller.get(ListUserPoliciesRequest.class, PolicyNamesResponse.class, credentials, partition).execute((client, request, response) -> {
-            final ListUserPoliciesResult result = client.listUserPolicies(request.withMarker(page));
+            final ListUserPoliciesResult result = client.listUserPolicies(request.withUserName(userName).withMarker(page));
             response.setPolicyNames(result.getPolicyNames());
             response.setNextPage(result.getMarker());
         });

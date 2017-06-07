@@ -89,7 +89,7 @@ public final class CloudSearchApi {
             @Named("domainName") final String domainName
     ) throws AmazonUnparsedException {
         return CloudSearchCaller.get(DescribeSuggestersRequest.class, SuggestersResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeSuggestersResult result = client.describeSuggesters(request);
+            final DescribeSuggestersResult result = client.describeSuggesters(request.withDomainName(domainName));
             response.setSuggesters(result.getSuggesters());
         });
     }

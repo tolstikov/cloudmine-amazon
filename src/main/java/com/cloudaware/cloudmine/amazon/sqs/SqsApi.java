@@ -59,7 +59,7 @@ public final class SqsApi {
             @Named("queueUrl") final String queueUrl
     ) throws AmazonUnparsedException {
         return SqsCaller.get(GetQueueAttributesRequest.class, AttributesResponse.class, credentials, region).execute((client, request, response) -> {
-            final GetQueueAttributesResult result = client.getQueueAttributes(request.withAttributeNames("All"));
+            final GetQueueAttributesResult result = client.getQueueAttributes(request.withQueueUrl(queueUrl).withAttributeNames("All"));
             response.setAttributes(result.getAttributes());
         });
     }

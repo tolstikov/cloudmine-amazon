@@ -295,7 +295,7 @@ public final class RdsApi {
             @Named("arn") final String arn
     ) throws AmazonUnparsedException {
         return RdsCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
-            final ListTagsForResourceResult result = client.listTagsForResource(request);
+            final ListTagsForResourceResult result = client.listTagsForResource(request.withResourceName(arn));
             response.setTags(result.getTagList());
         });
     }

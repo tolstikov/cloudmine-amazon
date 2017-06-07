@@ -208,7 +208,7 @@ public final class EcsApi {
             @Named("arn") final List<String> arns
     ) throws AmazonUnparsedException {
         return EcsCaller.get(DescribeTasksRequest.class, TasksResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeTasksResult result = client.describeTasks(request);
+            final DescribeTasksResult result = client.describeTasks(request.withCluster(clusterArn).withTasks(arns));
             response.setTasks(result.getTasks());
         });
     }

@@ -132,7 +132,7 @@ public final class RedshiftApi {
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return RedshiftCaller.get(DescribeTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeTagsResult result = client.describeTags(request.withMarker(page));
+            final DescribeTagsResult result = client.describeTags(request.withResourceName(arn).withMarker(page));
             response.setTags(result.getTaggedResources());
             response.setNextPage(result.getMarker());
         });

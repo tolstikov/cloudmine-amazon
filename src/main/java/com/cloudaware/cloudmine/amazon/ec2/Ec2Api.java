@@ -185,7 +185,7 @@ public final class Ec2Api {
             @Named("attributeName") final String attributeName
     ) throws AmazonUnparsedException {
         return Ec2Caller.get(DescribeImageAttributeRequest.class, ImageAttributeResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeImageAttributeResult result = client.describeImageAttribute(request);
+            final DescribeImageAttributeResult result = client.describeImageAttribute(request.withImageId(imageId).withAttribute(attributeName));
             response.setImageAttribute(result.getImageAttribute());
         });
     }
