@@ -55,6 +55,7 @@ public final class StsApi {
                             .withSerialNumber(request.getSerialNumber())
                             .withTokenCode(request.getTokenCode())
             );
+            response.setCredentials(result.getCredentials());
             response.setAssumedRoleUser(result.getAssumedRoleUser());
             response.setPackedPolicySize(result.getPackedPolicySize());
         });
