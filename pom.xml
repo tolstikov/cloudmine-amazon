@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -275,7 +275,7 @@
             <resource>
                 <directory>src/main/appengine</directory>
                 <filtering>true</filtering>
-                <targetPath>${build.directory}/appengine</targetPath>
+                <targetPath>${project.build.directory}/appengine</targetPath>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>

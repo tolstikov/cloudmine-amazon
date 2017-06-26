@@ -277,6 +277,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.5 - Elastic File System added
 * 1.0.4 - EC2 Systems Manager added
 * 1.0.3 - Exceptions now return API action
 * 1.0.2 - Added Redshift Parameter Groups and Security Groups
