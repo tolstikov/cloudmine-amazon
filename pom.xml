@@ -187,6 +187,11 @@
             <artifactId>aws-java-sdk-ssm</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-efs</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -339,6 +344,7 @@
                         <param>com.cloudaware.cloudmine.amazon.dynamodb.DynamoDbApi</param>
                         <param>com.cloudaware.cloudmine.amazon.ec2.Ec2Api</param>
                         <param>com.cloudaware.cloudmine.amazon.ecs.EcsApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.efs.EfsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.elasticache.ElastiCacheApi</param>
                         <param>com.cloudaware.cloudmine.amazon.elasticbeanstalk.ElasticBeanstalkApi</param>
                         <param>com.cloudaware.cloudmine.amazon.elb.ElbApi</param>
