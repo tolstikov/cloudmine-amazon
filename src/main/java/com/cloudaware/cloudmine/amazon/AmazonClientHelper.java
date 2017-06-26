@@ -34,6 +34,8 @@ import com.amazonaws.services.elasticache.AmazonElastiCache;
 import com.amazonaws.services.elasticache.AmazonElastiCacheClient;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalk;
 import com.amazonaws.services.elasticbeanstalk.AWSElasticBeanstalkClient;
+import com.amazonaws.services.elasticfilesystem.AmazonElasticFileSystem;
+import com.amazonaws.services.elasticfilesystem.AmazonElasticFileSystemClient;
 import com.amazonaws.services.elasticloadbalancing.AmazonElasticLoadBalancing;
 import com.amazonaws.services.elasticloadbalancing.AmazonElasticLoadBalancingClient;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
@@ -485,6 +487,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSSimpleSystemsManagement> getSsm(final String region) {
         checkRegion(region);
         final AWSSimpleSystemsManagement client = AWSSimpleSystemsManagementClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonElasticFileSystem> getEfs(final String region) {
+        checkRegion(region);
+        final AmazonElasticFileSystem client = AmazonElasticFileSystemClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
