@@ -121,6 +121,10 @@ public final class AmazonClientHelper {
             // These regions don't have "ds" in available endpoints, but they have the service
             return;
         }
+        if ("ssm".equals(endpointPrefix) && ("ca-central-1".equals(region) || "ap-south-1".equals(region) || "eu-west-2".equals(region))) {
+            // These regions don't have "ssm" in available endpoints, but they have the service
+            return;
+        }
         boolean found = false;
         for (final String availableEndpoint : availableEndpoints) {
             if (availableEndpoint.startsWith(endpointPrefix + ".") || availableEndpoint.startsWith(endpointPrefix + "-" + region)) {
