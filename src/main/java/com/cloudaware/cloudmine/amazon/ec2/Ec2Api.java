@@ -8,6 +8,8 @@ import com.amazonaws.services.ec2.model.DescribeAccountAttributesRequest;
 import com.amazonaws.services.ec2.model.DescribeAccountAttributesResult;
 import com.amazonaws.services.ec2.model.DescribeAddressesRequest;
 import com.amazonaws.services.ec2.model.DescribeAddressesResult;
+import com.amazonaws.services.ec2.model.DescribeCustomerGatewaysRequest;
+import com.amazonaws.services.ec2.model.DescribeCustomerGatewaysResult;
 import com.amazonaws.services.ec2.model.DescribeDhcpOptionsRequest;
 import com.amazonaws.services.ec2.model.DescribeDhcpOptionsResult;
 import com.amazonaws.services.ec2.model.DescribeFlowLogsRequest;
@@ -26,6 +28,8 @@ import com.amazonaws.services.ec2.model.DescribeInternetGatewaysRequest;
 import com.amazonaws.services.ec2.model.DescribeInternetGatewaysResult;
 import com.amazonaws.services.ec2.model.DescribeKeyPairsRequest;
 import com.amazonaws.services.ec2.model.DescribeKeyPairsResult;
+import com.amazonaws.services.ec2.model.DescribeNatGatewaysRequest;
+import com.amazonaws.services.ec2.model.DescribeNatGatewaysResult;
 import com.amazonaws.services.ec2.model.DescribeNetworkAclsRequest;
 import com.amazonaws.services.ec2.model.DescribeNetworkAclsResult;
 import com.amazonaws.services.ec2.model.DescribeNetworkInterfacesRequest;
@@ -644,6 +648,36 @@ public final class Ec2Api {
         return Ec2Caller.get(DescribeVpnGatewaysRequest.class, VpnGatewaysResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeVpnGatewaysResult result = client.describeVpnGateways(request);
             response.setVpnGateways(result.getVpnGateways());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "customerGateways.list",
+            path = "{region}/customer-gateways"
+    )
+    public CustomerGatewaysResponse customerGatewaysList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeCustomerGatewaysRequest.class, CustomerGatewaysResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeCustomerGatewaysResult result = client.describeCustomerGateways(request);
+            response.setCustomerGateways(result.getCustomerGateways());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "natGateways.list",
+            path = "{region}/nat-gateways"
+    )
+    public NatGatewaysResponse natGatewaysList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeNatGatewaysRequest.class, NatGatewaysResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeNatGatewaysResult result = client.describeNatGateways(request);
+            response.setNatGateways(result.getNatGateways());
         });
     }
 }
