@@ -40,6 +40,8 @@ import com.amazonaws.services.elasticloadbalancing.AmazonElasticLoadBalancing;
 import com.amazonaws.services.elasticloadbalancing.AmazonElasticLoadBalancingClient;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClient;
+import com.amazonaws.services.elasticsearch.AWSElasticsearch;
+import com.amazonaws.services.elasticsearch.AWSElasticsearchClient;
 import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
@@ -502,6 +504,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonElasticFileSystem> getEfs(final String region) {
         checkRegion(region);
         final AmazonElasticFileSystem client = AmazonElasticFileSystemClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSElasticsearch> getElasticsearch(final String region) {
+        checkRegion(region);
+        final AWSElasticsearch client = AWSElasticsearchClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
