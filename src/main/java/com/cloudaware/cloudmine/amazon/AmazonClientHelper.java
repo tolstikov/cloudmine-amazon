@@ -20,6 +20,8 @@ import com.amazonaws.services.cloudtrail.AWSCloudTrail;
 import com.amazonaws.services.cloudtrail.AWSCloudTrailClient;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
+import com.amazonaws.services.codestar.AWSCodeStar;
+import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.directconnect.AmazonDirectConnect;
 import com.amazonaws.services.directconnect.AmazonDirectConnectClient;
 import com.amazonaws.services.directory.AWSDirectoryService;
@@ -125,6 +127,10 @@ public final class AmazonClientHelper {
         }
         if ("ssm".equals(endpointPrefix) && ("ca-central-1".equals(region) || "ap-south-1".equals(region) || "eu-west-2".equals(region))) {
             // These regions don't have "ssm" in available endpoints, but they have the service
+            return;
+        }
+        if ("codestar".equals(endpointPrefix) && ("ap-southeast-1".equals(region) || "ap-southeast-2".equals(region) || "eu-central-1".equals(region))) {
+            // These regions don't have "codestar" in available endpoints, but they have the service
             return;
         }
         boolean found = false;
@@ -515,6 +521,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSElasticsearch> getElasticsearch(final String region) {
         checkRegion(region);
         final AWSElasticsearch client = AWSElasticsearchClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCodeStar> getCodeStar(final String region) {
+        checkRegion(region);
+        final AWSCodeStar client = AWSCodeStarClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
