@@ -202,6 +202,11 @@
             <artifactId>aws-java-sdk-codestar</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-codebuild</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -349,6 +354,7 @@
                         <param>com.cloudaware.cloudmine.amazon.cloudsearch.CloudSearchApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudtrail.CloudTrailApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudwatch.CloudWatchApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.codebuild.CodeBuildApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codestar.CodeStarApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directconnect.DirectConnectApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directoryservice.DirectoryServiceApi</param>
