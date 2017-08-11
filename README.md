@@ -277,6 +277,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.9 - ELBv2 added
 * 1.0.8 - CodeBuild added
 * 1.0.7 - CodeStar added
 * 1.0.6 - Elasticsearch Service added, EC2 Customer Gateways and NAT Gateways added
