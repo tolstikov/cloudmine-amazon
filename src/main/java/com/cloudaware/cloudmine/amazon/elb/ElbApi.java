@@ -38,7 +38,7 @@ import java.util.List;
         name = "elb",
         canonicalName = "Elb",
         title = "Elastic Load Balancing",
-        description = "High Scale Load Balancing",
+        description = "Classic Load Balancers",
         namespace = @ApiNamespace(
                 ownerDomain = "cloudaware.com",
                 ownerName = "CloudAware",
