@@ -251,6 +251,13 @@ To start dev server:
 
 `mvn clean package jetty:run-exploded -Dappengine.app.id=yourproject -Dendpoints.service.version=2017-04-28r0`
 
+# New API Version Deployment
+
+1. Build project - you will create/update `cloudmine-amazon.json` in root folder 
+2. `gcloud service-management deploy cloudmine-amazon.json`
+3. Receive new API Version and update property `endpoints.service.version`
+4. `mvn clean package appengine:update -Dappengine.app.id=yourproject -Dendpoints.service.version=2017-05-02r0` (`2017-05-02r0` - is your new version)
+
 # Client Library
 
 Client library built using [apis-client-generator](https://github.com/google/apis-client-generator)
@@ -268,15 +275,9 @@ To build client library:
 4. `mvn versions:set -DnewVersion=2017-04-28r0`
 5. `mvn package` or `mvn install`
 
-# New API Version Deployment
-
-1. Build project - you will create/update `cloudmine-amazon.json` in root folder 
-2. `gcloud service-management deploy cloudmine-amazon.json`
-3. Receive new API Version and update property `endpoints.service.version`
-4. `mvn clean package appengine:update -Dappengine.app.id=yourproject -Dendpoints.service.version=2017-05-02r0` (`2017-05-02r0` - is your new version)
-
 # Changelog
 
+* 1.0.8 - CodeBuild added
 * 1.0.7 - CodeStar added
 * 1.0.6 - Elasticsearch Service added, EC2 Customer Gateways and NAT Gateways added
 * 1.0.5 - Elastic File System added
