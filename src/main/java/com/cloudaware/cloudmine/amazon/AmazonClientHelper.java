@@ -20,6 +20,8 @@ import com.amazonaws.services.cloudtrail.AWSCloudTrail;
 import com.amazonaws.services.cloudtrail.AWSCloudTrailClient;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
+import com.amazonaws.services.codebuild.AWSCodeBuild;
+import com.amazonaws.services.codebuild.AWSCodeBuildClient;
 import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.directconnect.AmazonDirectConnect;
@@ -532,6 +534,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSCodeStar> getCodeStar(final String region) {
         checkRegion(region);
         final AWSCodeStar client = AWSCodeStarClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCodeBuild> getCodeBuild(final String region) {
+        checkRegion(region);
+        final AWSCodeBuild client = AWSCodeBuildClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
