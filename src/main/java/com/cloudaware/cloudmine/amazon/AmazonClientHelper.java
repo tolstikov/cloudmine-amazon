@@ -191,6 +191,17 @@ public final class AmazonClientHelper {
         return new ClientWrapper<>(client);
     }
 
+    public ClientWrapper<com.amazonaws.services.elasticloadbalancingv2.AmazonElasticLoadBalancing> getElbV2(final String region) {
+        checkRegion(region);
+        final com.amazonaws.services.elasticloadbalancingv2.AmazonElasticLoadBalancing client = com.amazonaws.services.elasticloadbalancingv2.AmazonElasticLoadBalancingClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
     public ClientWrapper<AmazonSimpleEmailService> getSes(final String region) {
         checkRegion(region);
         final AmazonSimpleEmailService client = AmazonSimpleEmailServiceClient.builder()
