@@ -212,6 +212,11 @@
             <artifactId>aws-java-sdk-elasticloadbalancingv2</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-codecommit</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -360,6 +365,7 @@
                         <param>com.cloudaware.cloudmine.amazon.cloudtrail.CloudTrailApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudwatch.CloudWatchApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codebuild.CodeBuildApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.codecommit.CodeCommitApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codestar.CodeStarApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directconnect.DirectConnectApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directoryservice.DirectoryServiceApi</param>

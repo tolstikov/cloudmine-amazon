@@ -22,6 +22,8 @@ import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
 import com.amazonaws.services.codebuild.AWSCodeBuild;
 import com.amazonaws.services.codebuild.AWSCodeBuildClient;
+import com.amazonaws.services.codecommit.AWSCodeCommit;
+import com.amazonaws.services.codecommit.AWSCodeCommitClient;
 import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.directconnect.AmazonDirectConnect;
@@ -556,6 +558,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSCodeBuild> getCodeBuild(final String region) {
         checkRegion(region);
         final AWSCodeBuild client = AWSCodeBuildClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCodeCommit> getCodeCommit(final String region) {
+        checkRegion(region);
+        final AWSCodeCommit client = AWSCodeCommitClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
