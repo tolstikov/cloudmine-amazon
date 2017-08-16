@@ -277,6 +277,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.10 - CodeCommit added
 * 1.0.9 - ELBv2 added
 * 1.0.8 - CodeBuild added
 * 1.0.7 - CodeStar added
