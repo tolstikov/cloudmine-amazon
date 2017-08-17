@@ -114,6 +114,10 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "NoSuchBucket".equals(errorCode)
                     || "NoSuchDistribution".equals(errorCode)
                     || "TrailNotFoundException".equals(errorCode)
+                    || "MountTargetNotFound".equals(errorCode)
+                    || "ListenerNotFound".equals(errorCode)
+                    || "ResourceNotFound".equals(errorCode)
+                    || "TargetGroupNotFound".equals(errorCode)
                     || ("ValidationError".equals(errorCode) && errorMessage.startsWith("Stack with id") && errorMessage.contains("does not exist"))
                     ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
@@ -124,6 +128,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
             if ("ExpiredToken".equals(errorCode)
                     || "InternalFailure".equals(errorCode)
                     || "InternalError".equals(errorCode)
+                    || "InternalServerError".equals(errorCode)
                     || "ServiceUnavailable".equals(errorCode)
                     || "503 Service Unavailable".equals(errorCode)
                     || "500 Internal Server Error".equals(errorCode)
