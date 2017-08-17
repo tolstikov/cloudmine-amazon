@@ -4,6 +4,8 @@ import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsRequest
 import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsResult;
 import com.amazonaws.services.autoscaling.model.DescribeLaunchConfigurationsRequest;
 import com.amazonaws.services.autoscaling.model.DescribeLaunchConfigurationsResult;
+import com.amazonaws.services.autoscaling.model.DescribePoliciesRequest;
+import com.amazonaws.services.autoscaling.model.DescribePoliciesResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -72,6 +74,24 @@ public final class AutoScalingApi {
         return AutoScalingCaller.get(DescribeLaunchConfigurationsRequest.class, LaunchConfigurationsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeLaunchConfigurationsResult result = client.describeLaunchConfigurations(request.withNextToken(page));
             response.setLaunchConfigurations(result.getLaunchConfigurations());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "policies.list",
+            path = "{region}/policies"
+    )
+    public PoliciesResponse policiesList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("groupName") @Nullable final String groupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return AutoScalingCaller.get(DescribePoliciesRequest.class, PoliciesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribePoliciesResult result = client.describePolicies(request.withNextToken(page).withAutoScalingGroupName(groupName));
+            response.setPolicies(result.getScalingPolicies());
             response.setNextPage(result.getNextToken());
         });
     }
