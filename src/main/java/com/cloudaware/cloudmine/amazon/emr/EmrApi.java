@@ -10,6 +10,8 @@ import com.amazonaws.services.elasticmapreduce.model.ListBootstrapActionsRequest
 import com.amazonaws.services.elasticmapreduce.model.ListBootstrapActionsResult;
 import com.amazonaws.services.elasticmapreduce.model.ListClustersRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListClustersResult;
+import com.amazonaws.services.elasticmapreduce.model.ListInstanceFleetsRequest;
+import com.amazonaws.services.elasticmapreduce.model.ListInstanceFleetsResult;
 import com.amazonaws.services.elasticmapreduce.model.ListInstanceGroupsRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListInstanceGroupsResult;
 import com.amazonaws.services.elasticmapreduce.model.ListInstancesRequest;
@@ -126,6 +128,28 @@ public final class EmrApi {
                             .withMarker(page)
             );
             response.setInstanceGroups(result.getInstanceGroups());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "clusters.instanceFleets.list",
+            path = "{region}/clusters/{clusterId}/instance-fleets"
+    )
+    public InstanceFleetsResponse clustersInstanceFleetsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("clusterId") final String clusterId,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return EmrCaller.get(ListInstanceFleetsRequest.class, InstanceFleetsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListInstanceFleetsResult result = client.listInstanceFleets(
+                    request
+                            .withClusterId(clusterId)
+                            .withMarker(page)
+            );
+            response.setInstanceFleets(result.getInstanceFleets());
             response.setNextPage(result.getMarker());
         });
     }
