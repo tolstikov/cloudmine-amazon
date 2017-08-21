@@ -277,6 +277,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.12 - EMR Instance Fleets added
 * 1.0.11 - AutoScaling policies added
 * 1.0.10 - CodeCommit added
 * 1.0.9 - ELBv2 added
