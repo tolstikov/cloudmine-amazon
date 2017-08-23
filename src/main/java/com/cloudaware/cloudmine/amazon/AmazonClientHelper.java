@@ -70,6 +70,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient;
+import com.amazonaws.services.servicecatalog.AWSServiceCatalog;
+import com.amazonaws.services.servicecatalog.AWSServiceCatalogClient;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
@@ -582,6 +584,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonConfig> getConfig(final String region) {
         checkRegion(region);
         final AmazonConfig client = AmazonConfigClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSServiceCatalog> getServiceCatalog(final String region) {
+        checkRegion(region);
+        final AWSServiceCatalog client = AWSServiceCatalogClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
