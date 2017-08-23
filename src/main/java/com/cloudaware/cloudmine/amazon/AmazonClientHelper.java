@@ -26,6 +26,8 @@ import com.amazonaws.services.codecommit.AWSCodeCommit;
 import com.amazonaws.services.codecommit.AWSCodeCommitClient;
 import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
+import com.amazonaws.services.config.AmazonConfig;
+import com.amazonaws.services.config.AmazonConfigClient;
 import com.amazonaws.services.directconnect.AmazonDirectConnect;
 import com.amazonaws.services.directconnect.AmazonDirectConnectClient;
 import com.amazonaws.services.directory.AWSDirectoryService;
@@ -569,6 +571,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSCodeCommit> getCodeCommit(final String region) {
         checkRegion(region);
         final AWSCodeCommit client = AWSCodeCommitClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonConfig> getConfig(final String region) {
+        checkRegion(region);
+        final AmazonConfig client = AmazonConfigClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
