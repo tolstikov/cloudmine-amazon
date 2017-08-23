@@ -277,6 +277,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.14 - Service Catalog added
 * 1.0.13 - AWS Config added
 * 1.0.12 - EMR Instance Fleets added
 * 1.0.11 - AutoScaling policies added
