@@ -33,7 +33,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
     }
 
     public static AmazonException parse(final Throwable t, final String action) throws AmazonUnparsedException {
-        LOGGER.error("Caught exception during API call to AWS", t);
+        LOGGER.info("Exception during AWS API Client call. {}: {}", t.getClass().getName(), t.getMessage());
         if (t instanceof AmazonServiceException) {
             final AmazonServiceException ex = (AmazonServiceException) t;
             final AmazonServiceException.ErrorType errorType = ex.getErrorType();
