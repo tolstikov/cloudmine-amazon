@@ -81,6 +81,12 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
 //                  We will notify you by email when they become available later this year.
 //                  (Service: AmazonEC2; Status Code: 400; Error Code: UnsupportedOperation; Request ID: dad30187-e5f7-426b-9f0e-5f33865ec864)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("Amazon Internet Services Private Limited (AISPL)"))
+//                  Starting August 1 2017, you won't be able to view or manage (except terminate) Elastic Beanstalk environments running legacy platforms.
+//                  However, your existing resources (such as EC2 instances, auto-scaling groups etc.) and assets deployed to these resources, via these Elastic Beanstalk environments,
+//                  will continue to function as expected, and you can continue to manage these resources using the respective service consoles.
+//                  (Service: AWSElasticBeanstalk; Status Code: 400; Error Code: InvalidParameterValue; Request ID: ba27e3a6-891e-11e7-a9f0-f3be31bf2ff0)
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Starting August 1 2017, you won't be able to view or manage (except terminate) "
+                    + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
