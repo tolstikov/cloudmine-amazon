@@ -18,6 +18,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmazonResponse.class);
     private static final int HTTP_TEMPORARY_UNAVAILABLE = 503;
+    private static final int HTTP_GATEWAY_TIMEOUT = 504;
     private AmazonException exception;
     private String nextPage;
 
@@ -148,7 +149,9 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "DirectConnectServerException".equals(errorCode)
                     || "KMSInternalException".equals(errorCode)
                     || "HttpConnectionTimeoutException".equals(errorCode)
-                    || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)) {
+                    || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)
+                    //null (Service: AWSElasticBeanstalk; Status Code: 504; Error Code: 504 GATEWAY_TIMEOUT)
+                    || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_GATEWAY_TIMEOUT)) {
                 return new AmazonException(AmazonException.Category.TEMPORARY_ERROR, action, ex);
             }
             LOGGER.error("Unable to categorize AmazonServiceException.", t);
