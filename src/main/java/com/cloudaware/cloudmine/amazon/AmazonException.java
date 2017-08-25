@@ -97,25 +97,29 @@ public final class AmazonException {
 
     public enum Category {
         /**
-         * Нет доступа до сервиса с этими ключами
+         * Service responded that you have no access
          */
         NO_ACCESS,
         /**
-         * Доступ есть, но сервис нас троттлит
+         * We have access, but we've been throttled
          */
         THROTTLING,
         /**
-         * Досту есть, но на этом аккаунте этот сервис не доступен
+         * Service is disabled for this account/region/etc
          */
         SERVICE_DISABLED,
         /**
-         * Обращение к не существующему объекту, например удаленному
+         * Trying to get info for object that may be deleted
          */
         OBJECT_NOT_FOUND,
         /**
-         * Временная ошибка на стороне AWS
+         * Temporary error of any kind on AWS side
          */
         TEMPORARY_ERROR,
+        /**
+         * Error related to network access
+         */
+        NETWORK_ERROR,
         /**
          * Прочие не категоризированные ошибки
          */

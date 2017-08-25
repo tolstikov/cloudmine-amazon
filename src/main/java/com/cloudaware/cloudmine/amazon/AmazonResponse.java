@@ -151,22 +151,28 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)) {
                 return new AmazonException(AmazonException.Category.TEMPORARY_ERROR, action, ex);
             }
+            LOGGER.error("Unable to categorize AmazonServiceException.", t);
             return new AmazonException(AmazonException.Category.UNKNOWN, action, ex);
         } else if (t instanceof AmazonClientException) {
             final AmazonClientException ex = (AmazonClientException) t;
             final String message = ex.getMessage();
-            if (message != null && message.contains("Unable to unmarshall response") && (message.contains("Read timed out") || message.contains("Connection reset"))) {
-                return new AmazonException(AmazonException.Category.TEMPORARY_ERROR, action, t.getClass().getName(), t.getMessage());
+            if (message != null && (message.contains("Read timed out") || message.contains("Connection reset"))) {
+                return new AmazonException(AmazonException.Category.NETWORK_ERROR, action, t.getClass().getName(), t.getMessage());
             }
             if (ex.getCause() != null && ex.getCause() instanceof ConnectTimeoutException
                     && ex.getCause().getCause() != null && ex.getCause().getCause() instanceof SocketTimeoutException) {
-                return new AmazonException(AmazonException.Category.TEMPORARY_ERROR, action, t.getClass().getName(), t.getMessage());
+                return new AmazonException(AmazonException.Category.NETWORK_ERROR, action, t.getClass().getName(), t.getMessage());
             }
             if (ex.getCause() != null && ex.getCause() instanceof org.apache.http.NoHttpResponseException) {
-                return new AmazonException(AmazonException.Category.TEMPORARY_ERROR, action, t.getClass().getName(), t.getMessage());
+                return new AmazonException(AmazonException.Category.NETWORK_ERROR, action, t.getClass().getName(), t.getMessage());
             }
+            if (ex.getCause() != null && ex.getCause() instanceof java.net.UnknownHostException) {
+                return new AmazonException(AmazonException.Category.NETWORK_ERROR, action, t.getClass().getName(), t.getMessage());
+            }
+            LOGGER.error("Unable to categorize AmazonClientException.", t);
             return new AmazonException(AmazonException.Category.UNKNOWN, action, t.getClass().getName(), t.getMessage());
         }
+        LOGGER.error("Unable to categorize exception.", t);
         throw new AmazonUnparsedException(t);
     }
 
