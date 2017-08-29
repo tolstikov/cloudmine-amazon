@@ -270,13 +270,12 @@ Each successful build will leave following files and directories:
 To build client library:
 
 1. Build project
-2. Execute `client/generate.sh`
-3. `cd target/client`
-4. `mvn versions:set -DnewVersion=2017-04-28r0`
-5. `mvn package` or `mvn install`
+2. Execute `client/generate.sh && cd target/client && mvn versions:set -DnewVersion=2017-04-28r0`
+3. `mvn package` or `mvn install`
 
 # Changelog
 
+* 1.0.15 - Kinesis added
 * 1.0.14 - Service Catalog added
 * 1.0.13 - AWS Config added
 * 1.0.12 - EMR Instance Fleets added
