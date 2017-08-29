@@ -54,6 +54,12 @@ import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
+import com.amazonaws.services.kinesis.AmazonKinesis;
+import com.amazonaws.services.kinesis.AmazonKinesisClient;
+import com.amazonaws.services.kinesisanalytics.AmazonKinesisAnalytics;
+import com.amazonaws.services.kinesisanalytics.AmazonKinesisAnalyticsClient;
+import com.amazonaws.services.kinesisfirehose.AmazonKinesisFirehose;
+import com.amazonaws.services.kinesisfirehose.AmazonKinesisFirehoseClient;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClient;
 import com.amazonaws.services.lambda.AWSLambda;
@@ -139,6 +145,10 @@ public final class AmazonClientHelper {
         }
         if ("codestar".equals(endpointPrefix) && ("ap-southeast-1".equals(region) || "ap-southeast-2".equals(region) || "eu-central-1".equals(region))) {
             // These regions don't have "codestar" in available endpoints, but they have the service
+            return;
+        }
+        if ("firehose".equals(endpointPrefix) && ("ap-northeast-1".equals(region) || "eu-central-1".equals(region) || "us-east-2".equals(region))) {
+            // These regions don't have "firehose" in available endpoints, but they have the service
             return;
         }
         boolean found = false;
@@ -595,6 +605,39 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSServiceCatalog> getServiceCatalog(final String region) {
         checkRegion(region);
         final AWSServiceCatalog client = AWSServiceCatalogClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonKinesis> getKinesisStreams(final String region) {
+        checkRegion(region);
+        final AmazonKinesis client = AmazonKinesisClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonKinesisFirehose> getKinesisFirehose(final String region) {
+        checkRegion(region);
+        final AmazonKinesisFirehose client = AmazonKinesisFirehoseClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonKinesisAnalytics> getKinesisAnalytics(final String region) {
+        checkRegion(region);
+        final AmazonKinesisAnalytics client = AmazonKinesisAnalyticsClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
