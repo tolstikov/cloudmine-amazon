@@ -24,6 +24,8 @@ import com.amazonaws.services.codebuild.AWSCodeBuild;
 import com.amazonaws.services.codebuild.AWSCodeBuildClient;
 import com.amazonaws.services.codecommit.AWSCodeCommit;
 import com.amazonaws.services.codecommit.AWSCodeCommitClient;
+import com.amazonaws.services.codedeploy.AmazonCodeDeploy;
+import com.amazonaws.services.codedeploy.AmazonCodeDeployClient;
 import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
@@ -684,4 +686,14 @@ public final class AmazonClientHelper {
         return new ClientWrapper<>(client);
     }
 
+    public ClientWrapper<AmazonCodeDeploy> getCodeDeploy(final String region) {
+        checkRegion(region);
+        final AmazonCodeDeploy client = AmazonCodeDeployClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
 }
