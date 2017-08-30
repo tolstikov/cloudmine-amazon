@@ -275,6 +275,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.17 - CodeDeploy added
 * 1.0.16 - WAF & Shield added
 * 1.0.15 - Kinesis added
 * 1.0.14 - Service Catalog added
