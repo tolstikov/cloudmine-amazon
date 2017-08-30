@@ -78,6 +78,8 @@ import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient;
 import com.amazonaws.services.servicecatalog.AWSServiceCatalog;
 import com.amazonaws.services.servicecatalog.AWSServiceCatalogClient;
+import com.amazonaws.services.shield.AWSShield;
+import com.amazonaws.services.shield.AWSShieldClient;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
@@ -90,6 +92,10 @@ import com.amazonaws.services.storagegateway.AWSStorageGateway;
 import com.amazonaws.services.storagegateway.AWSStorageGatewayClient;
 import com.amazonaws.services.support.AWSSupport;
 import com.amazonaws.services.support.AWSSupportClient;
+import com.amazonaws.services.waf.AWSWAF;
+import com.amazonaws.services.waf.AWSWAFClient;
+import com.amazonaws.services.waf.AWSWAFRegional;
+import com.amazonaws.services.waf.AWSWAFRegionalClient;
 import com.amazonaws.services.workspaces.AmazonWorkspaces;
 import com.amazonaws.services.workspaces.AmazonWorkspacesClient;
 
@@ -645,4 +651,36 @@ public final class AmazonClientHelper {
         checkEndpoint(region, (AmazonWebServiceClient) client);
         return new ClientWrapper<>(client);
     }
+
+    public ClientWrapper<AWSWAF> getWaf() {
+        final AWSWAF client = AWSWAFClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSWAFRegional> getWafRegional(final String region) {
+        checkRegion(region);
+        final AWSWAFRegional client = AWSWAFRegionalClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSShield> getShield() {
+        final String region = "us-east-1";
+        checkRegion(region);
+        final AWSShield client = AWSShieldClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
 }

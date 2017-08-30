@@ -232,6 +232,16 @@
             <artifactId>aws-java-sdk-kinesis</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-waf</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-shield</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -404,12 +414,14 @@
                         <param>com.cloudaware.cloudmine.amazon.route53.Route53Api</param>
                         <param>com.cloudaware.cloudmine.amazon.s3.S3Api</param>
                         <param>com.cloudaware.cloudmine.amazon.ses.SesApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.shield.ShieldApi</param>
                         <param>com.cloudaware.cloudmine.amazon.sns.SnsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.sqs.SqsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.ssm.SsmApi</param>
                         <param>com.cloudaware.cloudmine.amazon.storagegateway.StorageGatewayApi</param>
                         <param>com.cloudaware.cloudmine.amazon.sts.StsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.support.SupportApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.waf.WafApi</param>
                         <param>com.cloudaware.cloudmine.amazon.workspaces.WorkspacesApi</param>
                         <param>com.cloudaware.cloudmine.amazon.config.ConfigApi</param>
                         <param>com.cloudaware.cloudmine.amazon.servicecatalog.ServiceCatalogApi</param>
