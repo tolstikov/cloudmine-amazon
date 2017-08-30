@@ -656,6 +656,7 @@ public final class AmazonClientHelper {
         final AWSWAF client = AWSWAFClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("waf.amazonaws.com", "us-east-1"))
                 .build();
         return new ClientWrapper<>(client);
     }
