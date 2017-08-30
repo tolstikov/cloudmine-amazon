@@ -134,7 +134,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "rateBasedRules.list",
-            path = "rateBasedRules"
+            path = "rate-based-rules"
     )
     public RateBasedRulesResponse rateBasedRuleList(
             @Named("credentials") final String credentials,
@@ -150,7 +150,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "rateBasedRules.get",
-            path = "rateBasedRules/{id}"
+            path = "rate-based-rules/{id}"
     )
     public RateBasedRuleResponse rateBasedRuleGet(
             @Named("credentials") final String credentials,
@@ -165,7 +165,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "ipSets.list",
-            path = "ipSets"
+            path = "ip-sets"
     )
     public IpSetsResponse ipSetList(
             @Named("credentials") final String credentials,
@@ -181,7 +181,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "ipSets.get",
-            path = "ipSets/{id}"
+            path = "ip-sets/{id}"
     )
     public IpSetResponse ipSetGet(
             @Named("credentials") final String credentials,
@@ -196,7 +196,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "byteMatchSets.list",
-            path = "byteMatchSets"
+            path = "byte-match-sets"
     )
     public ByteMatchSetsResponse byteMatchSetList(
             @Named("credentials") final String credentials,
@@ -212,7 +212,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "byteMatchSets.get",
-            path = "byteMatchSets/{id}"
+            path = "byte-match-sets/{id}"
     )
     public ByteMatchSetResponse byteMatchSetGet(
             @Named("credentials") final String credentials,
@@ -227,7 +227,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "sqlInjectionMatchSets.list",
-            path = "sqlInjectionMatchSets"
+            path = "sql-injection-match-sets"
     )
     public SqlInjectionMatchSetsResponse sqlInjectionMatchSetList(
             @Named("credentials") final String credentials,
@@ -243,7 +243,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "sqlInjectionMatchSets.get",
-            path = "sqlInjectionMatchSets/{id}"
+            path = "sql-injection-match-sets/{id}"
     )
     public SqlInjectionMatchSetResponse sqlInjectionMatchSetGet(
             @Named("credentials") final String credentials,
@@ -258,7 +258,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "xssMatchSets.list",
-            path = "xssMatchSets"
+            path = "xss-match-sets"
     )
     public XssMatchSetsResponse xssMatchSetList(
             @Named("credentials") final String credentials,
@@ -274,7 +274,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "xssMatchSets.get",
-            path = "xssMatchSets/{id}"
+            path = "xss-match-sets/{id}"
     )
     public XssMatchSetResponse xssMatchSetGet(
             @Named("credentials") final String credentials,
@@ -289,7 +289,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "sizeConstraintSets.list",
-            path = "sizeConstraintSets"
+            path = "size-constraint-sets"
     )
     public SizeConstraintSetsResponse sizeConstraintSetList(
             @Named("credentials") final String credentials,
@@ -305,7 +305,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "sizeConstraintSets.get",
-            path = "sizeConstraintSets/{id}"
+            path = "size-constraint-sets/{id}"
     )
     public SizeConstraintSetResponse sizeConstraintSetGet(
             @Named("credentials") final String credentials,
@@ -402,7 +402,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.rateBasedRules.list",
-            path = "regions/{region}/rateBasedRules"
+            path = "regions/{region}/rate-based-rules"
     )
     public RateBasedRulesResponse regionsRateBasedRuleList(
             @Named("credentials") final String credentials,
@@ -419,7 +419,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.rateBasedRules.get",
-            path = "regions/{region}/rateBasedRules/{id}"
+            path = "regions/{region}/rate-based-rules/{id}"
     )
     public RateBasedRuleResponse regionsRateBasedRuleGet(
             @Named("credentials") final String credentials,
@@ -435,7 +435,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.ipSets.list",
-            path = "regions/{region}/ipSets"
+            path = "regions/{region}/ip-sets"
     )
     public IpSetsResponse regionsIpSetList(
             @Named("credentials") final String credentials,
@@ -452,7 +452,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.ipSets.get",
-            path = "regions/{region}/ipSets/{id}"
+            path = "regions/{region}/ip-sets/{id}"
     )
     public IpSetResponse regionsIpSetGet(
             @Named("credentials") final String credentials,
@@ -468,7 +468,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.byteMatchSets.list",
-            path = "regions/{region}/byteMatchSets"
+            path = "regions/{region}/byte-match-sets"
     )
     public ByteMatchSetsResponse regionsByteMatchSetList(
             @Named("credentials") final String credentials,
@@ -485,7 +485,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.byteMatchSets.get",
-            path = "regions/{region}/byteMatchSets/{id}"
+            path = "regions/{region}/byte-match-sets/{id}"
     )
     public ByteMatchSetResponse regionsByteMatchSetGet(
             @Named("credentials") final String credentials,
@@ -501,7 +501,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.sqlInjectionMatchSets.list",
-            path = "regions/{region}/sqlInjectionMatchSets"
+            path = "regions/{region}/sql-injection-match-sets"
     )
     public SqlInjectionMatchSetsResponse regionsSqlInjectionMatchSetList(
             @Named("credentials") final String credentials,
@@ -518,7 +518,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.sqlInjectionMatchSets.get",
-            path = "regions/{region}/sqlInjectionMatchSets/{id}"
+            path = "regions/{region}/sql-injection-match-sets/{id}"
     )
     public SqlInjectionMatchSetResponse regionsSqlInjectionMatchSetGet(
             @Named("credentials") final String credentials,
@@ -534,7 +534,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.xssMatchSets.list",
-            path = "regions/{region}/xssMatchSets"
+            path = "regions/{region}/xss-match-sets"
     )
     public XssMatchSetsResponse regionsXssMatchSetList(
             @Named("credentials") final String credentials,
@@ -551,7 +551,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.xssMatchSets.get",
-            path = "regions/{region}/xssMatchSets/{id}"
+            path = "regions/{region}/xss-match-sets/{id}"
     )
     public XssMatchSetResponse regionsXssMatchSetGet(
             @Named("credentials") final String credentials,
@@ -567,7 +567,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.sizeConstraintSets.list",
-            path = "regions/{region}/sizeConstraintSets"
+            path = "regions/{region}/size-constraint-sets"
     )
     public SizeConstraintSetsResponse regionsSizeConstraintSetList(
             @Named("credentials") final String credentials,
@@ -584,7 +584,7 @@ public final class WafApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "regions.sizeConstraintSets.get",
-            path = "regions/{region}/sizeConstraintSets/{id}"
+            path = "regions/{region}/size-constraint-sets/{id}"
     )
     public SizeConstraintSetResponse regionsSizeConstraintSetGet(
             @Named("credentials") final String credentials,
