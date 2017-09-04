@@ -52,7 +52,7 @@ public final class ElasticTranscoderApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "pipelines.jobs.list",
-            path = "{region}/pipelines/PIPELINE_ID/jobs"
+            path = "{region}/pipelines/{pipelineId}/jobs"
     )
     public JobsResponse pipelineJobsList(
             @Named("credentials") final String credentials,

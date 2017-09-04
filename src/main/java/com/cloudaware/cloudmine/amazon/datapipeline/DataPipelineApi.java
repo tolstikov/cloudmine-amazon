@@ -61,7 +61,7 @@ public final class DataPipelineApi {
     public PipelineDescriptionsResponse pipelineDescriptionsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("pipelineIds") final List<String> pipelineIds
+            @Named("pipelineId") final List<String> pipelineIds
     ) throws AmazonUnparsedException {
         return DataPipelineCaller.get(DescribePipelinesRequest.class, PipelineDescriptionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribePipelinesResult result = client.describePipelines(request.withPipelineIds(pipelineIds));
@@ -72,7 +72,7 @@ public final class DataPipelineApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "pipelines.get",
-            path = "{region}/pipelines/PIPELINE_ID"
+            path = "{region}/pipelines/{pipelineId}"
     )
     public PipelineDefinitionResponse pipelinesGet(
             @Named("credentials") final String credentials,
@@ -91,14 +91,14 @@ public final class DataPipelineApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "pipelines.objects.list",
-            path = "{region}/pipelines/PIPELINE_ID/objects"
+            path = "{region}/pipelines/{pipelineId}/objects"
     )
     public PipelineObjectsResponse pipelineObjectsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page,
             @Named("pipelineId") final String pipelineId,
-            @Named("objectIds") final List<String> objectIds
+            @Named("objectId") final List<String> objectIds
     ) throws AmazonUnparsedException {
         return DataPipelineCaller.get(DescribeObjectsRequest.class, PipelineObjectsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeObjectsResult result = client.describeObjects(request.withPipelineId(pipelineId).withObjectIds(objectIds).withMarker(page));
