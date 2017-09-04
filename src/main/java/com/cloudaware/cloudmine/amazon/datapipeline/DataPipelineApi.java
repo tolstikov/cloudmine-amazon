@@ -38,15 +38,15 @@ public final class DataPipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipelineIdNames.list",
-            path = "{region}/pipeline-id-names"
+            name = "pipelines.list",
+            path = "{region}/pipelines"
     )
-    public PipelineIdNamesResponse pipelineIdNamesList(
+    public PipelinesResponse pipelinesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return DataPipelineCaller.get(ListPipelinesRequest.class, PipelineIdNamesResponse.class, credentials, region).execute((client, request, response) -> {
+        return DataPipelineCaller.get(ListPipelinesRequest.class, PipelinesResponse.class, credentials, region).execute((client, request, response) -> {
             final ListPipelinesResult result = client.listPipelines(request.withMarker(page));
             response.setPipelines(result.getPipelineIdList());
             response.setNextPage(result.getMarker());
@@ -55,15 +55,15 @@ public final class DataPipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipelines.list",
-            path = "{region}/pipelines"
+            name = "pipelineDescriptions.list",
+            path = "{region}/pipeline-descriptions"
     )
-    public PipelinesResponse pipelinesList(
+    public PipelineDescriptionsResponse pipelineDescriptionsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("pipelineIds") final List<String> pipelineIds
     ) throws AmazonUnparsedException {
-        return DataPipelineCaller.get(DescribePipelinesRequest.class, PipelinesResponse.class, credentials, region).execute((client, request, response) -> {
+        return DataPipelineCaller.get(DescribePipelinesRequest.class, PipelineDescriptionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribePipelinesResult result = client.describePipelines(request.withPipelineIds(pipelineIds));
             response.setPipelineDescriptions(result.getPipelineDescriptionList());
         });
@@ -71,34 +71,17 @@ public final class DataPipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipelines.getLatest",
-            path = "{region}/pipelines/PIPELINE_ID/latest"
+            name = "pipelines.get",
+            path = "{region}/pipelines/PIPELINE_ID"
     )
-    public PipelineDefinitionResponse pipelinesGetLatest(
+    public PipelineDefinitionResponse pipelinesGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("pipelineId") final String pipelineId
+            @Named("pipelineId") final String pipelineId,
+            @Named("version") @Nullable final String version
     ) throws AmazonUnparsedException {
         return DataPipelineCaller.get(GetPipelineDefinitionRequest.class, PipelineDefinitionResponse.class, credentials, region).execute((client, request, response) -> {
-            final GetPipelineDefinitionResult result = client.getPipelineDefinition(request.withPipelineId(pipelineId));
-            response.setPipelineObjects(result.getPipelineObjects());
-            response.setParameterObjects(result.getParameterObjects());
-            response.setParameterValues(result.getParameterValues());
-        });
-    }
-
-    @ApiMethod(
-            httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipelines.getActive",
-            path = "{region}/pipelines/PIPELINE_ID/active"
-    )
-    public PipelineDefinitionResponse pipelinesGetActive(
-            @Named("credentials") final String credentials,
-            @Named("region") final String region,
-            @Named("pipelineId") final String pipelineId
-    ) throws AmazonUnparsedException {
-        return DataPipelineCaller.get(GetPipelineDefinitionRequest.class, PipelineDefinitionResponse.class, credentials, region).execute((client, request, response) -> {
-            final GetPipelineDefinitionResult result = client.getPipelineDefinition(request.withPipelineId(pipelineId).withVersion("active"));
+            final GetPipelineDefinitionResult result = client.getPipelineDefinition(request.withPipelineId(pipelineId).withVersion(version));
             response.setPipelineObjects(result.getPipelineObjects());
             response.setParameterObjects(result.getParameterObjects());
             response.setParameterValues(result.getParameterValues());
