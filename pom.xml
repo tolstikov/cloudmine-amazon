@@ -247,7 +247,17 @@
             <artifactId>aws-java-sdk-codedeploy</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-datapipeline</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-elastictranscoder</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -434,6 +444,8 @@
                         <param>com.cloudaware.cloudmine.amazon.kinesisstreams.KinesisStreamsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.kinesisfirehose.KinesisFirehoseApi</param>
                         <param>com.cloudaware.cloudmine.amazon.kinesisanalytics.KinesisAnalyticsApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.datapipeline.DataPipelineApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.elastictranscoder.ElasticTranscoderApi</param>
                     </apis>
                 </configuration>
                 <executions>

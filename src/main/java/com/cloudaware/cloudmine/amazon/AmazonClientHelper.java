@@ -30,6 +30,8 @@ import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
 import com.amazonaws.services.config.AmazonConfigClient;
+import com.amazonaws.services.datapipeline.DataPipeline;
+import com.amazonaws.services.datapipeline.DataPipelineClient;
 import com.amazonaws.services.directconnect.AmazonDirectConnect;
 import com.amazonaws.services.directconnect.AmazonDirectConnectClient;
 import com.amazonaws.services.directory.AWSDirectoryService;
@@ -52,6 +54,8 @@ import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduce;
 import com.amazonaws.services.elasticmapreduce.AmazonElasticMapReduceClient;
 import com.amazonaws.services.elasticsearch.AWSElasticsearch;
 import com.amazonaws.services.elasticsearch.AWSElasticsearchClient;
+import com.amazonaws.services.elastictranscoder.AmazonElasticTranscoder;
+import com.amazonaws.services.elastictranscoder.AmazonElasticTranscoderClient;
 import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
@@ -689,6 +693,28 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonCodeDeploy> getCodeDeploy(final String region) {
         checkRegion(region);
         final AmazonCodeDeploy client = AmazonCodeDeployClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<DataPipeline> getDataPipeline(final String region) {
+        checkRegion(region);
+        final DataPipeline client = DataPipelineClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonElasticTranscoder> getElasticTranscoder(final String region) {
+        checkRegion(region);
+        final AmazonElasticTranscoder client = AmazonElasticTranscoderClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
