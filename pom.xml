@@ -257,7 +257,12 @@
             <artifactId>aws-java-sdk-elastictranscoder</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-iot</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -446,6 +451,7 @@
                         <param>com.cloudaware.cloudmine.amazon.kinesisanalytics.KinesisAnalyticsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.datapipeline.DataPipelineApi</param>
                         <param>com.cloudaware.cloudmine.amazon.elastictranscoder.ElasticTranscoderApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.iot.IotApi</param>
                     </apis>
                 </configuration>
                 <executions>
