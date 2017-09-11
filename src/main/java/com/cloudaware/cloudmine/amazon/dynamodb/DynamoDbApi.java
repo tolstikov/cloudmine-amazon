@@ -2,8 +2,12 @@ package com.cloudaware.cloudmine.amazon.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.model.DescribeTableRequest;
 import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
+import com.amazonaws.services.dynamodbv2.model.DescribeTimeToLiveRequest;
+import com.amazonaws.services.dynamodbv2.model.DescribeTimeToLiveResult;
 import com.amazonaws.services.dynamodbv2.model.ListTablesRequest;
 import com.amazonaws.services.dynamodbv2.model.ListTablesResult;
+import com.amazonaws.services.dynamodbv2.model.ListTagsOfResourceRequest;
+import com.amazonaws.services.dynamodbv2.model.ListTagsOfResourceResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -71,4 +75,41 @@ public final class DynamoDbApi {
             response.setTable(result.getTable());
         });
     }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "tables.getTtl",
+            path = "{region}/tables/{tableName}/ttl"
+    )
+    public TableTtlResponse tablesGetTtl(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("tableName") final String tableName
+    ) throws AmazonUnparsedException {
+        return DynamoDbCaller.get(DescribeTimeToLiveRequest.class, TableTtlResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeTimeToLiveResult result = client.describeTimeToLive(
+                    request.withTableName(tableName)
+            );
+            response.setTtl(result.getTimeToLiveDescription());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "tags.get",
+            path = "{region}/tags/ARN"
+    )
+    public TagsResponse tagsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page,
+            @Named("arn") final String arn
+    ) throws AmazonUnparsedException {
+        return DynamoDbCaller.get(ListTagsOfResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListTagsOfResourceResult result = client.listTagsOfResource(request.withNextToken(page).withResourceArn(arn));
+            response.setTags(result.getTags());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
 }
