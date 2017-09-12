@@ -262,6 +262,11 @@
             <artifactId>aws-java-sdk-dax</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-iot</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -453,6 +458,7 @@
                         <param>com.cloudaware.cloudmine.amazon.elastictranscoder.ElasticTranscoderApi</param>
                         <param>com.cloudaware.cloudmine.amazon.dynamodbstreams.DynamoDbStreamsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.dynamodbaccelerator.DynamoDbAcceleratorApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.iot.IotApi</param>
                     </apis>
                 </configuration>
                 <executions>
