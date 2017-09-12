@@ -32,12 +32,16 @@ import com.amazonaws.services.config.AmazonConfig;
 import com.amazonaws.services.config.AmazonConfigClient;
 import com.amazonaws.services.datapipeline.DataPipeline;
 import com.amazonaws.services.datapipeline.DataPipelineClient;
+import com.amazonaws.services.dax.AmazonDax;
+import com.amazonaws.services.dax.AmazonDaxClient;
 import com.amazonaws.services.directconnect.AmazonDirectConnect;
 import com.amazonaws.services.directconnect.AmazonDirectConnectClient;
 import com.amazonaws.services.directory.AWSDirectoryService;
 import com.amazonaws.services.directory.AWSDirectoryServiceClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBStreams;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBStreamsClient;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ecs.AmazonECS;
@@ -163,6 +167,10 @@ public final class AmazonClientHelper {
         }
         if ("firehose".equals(endpointPrefix) && ("ap-northeast-1".equals(region) || "eu-central-1".equals(region) || "us-east-2".equals(region))) {
             // These regions don't have "firehose" in available endpoints, but they have the service
+            return;
+        }
+        if ("dax".equals(endpointPrefix) && ("us-east-1".equals(region) || "us-west-1".equals(region) || "us-west-2".equals(region) || "eu-west-1".equals(region) || "ap-northeast-1".equals(region))) {
+            // These regions don't have "dax" in available endpoints, but they have the service
             return;
         }
         boolean found = false;
@@ -353,6 +361,28 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonDynamoDB> getDynamoDb(final String region) {
         checkRegion(region);
         final AmazonDynamoDB client = AmazonDynamoDBClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonDynamoDBStreams> getDynamoDbStreams(final String region) {
+        checkRegion(region);
+        final AmazonDynamoDBStreams client = AmazonDynamoDBStreamsClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonDax> getDynamoDbAccelerator(final String region) {
+        checkRegion(region);
+        final AmazonDax client = AmazonDaxClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
