@@ -66,10 +66,10 @@ public final class CodePipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipeline.get",
+            name = "pipelines.get",
             path = "{region}/pipelines/{pipelineName}"
     )
-    public PipelineResponse pipelineGet(
+    public PipelineResponse pipelinesGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("pipelineName") final String pipelineName,
@@ -109,10 +109,10 @@ public final class CodePipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipelines.pipelineExecution.get",
-            path = "{region}/pipelines/{pipelineName}/pipeline-execution/{pipelineExecutionId}"
+            name = "pipelines.pipelineExecutions.get",
+            path = "{region}/pipelines/{pipelineName}/pipeline-executions/{pipelineExecutionId}"
     )
-    public PipelineExecutionResponse pipelinesPipelineExecutionGet(
+    public PipelineExecutionResponse pipelinesPipelineExecutionsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("pipelineName") final String pipelineName,
@@ -152,10 +152,10 @@ public final class CodePipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "pipelines.pipelineState.get",
-            path = "{region}/pipelines/{pipelineName}/pipeline-state"
+            name = "pipelines.pipelineStates.get",
+            path = "{region}/pipelines/{pipelineName}/pipeline-states"
     )
-    public PipelineStateResponse pipelinesPipelineStateGet(
+    public PipelineStateResponse pipelinesPipelineStatesGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("pipelineName") final String pipelineName
@@ -228,10 +228,10 @@ public final class CodePipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "job.get",
+            name = "jobs.get",
             path = "{region}/jobs/{jobId}"
     )
-    public JobResponse jobGet(
+    public JobResponse jobsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("jobId") final String jobId
@@ -244,10 +244,10 @@ public final class CodePipelineApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "thirdPartyJob.get",
+            name = "thirdPartyJobs.get",
             path = "{region}/third-party-jobs/{jobId}"
     )
-    public ThirdPartyJobResponse thirdPartyJobGet(
+    public ThirdPartyJobResponse thirdPartyJobsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("jobId") final String jobId,
