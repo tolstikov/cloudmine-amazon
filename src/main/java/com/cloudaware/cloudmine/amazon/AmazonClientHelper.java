@@ -26,6 +26,8 @@ import com.amazonaws.services.codecommit.AWSCodeCommit;
 import com.amazonaws.services.codecommit.AWSCodeCommitClient;
 import com.amazonaws.services.codedeploy.AmazonCodeDeploy;
 import com.amazonaws.services.codedeploy.AmazonCodeDeployClient;
+import com.amazonaws.services.codepipeline.AWSCodePipeline;
+import com.amazonaws.services.codepipeline.AWSCodePipelineClient;
 import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
@@ -758,6 +760,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSIot> getIot(final String region) {
         checkRegion(region);
         final AWSIot client = AWSIotClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCodePipeline> getCodePipeline(final String region) {
+        checkRegion(region);
+        final AWSCodePipeline client = AWSCodePipelineClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
