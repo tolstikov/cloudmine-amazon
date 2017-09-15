@@ -267,6 +267,11 @@
             <artifactId>aws-java-sdk-iot</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-codepipeline</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -417,6 +422,7 @@
                         <param>com.cloudaware.cloudmine.amazon.codebuild.CodeBuildApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codecommit.CodeCommitApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codedeploy.CodeDeployApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.codepipeline.CodePipelineApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codestar.CodeStarApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directconnect.DirectConnectApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directoryservice.DirectoryServiceApi</param>
