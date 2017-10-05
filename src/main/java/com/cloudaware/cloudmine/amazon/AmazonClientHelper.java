@@ -26,6 +26,8 @@ import com.amazonaws.services.codecommit.AWSCodeCommit;
 import com.amazonaws.services.codecommit.AWSCodeCommitClient;
 import com.amazonaws.services.codedeploy.AmazonCodeDeploy;
 import com.amazonaws.services.codedeploy.AmazonCodeDeployClient;
+import com.amazonaws.services.codepipeline.AWSCodePipeline;
+import com.amazonaws.services.codepipeline.AWSCodePipelineClient;
 import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
@@ -44,6 +46,8 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBStreams;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBStreamsClient;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
+import com.amazonaws.services.ecr.AmazonECR;
+import com.amazonaws.services.ecr.AmazonECRClient;
 import com.amazonaws.services.ecs.AmazonECS;
 import com.amazonaws.services.ecs.AmazonECSClient;
 import com.amazonaws.services.elasticache.AmazonElastiCache;
@@ -64,6 +68,8 @@ import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
+import com.amazonaws.services.iot.AWSIot;
+import com.amazonaws.services.iot.AWSIotClient;
 import com.amazonaws.services.kinesis.AmazonKinesis;
 import com.amazonaws.services.kinesis.AmazonKinesisClient;
 import com.amazonaws.services.kinesisanalytics.AmazonKinesisAnalytics;
@@ -745,6 +751,39 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonElasticTranscoder> getElasticTranscoder(final String region) {
         checkRegion(region);
         final AmazonElasticTranscoder client = AmazonElasticTranscoderClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSIot> getIot(final String region) {
+        checkRegion(region);
+        final AWSIot client = AWSIotClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCodePipeline> getCodePipeline(final String region) {
+        checkRegion(region);
+        final AWSCodePipeline client = AWSCodePipelineClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonECR> getEcr(final String region) {
+        checkRegion(region);
+        final AmazonECR client = AmazonECRClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)

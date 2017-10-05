@@ -275,6 +275,9 @@ To build client library:
 
 # Changelog
 
+* 1.0.21 - ECR added
+* 1.0.20 - CodePipeline added
+* 1.0.19 - IoT added, DynamoDB updated
 * 1.0.18 - DataPipeline and ElasticTranscoder added
 * 1.0.17 - CodeDeploy added
 * 1.0.16 - WAF & Shield added

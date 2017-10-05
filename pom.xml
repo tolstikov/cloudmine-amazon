@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.18</version>
+    <version>1.0.21</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -15,7 +15,7 @@
         <appengine.app.version>${endpoints.service.version}</appengine.app.version>
         <endpoints.service.name>cloudmine-amazon.endpoints.${appengine.app.id}.cloud.goog</endpoints.service.name>
         <endpoints.service.version>1970-01-01r0</endpoints.service.version>
-        <aws-java-sdk.version>1.11.188</aws-java-sdk.version>
+        <aws-java-sdk.version>1.11.203</aws-java-sdk.version>
         <google-api-client.version>1.22.0</google-api-client.version>
         <endpoints-framework.version>2.0.7</endpoints-framework.version>
         <endpoints-management.version>1.0.2</endpoints-management.version>
@@ -262,6 +262,21 @@
             <artifactId>aws-java-sdk-dax</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-iot</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-codepipeline</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-ecr</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -412,6 +427,7 @@
                         <param>com.cloudaware.cloudmine.amazon.codebuild.CodeBuildApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codecommit.CodeCommitApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codedeploy.CodeDeployApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.codepipeline.CodePipelineApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codestar.CodeStarApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directconnect.DirectConnectApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directoryservice.DirectoryServiceApi</param>
@@ -453,6 +469,8 @@
                         <param>com.cloudaware.cloudmine.amazon.elastictranscoder.ElasticTranscoderApi</param>
                         <param>com.cloudaware.cloudmine.amazon.dynamodbstreams.DynamoDbStreamsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.dynamodbaccelerator.DynamoDbAcceleratorApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.iot.IotApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.ecr.EcrApi</param>
                     </apis>
                 </configuration>
                 <executions>
