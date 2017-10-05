@@ -19,6 +19,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -114,7 +115,7 @@ public final class EcrApi {
             name = "repositories.images.list",
             path = "{region}/repositories/{repositoryName}/images"
     )
-    public ImagesResponse repositoriesBatchImagesList(
+    public ImagesResponse repositoriesImagesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("repositoryName") final String repositoryName,
@@ -124,7 +125,10 @@ public final class EcrApi {
         imageIdentifiers.forEach((id) -> {
             final ImageIdentifier identifier = new ImageIdentifier();
             identifier.setImageDigest(id.substring(0, id.lastIndexOf(":")));
-            identifier.setImageTag(id.substring(id.lastIndexOf(":") + 1));
+            final String tag = id.substring(id.lastIndexOf(":") + 1);
+            if (!Strings.isNullOrEmpty(tag)) {
+                identifier.setImageTag(tag);
+            }
             identifiers.add(identifier);
         });
         return EcrCaller.get(BatchGetImageRequest.class, ImagesResponse.class, credentials, region).execute((client, request, response) -> {
