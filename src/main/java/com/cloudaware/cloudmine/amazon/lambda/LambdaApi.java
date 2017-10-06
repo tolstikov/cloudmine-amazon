@@ -10,6 +10,8 @@ import com.amazonaws.services.lambda.model.ListEventSourceMappingsRequest;
 import com.amazonaws.services.lambda.model.ListEventSourceMappingsResult;
 import com.amazonaws.services.lambda.model.ListFunctionsRequest;
 import com.amazonaws.services.lambda.model.ListFunctionsResult;
+import com.amazonaws.services.lambda.model.ListTagsRequest;
+import com.amazonaws.services.lambda.model.ListTagsResult;
 import com.amazonaws.services.lambda.model.ListVersionsByFunctionRequest;
 import com.amazonaws.services.lambda.model.ListVersionsByFunctionResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
@@ -157,6 +159,25 @@ public final class LambdaApi {
             );
             response.setEventSourceMappings(result.getEventSourceMappings());
             response.setNextPage(result.getNextMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "tags.get",
+            path = "{region}/tags/ARN"
+    )
+    public TagsResponse tagsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("arn") final String arn
+    ) throws AmazonUnparsedException {
+        return LambdaCaller.get(ListTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListTagsResult result = client.listTags(
+                    request
+                            .withResource(arn)
+            );
+            response.setTags(result.getTags());
         });
     }
 }
