@@ -1,10 +1,12 @@
 package com.cloudaware.cloudmine.amazon.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AccessControlList;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.BucketPolicy;
 import com.amazonaws.services.s3.model.BucketTaggingConfiguration;
 import com.amazonaws.services.s3.model.GetBucketAccelerateConfigurationRequest;
+import com.amazonaws.services.s3.model.GetBucketAclRequest;
 import com.amazonaws.services.s3.model.GetBucketVersioningConfigurationRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.SetBucketTaggingConfigurationRequest;
@@ -132,6 +134,25 @@ public final class S3Api {
             return new AccelerateConfigurationResponse(configuration);
         } catch (Throwable t) {
             return new AccelerateConfigurationResponse(AmazonResponse.parse(t, "s3:GetBucketAccelerateConfiguration"));
+        }
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "buckets.acl.get",
+            path = "{region}/bucket/{bucketName}/acl"
+    )
+    public AclResponse bucketsAclGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("bucketName") final String bucketName
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
+            final AccessControlList acl = clientWrapper.getClient()
+                    .getBucketAcl(new GetBucketAclRequest(bucketName));
+            return new AclResponse(acl);
+        } catch (Throwable t) {
+            return new AclResponse(AmazonResponse.parse(t, "s3:GetBucketAclRequest"));
         }
     }
 
