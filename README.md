@@ -275,6 +275,8 @@ To build client library:
 
 # Changelog
 
+* 1.0.24 - S3 Bucket ACLs added
+* 1.0.23 - Lambda tags added
 * 1.0.22 - ECR BatchGetImages (repositories.images.list) added
 * 1.0.21 - ECR added
 * 1.0.20 - CodePipeline added

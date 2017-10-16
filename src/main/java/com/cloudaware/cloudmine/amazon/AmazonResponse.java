@@ -132,6 +132,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("ValidationError".equals(errorCode) && errorMessage.startsWith("Stack with id") && errorMessage.contains("does not exist"))
                     || ("ValidationError".equals(errorCode) && errorMessage.startsWith("Group") && errorMessage.contains("not found"))
                     || "PipelineDeletedException".equals(errorCode)
+                    || "PipelineNotFoundException".equals(errorCode)
+                    || "ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state")
                     ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
