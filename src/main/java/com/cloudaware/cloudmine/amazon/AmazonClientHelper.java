@@ -106,8 +106,6 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
-import com.amazonaws.services.stepfunctions.AWSStepFunctions;
-import com.amazonaws.services.stepfunctions.AWSStepFunctionsClient;
 import com.amazonaws.services.storagegateway.AWSStorageGateway;
 import com.amazonaws.services.storagegateway.AWSStorageGatewayClient;
 import com.amazonaws.services.support.AWSSupport;
@@ -803,17 +801,6 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonAthena> getAthena(final String region) {
         checkRegion(region);
         final AmazonAthena client = AmazonAthenaClient.builder()
-                .withClientConfiguration(config)
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(region)
-                .build();
-        checkEndpoint(region, (AmazonWebServiceClient) client);
-        return new ClientWrapper<>(client);
-    }
-
-    public ClientWrapper<AWSStepFunctions> getStepFunctions(final String region) {
-        checkRegion(region);
-        final AWSStepFunctions client = AWSStepFunctionsClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
