@@ -68,6 +68,8 @@ import com.amazonaws.services.elastictranscoder.AmazonElasticTranscoder;
 import com.amazonaws.services.elastictranscoder.AmazonElasticTranscoderClient;
 import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
+import com.amazonaws.services.glue.AWSGlue;
+import com.amazonaws.services.glue.AWSGlueClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.iot.AWSIot;
@@ -814,6 +816,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSStepFunctions> getStepFunctions(final String region) {
         checkRegion(region);
         final AWSStepFunctions client = AWSStepFunctionsClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSGlue> getGlue(final String region) {
+        checkRegion(region);
+        final AWSGlue client = AWSGlueClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
