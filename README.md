@@ -275,6 +275,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.27 - Glue added
 * 1.0.26 - StepFunctions added
 * 1.0.25 - Athena added
 * 1.0.24 - S3 Bucket ACLs added

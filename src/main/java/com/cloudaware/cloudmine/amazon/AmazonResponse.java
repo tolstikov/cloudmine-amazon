@@ -55,6 +55,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "InvalidClientTokenId".equals(errorCode)
                     || "InvalidAccessKeyId".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Access Denied")) // Strange exception from Beastalk which contains another exception in message
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("is not authorized to perform")) // another Beanstalk exception
                     ) {
                 return new AmazonException(AmazonException.Category.NO_ACCESS, action, ex);
             }
