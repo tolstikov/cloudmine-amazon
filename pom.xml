@@ -287,6 +287,11 @@
             <artifactId>aws-java-sdk-stepfunctions</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-glue</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -453,6 +458,7 @@
                         <param>com.cloudaware.cloudmine.amazon.elbv2.ElbV2Api</param>
                         <param>com.cloudaware.cloudmine.amazon.emr.EmrApi</param>
                         <param>com.cloudaware.cloudmine.amazon.glacier.GlacierApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.glue.GlueApi</param>
                         <param>com.cloudaware.cloudmine.amazon.iam.IamApi</param>
                         <param>com.cloudaware.cloudmine.amazon.kms.KmsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.lambda.LambdaApi</param>
