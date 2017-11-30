@@ -8,6 +8,8 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.retry.PredefinedRetryPolicies;
+import com.amazonaws.services.athena.AmazonAthena;
+import com.amazonaws.services.athena.AmazonAthenaClient;
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
 import com.amazonaws.services.cloudformation.AmazonCloudFormation;
@@ -66,6 +68,8 @@ import com.amazonaws.services.elastictranscoder.AmazonElasticTranscoder;
 import com.amazonaws.services.elastictranscoder.AmazonElasticTranscoderClient;
 import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
+import com.amazonaws.services.glue.AWSGlue;
+import com.amazonaws.services.glue.AWSGlueClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.iot.AWSIot;
@@ -104,6 +108,8 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
+import com.amazonaws.services.stepfunctions.AWSStepFunctions;
+import com.amazonaws.services.stepfunctions.AWSStepFunctionsClient;
 import com.amazonaws.services.storagegateway.AWSStorageGateway;
 import com.amazonaws.services.storagegateway.AWSStorageGatewayClient;
 import com.amazonaws.services.support.AWSSupport;
@@ -175,6 +181,10 @@ public final class AmazonClientHelper {
         }
         if ("dax".equals(endpointPrefix) && ("us-east-1".equals(region) || "us-west-1".equals(region) || "us-west-2".equals(region) || "eu-west-1".equals(region) || "ap-northeast-1".equals(region))) {
             // These regions don't have "dax" in available endpoints, but they have the service
+            return;
+        }
+        if ("athena".equals(endpointPrefix) && "ap-southeast-2".equals(region)) {
+            // These regions don't have "athena" in available endpoints, but they have the service
             return;
         }
         boolean found = false;
@@ -784,6 +794,39 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonECR> getEcr(final String region) {
         checkRegion(region);
         final AmazonECR client = AmazonECRClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonAthena> getAthena(final String region) {
+        checkRegion(region);
+        final AmazonAthena client = AmazonAthenaClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSStepFunctions> getStepFunctions(final String region) {
+        checkRegion(region);
+        final AWSStepFunctions client = AWSStepFunctionsClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSGlue> getGlue(final String region) {
+        checkRegion(region);
+        final AWSGlue client = AWSGlueClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
