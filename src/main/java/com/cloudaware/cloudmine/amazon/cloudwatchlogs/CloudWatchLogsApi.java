@@ -21,7 +21,7 @@ import com.google.api.server.spi.config.Nullable;
 
 @Api(
         name = "cloudwatchlogs",
-        canonicalName = "CloudWatch Logs",
+        canonicalName = "CloudWatchLogs",
         title = "Amazon CloudWatch Logs",
         description = "Monitor, store, and access your log files",
         namespace = @ApiNamespace(
@@ -60,7 +60,7 @@ public final class CloudWatchLogsApi {
             name = "logGroups.logStreams.list",
             path = "{region}/log-groups/{logGroupName}/log-streams"
     )
-    public LogStreamsResponse logGroupLogStreamsList(
+    public LogStreamsResponse logGroupsLogStreamsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("logGroupName") final String logGroupName,
@@ -80,7 +80,7 @@ public final class CloudWatchLogsApi {
             name = "logGroups.tags.list",
             path = "{region}/log-groups/{logGroupName}/tags"
     )
-    public TagsResponse logGroupTagsList(
+    public TagsResponse logGroupsTagsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("logGroupName") final String logGroupName,
@@ -91,6 +91,7 @@ public final class CloudWatchLogsApi {
                     request.withLogGroupName(logGroupName)
             );
             response.setTags(result.getTags());
+            response.setNextPage(page);
         });
     }
 
@@ -99,7 +100,7 @@ public final class CloudWatchLogsApi {
             name = "logGroups.subscriptionFilters.list",
             path = "{region}/log-groups/{logGroupName}/subscription-filters"
     )
-    public SubscriptionFiltersResponse logGroupSubscriptionFiltersList(
+    public SubscriptionFiltersResponse logGroupsSubscriptionFiltersList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("logGroupName") final String logGroupName,
