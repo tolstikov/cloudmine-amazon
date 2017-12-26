@@ -14,6 +14,8 @@ import com.amazonaws.services.athena.AmazonAthena;
 import com.amazonaws.services.athena.AmazonAthenaClient;
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
+import com.amazonaws.services.batch.AWSBatch;
+import com.amazonaws.services.batch.AWSBatchClient;
 import com.amazonaws.services.cloudformation.AmazonCloudFormation;
 import com.amazonaws.services.cloudformation.AmazonCloudFormationClient;
 import com.amazonaws.services.cloudfront.AmazonCloudFront;
@@ -866,6 +868,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonLightsail> getLightsail(final String region) {
         checkRegion(region);
         final AmazonLightsail client = AmazonLightsailClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSBatch> getBatch(final String region) {
+        checkRegion(region);
+        final AWSBatch client = AWSBatchClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
