@@ -2,6 +2,7 @@ package com.cloudaware.cloudmine.amazon.emr;
 
 import com.amazonaws.services.elasticmapreduce.model.AddJobFlowStepsRequest;
 import com.amazonaws.services.elasticmapreduce.model.AddJobFlowStepsResult;
+import com.amazonaws.services.elasticmapreduce.model.AddTagsRequest;
 import com.amazonaws.services.elasticmapreduce.model.DescribeClusterRequest;
 import com.amazonaws.services.elasticmapreduce.model.DescribeClusterResult;
 import com.amazonaws.services.elasticmapreduce.model.DescribeStepRequest;
@@ -18,6 +19,7 @@ import com.amazonaws.services.elasticmapreduce.model.ListInstancesRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListInstancesResult;
 import com.amazonaws.services.elasticmapreduce.model.ListStepsRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListStepsResult;
+import com.amazonaws.services.elasticmapreduce.model.RemoveTagsRequest;
 import com.amazonaws.services.elasticmapreduce.model.RunJobFlowRequest;
 import com.amazonaws.services.elasticmapreduce.model.RunJobFlowResult;
 import com.amazonaws.services.elasticmapreduce.model.TerminateJobFlowsRequest;
@@ -216,6 +218,38 @@ public final class EmrApi {
                             .withStepId(stepId)
             );
             response.setStep(result.getStep());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "tags.add",
+            path = "{region}/{resourceId}/tags"
+    )
+    public AmazonResponse tagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceId") final String resourceId,
+            final TagsRequest request
+    ) throws AmazonUnparsedException {
+        return EmrCaller.get(AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTags(r.withResourceId(resourceId).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "tags.remove",
+            path = "{region}/{resourceId}/tags"
+    )
+    public AmazonResponse tagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceId") final String resourceId,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return EmrCaller.get(RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTags(r.withResourceId(resourceId).withTagKeys(tagKeys));
         });
     }
 

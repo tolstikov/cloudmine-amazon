@@ -1,5 +1,6 @@
 package com.cloudaware.cloudmine.amazon.directoryservice;
 
+import com.amazonaws.services.directory.model.AddTagsToResourceRequest;
 import com.amazonaws.services.directory.model.DescribeConditionalForwardersRequest;
 import com.amazonaws.services.directory.model.DescribeConditionalForwardersResult;
 import com.amazonaws.services.directory.model.DescribeDirectoriesRequest;
@@ -20,6 +21,8 @@ import com.amazonaws.services.directory.model.ListSchemaExtensionsRequest;
 import com.amazonaws.services.directory.model.ListSchemaExtensionsResult;
 import com.amazonaws.services.directory.model.ListTagsForResourceRequest;
 import com.amazonaws.services.directory.model.ListTagsForResourceResult;
+import com.amazonaws.services.directory.model.RemoveTagsFromResourceRequest;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -238,23 +241,55 @@ public final class DirectoryServiceApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "directories.tags.get",
-            path = "{region}/directories/{directoryId}/tags"
+            name = "resources.tags.list",
+            path = "{region}/resources/{resourceId}/tags"
     )
-    public TagsResponse directoriesTagsGet(
+    public TagsResponse resourcesTagsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("directoryId") final String directoryId,
+            @Named("resourceId") final String resourceId,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return DirectoryServiceCaller.get(ListTagsForResourceRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTagsForResourceResult result = client.listTagsForResource(
                     request
-                            .withResourceId(directoryId)
+                            .withResourceId(resourceId)
                             .withNextToken(page)
             );
             response.setTags(result.getTags());
             response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "resources.tags.add",
+            path = "{region}/resources/{resourceId}/tags"
+    )
+    public AmazonResponse resourcesTagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceId") final String resourceId,
+            final AddTagsRequest request
+    ) throws AmazonUnparsedException {
+        return DirectoryServiceCaller.get(AddTagsToResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTagsToResource(r.withResourceId(resourceId).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "resources.tags.remove",
+            path = "{region}/resources/{resourceId}/tags"
+    )
+    public AmazonResponse resourcesTagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceId") final String resourceId,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return DirectoryServiceCaller.get(RemoveTagsFromResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTagsFromResource(r.withResourceId(resourceId).withTagKeys(tagKeys));
         });
     }
 }

@@ -1,5 +1,7 @@
 package com.cloudaware.cloudmine.amazon.efs;
 
+import com.amazonaws.services.elasticfilesystem.model.CreateTagsRequest;
+import com.amazonaws.services.elasticfilesystem.model.DeleteTagsRequest;
 import com.amazonaws.services.elasticfilesystem.model.DescribeFileSystemsRequest;
 import com.amazonaws.services.elasticfilesystem.model.DescribeFileSystemsResult;
 import com.amazonaws.services.elasticfilesystem.model.DescribeMountTargetSecurityGroupsRequest;
@@ -8,6 +10,7 @@ import com.amazonaws.services.elasticfilesystem.model.DescribeMountTargetsReques
 import com.amazonaws.services.elasticfilesystem.model.DescribeMountTargetsResult;
 import com.amazonaws.services.elasticfilesystem.model.DescribeTagsRequest;
 import com.amazonaws.services.elasticfilesystem.model.DescribeTagsResult;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -16,6 +19,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+
+import java.util.List;
 
 @Api(
         name = "efs",
@@ -106,7 +111,7 @@ public final class EfsApi {
             name = "fileSystems.tags.list",
             path = "{region}/file-systems/{fileSystemId}/tags"
     )
-    public TagsResponse tagsList(
+    public TagsResponse fileSystemTagsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("fileSystemId") final String fileSystemId,
@@ -120,6 +125,38 @@ public final class EfsApi {
             );
             response.setTags(result.getTags());
             response.setNextPage(result.getNextMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "fileSystems.tags.create",
+            path = "{region}/file-systems/{fileSystemId}/tags"
+    )
+    public AmazonResponse fileSystemagsCreate(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("fileSystemId") final String fileSystemId,
+            final TagsRequest request
+    ) throws AmazonUnparsedException {
+        return EfsCaller.get(CreateTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.createTags(r.withFileSystemId(fileSystemId).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "fileSystems.tags.delete",
+            path = "{region}/file-systems/{fileSystemId}/tags"
+    )
+    public AmazonResponse fileSystemTagsDelete(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("fileSystemId") final String fileSystemId,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return EfsCaller.get(DeleteTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.deleteTags(r.withFileSystemId(fileSystemId).withTagKeys(tagKeys));
         });
     }
 }

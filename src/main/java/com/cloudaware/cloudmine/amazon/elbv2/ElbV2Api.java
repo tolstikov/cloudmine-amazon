@@ -18,6 +18,7 @@ import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetGroupsR
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetGroupsResult;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetHealthRequest;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetHealthResult;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -228,6 +229,36 @@ public final class ElbV2Api {
                             .withResourceArns(resourceArns)
             );
             response.setTags(result.getTagDescriptions());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "tags.add",
+            path = "{region}/tags/add"
+    )
+    public AmazonResponse tagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            final AddTagsRequest request
+    ) throws AmazonUnparsedException {
+        return ElbV2Caller.get(com.amazonaws.services.elasticloadbalancingv2.model.AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTags(r.withResourceArns(request.getArns()).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "tags.remove",
+            path = "{region}/tags/remove"
+    )
+    public AmazonResponse tagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            final RemoveTagsRequest request
+    ) throws AmazonUnparsedException {
+        return ElbV2Caller.get(com.amazonaws.services.elasticloadbalancingv2.model.RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTags(r.withResourceArns(request.getArns()).withTagKeys(request.getTagKeys()));
         });
     }
 }
