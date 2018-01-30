@@ -92,6 +92,8 @@ import com.amazonaws.services.lightsail.AmazonLightsail;
 import com.amazonaws.services.lightsail.AmazonLightsailClient;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.AWSLogsClient;
+import com.amazonaws.services.opsworks.AWSOpsWorks;
+import com.amazonaws.services.opsworks.AWSOpsWorksClient;
 import com.amazonaws.services.organizations.AWSOrganizations;
 import com.amazonaws.services.organizations.AWSOrganizationsClient;
 import com.amazonaws.services.rds.AmazonRDS;
@@ -879,6 +881,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSBatch> getBatch(final String region) {
         checkRegion(region);
         final AWSBatch client = AWSBatchClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSOpsWorks> getOpsWorks(final String region) {
+        checkRegion(region);
+        final AWSOpsWorks client = AWSOpsWorksClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
