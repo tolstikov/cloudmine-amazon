@@ -312,6 +312,11 @@
             <artifactId>aws-java-sdk-batch</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-opsworks</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -487,6 +492,7 @@
                         <param>com.cloudaware.cloudmine.amazon.lambda.LambdaApi</param>
                         <param>com.cloudaware.cloudmine.amazon.lightsail.LightsailApi</param>
                         <param>com.cloudaware.cloudmine.amazon.organizations.OrganizationsApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.opsworks.OpsWorksApi</param>
                         <param>com.cloudaware.cloudmine.amazon.rds.RdsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.redshift.RedshiftApi</param>
                         <param>com.cloudaware.cloudmine.amazon.route53.Route53Api</param>
