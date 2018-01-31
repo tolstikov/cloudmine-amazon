@@ -275,6 +275,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.33 - OpsWorks added
 * 1.0.32 - SQS and CloudWatch Logs tags
 * 1.0.31 - Tag modification refactoring
 * 1.0.30 - Batch added
