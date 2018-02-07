@@ -173,11 +173,13 @@ public final class IotApi {
     public PrincipalsResponse policiesPrincipalsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("policyName") final String policyName
+            @Named("policyName") final String policyName,
+            @Named("page") final String page
     ) throws AmazonUnparsedException {
         return IotCaller.get(ListPolicyPrincipalsRequest.class, PrincipalsResponse.class, credentials, region).execute((client, request, response) -> {
-            final ListPolicyPrincipalsResult result = client.listPolicyPrincipals(request.withPolicyName(policyName));
+            final ListPolicyPrincipalsResult result = client.listPolicyPrincipals(request.withPolicyName(policyName).withMarker(page));
             response.setPrincipals(result.getPrincipals());
+            response.setNextPage(result.getNextMarker());
         });
     }
 
