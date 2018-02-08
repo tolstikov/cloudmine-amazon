@@ -124,11 +124,13 @@ public final class ElasticBeanstalkApi {
     )
     public EnvironmentsResponse environmentsList(
             @Named("credentials") final String credentials,
-            @Named("region") final String region
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return ElasticBeanstalkCaller.get(DescribeEnvironmentsRequest.class, EnvironmentsResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeEnvironmentsResult result = client.describeEnvironments(request);
+            final DescribeEnvironmentsResult result = client.describeEnvironments(request).withNextToken(page);
             response.setEnvironments(result.getEnvironments());
+            response.setNextPage(result.getNextToken());
         });
     }
 
