@@ -165,6 +165,7 @@ public final class EmrApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("clusterId") final String clusterId,
+            @Named("instanceState") @Nullable final List<String> instanceStates,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return EmrCaller.get(ListInstancesRequest.class, InstancesResponse.class, credentials, region).execute((client, request, response) -> {
@@ -172,6 +173,7 @@ public final class EmrApi {
                     request
                             .withClusterId(clusterId)
                             .withMarker(page)
+                            .withInstanceStates(instanceStates)
             );
             response.setInstances(result.getInstances());
             response.setNextPage(result.getMarker());
