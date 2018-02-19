@@ -74,6 +74,8 @@ import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
+import com.amazonaws.services.guardduty.AmazonGuardDuty;
+import com.amazonaws.services.guardduty.AmazonGuardDutyClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.iot.AWSIot;
@@ -195,6 +197,25 @@ public final class AmazonClientHelper {
         }
         if ("athena".equals(endpointPrefix) && "ap-southeast-2".equals(region)) {
             // These regions don't have "athena" in available endpoints, but they have the service
+            return;
+        }
+        if ("guardduty".equals(endpointPrefix)
+                && "ap-south-1".equals(region)
+                || "ap-northeast-2".equals(region)
+                || "ap-southeast-1".equals(region)
+                || "ap-southeast-2".equals(region)
+                || "ap-northeast-1".equals(region)
+                || "ca-central-1".equals(region)
+                || "eu-central-1".equals(region)
+                || "eu-west-1".equals(region)
+                || "eu-west-2".equals(region)
+                || "us-east-1".equals(region)
+                || "us-east-2".equals(region)
+                || "us-west-1".equals(region)
+                || "us-west-2".equals(region)
+                || "sa-east-1".equals(region)
+                ) {
+            // These regions don't have "guardduty" in available endpoints, but they have the service
             return;
         }
         boolean found = false;
@@ -892,6 +913,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSOpsWorks> getOpsWorks(final String region) {
         checkRegion(region);
         final AWSOpsWorks client = AWSOpsWorksClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonGuardDuty> getGuardDuty(final String region) {
+        checkRegion(region);
+        final AmazonGuardDuty client = AmazonGuardDutyClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
