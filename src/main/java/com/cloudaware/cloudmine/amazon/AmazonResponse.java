@@ -200,6 +200,6 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
     }
 
     public final void setNextPage(final String nextPage) {
-        this.nextPage = nextPage;
+        this.nextPage = (nextPage != null && !nextPage.isEmpty()) ? nextPage : null;
     }
 }
