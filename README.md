@@ -275,6 +275,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.36 - S3 Server Side Encryption added
 * 1.0.35 - GuardDuty added
 * 1.0.34 - instanceState filter fro EMR ListInstances
 * 1.0.33 - OpsWorks added
