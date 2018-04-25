@@ -1,5 +1,7 @@
 package com.cloudaware.cloudmine.amazon.elb;
 
+import com.amazonaws.services.elasticloadbalancing.model.DescribeAccountLimitsRequest;
+import com.amazonaws.services.elasticloadbalancing.model.DescribeAccountLimitsResult;
 import com.amazonaws.services.elasticloadbalancing.model.DescribeInstanceHealthRequest;
 import com.amazonaws.services.elasticloadbalancing.model.DescribeInstanceHealthResult;
 import com.amazonaws.services.elasticloadbalancing.model.DescribeLoadBalancerAttributesRequest;
@@ -111,6 +113,23 @@ public final class ElbApi {
                             .withLoadBalancerName(loadBalancerName)
             );
             response.setAttributes(result.getLoadBalancerAttributes());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountLimits.list",
+            path = "{region}/account-limits"
+    )
+    public AccountLimitsResponse accountLimitsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return ElbCaller.get(DescribeAccountLimitsRequest.class, AccountLimitsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeAccountLimitsResult result = client.describeAccountLimits(request.withMarker(page));
+            response.setLimits(result.getLimits());
+            response.setNextPage(result.getNextMarker());
         });
     }
 
