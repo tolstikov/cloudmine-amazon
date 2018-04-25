@@ -1,5 +1,7 @@
 package com.cloudaware.cloudmine.amazon.elbv2;
 
+import com.amazonaws.services.elasticloadbalancingv2.model.DescribeAccountLimitsRequest;
+import com.amazonaws.services.elasticloadbalancingv2.model.DescribeAccountLimitsResult;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeListenersRequest;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeListenersResult;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeLoadBalancerAttributesRequest;
@@ -210,6 +212,23 @@ public final class ElbV2Api {
                             .withTargetGroupArn(targetGroupArn)
             );
             response.setTargetStates(result.getTargetHealthDescriptions());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountLimits.list",
+            path = "{region}/account-limits"
+    )
+    public AccountLimitsResponse accountLimitsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return ElbV2Caller.get(DescribeAccountLimitsRequest.class, AccountLimitsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeAccountLimitsResult result = client.describeAccountLimits(request.withMarker(page));
+            response.setLimits(result.getLimits());
+            response.setNextPage(result.getNextMarker());
         });
     }
 
