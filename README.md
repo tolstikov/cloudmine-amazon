@@ -1,3 +1,4 @@
+[![Build Status](https://jenkins.cloudaware.com/buildStatus/icon?style=plastic&job=cloudmine-amazon%20deploy)](https://jenkins.cloudaware.com/job/cloudmine-amazon%20deploy)
 # About
 
 This project aims to solve following problems for AWS API Users:
