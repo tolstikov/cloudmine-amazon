@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.38 - VPC actualized 
 * 1.0.37 - Cost Explorer added
 * 1.0.36 - S3 Server Side Encryption added
 * 1.0.35 - GuardDuty added
