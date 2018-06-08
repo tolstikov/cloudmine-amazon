@@ -92,6 +92,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Starting August 1 2017, you won't be able to view or manage (except terminate) "
                     + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
+                    || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
                     ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
@@ -139,6 +140,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state")
                     || "ExecutionDoesNotExist".equals(errorCode)
                     || "DeploymentDoesNotExistException".equals(errorCode)
+                    || "InvalidVpcID.NotFound".equals(errorCode)
                     ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
