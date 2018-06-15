@@ -4,14 +4,22 @@ import com.amazonaws.services.redshift.model.CreateTagsRequest;
 import com.amazonaws.services.redshift.model.DeleteTagsRequest;
 import com.amazonaws.services.redshift.model.DescribeClusterParameterGroupsRequest;
 import com.amazonaws.services.redshift.model.DescribeClusterParameterGroupsResult;
+import com.amazonaws.services.redshift.model.DescribeClusterParametersRequest;
+import com.amazonaws.services.redshift.model.DescribeClusterParametersResult;
 import com.amazonaws.services.redshift.model.DescribeClusterSecurityGroupsRequest;
 import com.amazonaws.services.redshift.model.DescribeClusterSecurityGroupsResult;
 import com.amazonaws.services.redshift.model.DescribeClusterSnapshotsRequest;
 import com.amazonaws.services.redshift.model.DescribeClusterSnapshotsResult;
+import com.amazonaws.services.redshift.model.DescribeClusterSubnetGroupsRequest;
+import com.amazonaws.services.redshift.model.DescribeClusterSubnetGroupsResult;
 import com.amazonaws.services.redshift.model.DescribeClustersRequest;
 import com.amazonaws.services.redshift.model.DescribeClustersResult;
+import com.amazonaws.services.redshift.model.DescribeEventSubscriptionsRequest;
+import com.amazonaws.services.redshift.model.DescribeEventSubscriptionsResult;
 import com.amazonaws.services.redshift.model.DescribeEventsRequest;
 import com.amazonaws.services.redshift.model.DescribeEventsResult;
+import com.amazonaws.services.redshift.model.DescribeLoggingStatusRequest;
+import com.amazonaws.services.redshift.model.DescribeLoggingStatusResult;
 import com.amazonaws.services.redshift.model.DescribeReservedNodesRequest;
 import com.amazonaws.services.redshift.model.DescribeReservedNodesResult;
 import com.amazonaws.services.redshift.model.DescribeTagsRequest;
@@ -28,11 +36,6 @@ import com.google.api.server.spi.config.Nullable;
 
 import java.util.List;
 
-/**
- * User: urmuzov
- * Date: 03.23.17
- * Time: 16:28
- */
 @Api(
         name = "redshift",
         canonicalName = "Redshift",
@@ -64,6 +67,27 @@ public final class RedshiftApi {
             final DescribeClustersResult result = client.describeClusters(request.withMarker(page));
             response.setClusters(result.getClusters());
             response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "clusters.loggingStatus.get",
+            path = "{region}/clusters/{clusterIdentifier}/logging-status"
+    )
+    public LoggingStatusResponse clustersLoggingStatusGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("clusterIdentifier") final String clusterIdentifier
+    ) throws AmazonUnparsedException {
+        return RedshiftCaller.get(DescribeLoggingStatusRequest.class, LoggingStatusResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeLoggingStatusResult result = client.describeLoggingStatus(request.withClusterIdentifier(clusterIdentifier));
+            response.setBucketName(result.getBucketName());
+            response.setLastFailureMessage(result.getLastFailureMessage());
+            response.setLastFailureTime(result.getLastFailureTime());
+            response.setLastSuccessfulDeliveryTime(result.getLastSuccessfulDeliveryTime());
+            response.setLoggingEnabled(result.getLoggingEnabled());
+            response.setS3KeyPrefix(result.getS3KeyPrefix());
         });
     }
 
@@ -114,6 +138,23 @@ public final class RedshiftApi {
         return RedshiftCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withMarker(page));
             response.setEvents(result.getEvents());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "eventSubscriptions.list",
+            path = "{region}/event-subscriptions"
+    )
+    public EventSubscriptionsResponse eventSubscriptionsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RedshiftCaller.get(DescribeEventSubscriptionsRequest.class, EventSubscriptionsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeEventSubscriptionsResult result = client.describeEventSubscriptions(request.withMarker(page));
+            response.setSubscriptions(result.getEventSubscriptionsList());
             response.setNextPage(result.getMarker());
         });
     }
@@ -173,14 +214,32 @@ public final class RedshiftApi {
             name = "parameterGroups.list",
             path = "{region}/parameter-groups"
     )
-    public ParameterGroupResponse parameterGroupsList(
+    public ClusterParameterGroupsResponse parameterGroupsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
-        return RedshiftCaller.get(DescribeClusterParameterGroupsRequest.class, ParameterGroupResponse.class, credentials, region).execute((client, request, response) -> {
+        return RedshiftCaller.get(DescribeClusterParameterGroupsRequest.class, ClusterParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterParameterGroupsResult result = client.describeClusterParameterGroups(request.withMarker(page));
             response.setParameterGroups(result.getParameterGroups());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "parameterGroups.parameters.list",
+            path = "{region}/parameter-groups/{parameterGroupName}/parameters"
+    )
+    public ClusterParametersResponse parameterGroupsParametersList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("parameterGroupName") final String parameterGroupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RedshiftCaller.get(DescribeClusterParametersRequest.class, ClusterParametersResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeClusterParametersResult result = client.describeClusterParameters(request.withParameterGroupName(parameterGroupName).withMarker(page));
+            response.setParameters(result.getParameters());
             response.setNextPage(result.getMarker());
         });
     }
@@ -198,6 +257,23 @@ public final class RedshiftApi {
         return RedshiftCaller.get(DescribeClusterSecurityGroupsRequest.class, SecurityGroupResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeClusterSecurityGroupsResult result = client.describeClusterSecurityGroups(request.withMarker(page));
             response.setSecurityGroups(result.getClusterSecurityGroups());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "subnetGroups.list",
+            path = "{region}/subnet-groups"
+    )
+    public SubnetGroupsResponse subnetGroupsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RedshiftCaller.get(DescribeClusterSubnetGroupsRequest.class, SubnetGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeClusterSubnetGroupsResult result = client.describeClusterSubnetGroups(request.withMarker(page));
+            response.setGroups(result.getClusterSubnetGroups());
             response.setNextPage(result.getMarker());
         });
     }
