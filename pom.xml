@@ -507,6 +507,7 @@
                         <param>com.cloudaware.cloudmine.amazon.rds.RdsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.redshift.RedshiftApi</param>
                         <param>com.cloudaware.cloudmine.amazon.route53.Route53Api</param>
+                        <param>com.cloudaware.cloudmine.amazon.route53domains.Route53DomainsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.s3.S3Api</param>
                         <param>com.cloudaware.cloudmine.amazon.ses.SesApi</param>
                         <param>com.cloudaware.cloudmine.amazon.shield.ShieldApi</param>
