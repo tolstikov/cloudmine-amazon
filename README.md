@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.40 - Route53 actualized
 * 1.0.39 - Redshift actualized
 * 1.0.38 - VPC actualized 
 * 1.0.37 - Cost Explorer added

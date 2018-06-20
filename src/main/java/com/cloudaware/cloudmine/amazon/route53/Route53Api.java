@@ -1,13 +1,23 @@
 package com.cloudaware.cloudmine.amazon.route53;
 
 import com.amazonaws.services.route53.model.ChangeTagsForResourceRequest;
+import com.amazonaws.services.route53.model.GetTrafficPolicyRequest;
+import com.amazonaws.services.route53.model.GetTrafficPolicyResult;
 import com.amazonaws.services.route53.model.InvalidArgumentException;
+import com.amazonaws.services.route53.model.ListHealthChecksRequest;
+import com.amazonaws.services.route53.model.ListHealthChecksResult;
 import com.amazonaws.services.route53.model.ListHostedZonesRequest;
 import com.amazonaws.services.route53.model.ListHostedZonesResult;
 import com.amazonaws.services.route53.model.ListResourceRecordSetsRequest;
 import com.amazonaws.services.route53.model.ListResourceRecordSetsResult;
 import com.amazonaws.services.route53.model.ListTagsForResourceRequest;
 import com.amazonaws.services.route53.model.ListTagsForResourceResult;
+import com.amazonaws.services.route53.model.ListTrafficPoliciesRequest;
+import com.amazonaws.services.route53.model.ListTrafficPoliciesResult;
+import com.amazonaws.services.route53.model.ListTrafficPolicyInstancesRequest;
+import com.amazonaws.services.route53.model.ListTrafficPolicyInstancesResult;
+import com.amazonaws.services.route53.model.ListTrafficPolicyVersionsRequest;
+import com.amazonaws.services.route53.model.ListTrafficPolicyVersionsResult;
 import com.amazonaws.services.route53.model.Tag;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
@@ -139,6 +149,87 @@ public final class Route53Api {
             }
 
             client.changeTagsForResource(r);
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "healthChecks.list",
+            path = "health-checks"
+    )
+    public HealthChecksResponse healthChecksList(
+            @Named("credentials") final String credentials,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Route53Caller.get(ListHealthChecksRequest.class, HealthChecksResponse.class, credentials).execute((client, request, response) -> {
+            final ListHealthChecksResult result = client.listHealthChecks(request.withMarker(page));
+            response.setHealthChecks(result.getHealthChecks());
+            response.setNextPage(result.getNextMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "trafficPolicies.list",
+            path = "traffic-policies"
+    )
+    public TrafficPoliciesResponse trafficPoliciesList(
+            @Named("credentials") final String credentials,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Route53Caller.get(ListTrafficPoliciesRequest.class, TrafficPoliciesResponse.class, credentials).execute((client, request, response) -> {
+            final ListTrafficPoliciesResult result = client.listTrafficPolicies(request.withTrafficPolicyIdMarker(page));
+            response.setTrafficPolicies(result.getTrafficPolicySummaries());
+            response.setNextPage(result.getTrafficPolicyIdMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "trafficPolicies.get",
+            path = "traffic-policies/{policyId}/{version}"
+    )
+    public TrafficPolicyResponse trafficPoliciesGet(
+            @Named("credentials") final String credentials,
+            @Named("policyId") final String policyId,
+            @Named("version") final Integer version
+    ) throws AmazonUnparsedException {
+        return Route53Caller.get(GetTrafficPolicyRequest.class, TrafficPolicyResponse.class, credentials).execute((client, request, response) -> {
+            final GetTrafficPolicyResult result = client.getTrafficPolicy(request.withId(policyId).withVersion(version));
+            response.setPolicy(result.getTrafficPolicy());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "trafficPolicies.versions.list",
+            path = "traffic-policies/{policyId}/versions"
+    )
+    public TrafficPolicyVersionsResponse trafficPoliciesVersionsList(
+            @Named("credentials") final String credentials,
+            @Named("policyId") final String policyId,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Route53Caller.get(ListTrafficPolicyVersionsRequest.class, TrafficPolicyVersionsResponse.class, credentials).execute((client, request, response) -> {
+            final ListTrafficPolicyVersionsResult result = client.listTrafficPolicyVersions(request.withId(policyId).withTrafficPolicyVersionMarker(page));
+            response.setPolicies(result.getTrafficPolicies());
+            response.setNextPage(result.getTrafficPolicyVersionMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "trafficPolicies.instances.list",
+            path = "traffic-policies/instances"
+    )
+    public TrafficPolicyInstancesResponse trafficPoliciesInstancesList(
+            @Named("credentials") final String credentials,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Route53Caller.get(ListTrafficPolicyInstancesRequest.class, TrafficPolicyInstancesResponse.class, credentials).execute((client, request, response) -> {
+            final ListTrafficPolicyInstancesResult result = client.listTrafficPolicyInstances(request.withTrafficPolicyInstanceNameMarker(page));
+            response.setInstances(result.getTrafficPolicyInstances());
+            response.setNextPage(result.getTrafficPolicyInstanceNameMarker());
         });
     }
 }

@@ -106,6 +106,8 @@ import com.amazonaws.services.redshift.AmazonRedshift;
 import com.amazonaws.services.redshift.AmazonRedshiftClient;
 import com.amazonaws.services.route53.AmazonRoute53;
 import com.amazonaws.services.route53.AmazonRoute53Client;
+import com.amazonaws.services.route53domains.AmazonRoute53Domains;
+import com.amazonaws.services.route53domains.AmazonRoute53DomainsClient;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
@@ -947,6 +949,15 @@ public final class AmazonClientHelper {
                 .withRegion(region)
                 .build();
         checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonRoute53Domains> getRoute53Domains() {
+        final AmazonRoute53Domains client = AmazonRoute53DomainsClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.US_EAST_1)
+                .build();
         return new ClientWrapper<>(client);
     }
 }
