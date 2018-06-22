@@ -8,7 +8,6 @@ import com.amazonaws.services.s3.model.BucketTaggingConfiguration;
 import com.amazonaws.services.s3.model.GetBucketAccelerateConfigurationRequest;
 import com.amazonaws.services.s3.model.GetBucketAclRequest;
 import com.amazonaws.services.s3.model.GetBucketVersioningConfigurationRequest;
-import com.amazonaws.services.s3.model.Grant;
 import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.SetBucketTaggingConfigurationRequest;
@@ -157,15 +156,16 @@ public final class S3Api {
             aclParseable.setRequesterCharged(acl.isRequesterCharged());
             aclParseable.setGrants(Lists.newArrayList());
             if (acl.getGrantsAsList() != null) {
-                for (final Grant grant : acl.getGrantsAsList()) {
+                for (final com.amazonaws.services.s3.model.Grant grant : acl.getGrantsAsList()) {
                     if (grant.getGrantee() instanceof GroupGrantee) {
                         final GroupGrantee originalGrantee = (GroupGrantee) grant.getGrantee();
                         final com.cloudaware.cloudmine.amazon.s3.GroupGrantee grantee = new com.cloudaware.cloudmine.amazon.s3.GroupGrantee();
                         grantee.setGroupName(originalGrantee.name());
                         grantee.setIdentifier(originalGrantee.getIdentifier());
-                        aclParseable.getGrants().add(new Grant(grantee, grant.getPermission()));
+                        final com.amazonaws.services.s3.model.Grant awsGrant = new com.amazonaws.services.s3.model.Grant(grantee, grant.getPermission());
+                        aclParseable.getGrants().add(new Grant(awsGrant));
                     } else {
-                        aclParseable.getGrants().add(grant);
+                        aclParseable.getGrants().add(new Grant(grant));
                     }
                 }
             }

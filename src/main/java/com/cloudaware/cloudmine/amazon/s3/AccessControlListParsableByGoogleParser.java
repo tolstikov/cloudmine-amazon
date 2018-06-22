@@ -1,6 +1,5 @@
 package com.cloudaware.cloudmine.amazon.s3;
 
-import com.amazonaws.services.s3.model.Grant;
 import com.amazonaws.services.s3.model.Owner;
 
 import java.util.List;
