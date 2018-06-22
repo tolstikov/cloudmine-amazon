@@ -1,5 +1,7 @@
 package com.cloudaware.cloudmine.amazon.elbv2;
 
+import com.amazonaws.services.elasticloadbalancingv2.model.DescribeAccountLimitsRequest;
+import com.amazonaws.services.elasticloadbalancingv2.model.DescribeAccountLimitsResult;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeListenersRequest;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeListenersResult;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeLoadBalancerAttributesRequest;
@@ -18,6 +20,7 @@ import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetGroupsR
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetGroupsResult;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetHealthRequest;
 import com.amazonaws.services.elasticloadbalancingv2.model.DescribeTargetHealthResult;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -214,6 +217,23 @@ public final class ElbV2Api {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountLimits.list",
+            path = "{region}/account-limits"
+    )
+    public AccountLimitsResponse accountLimitsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return ElbV2Caller.get(DescribeAccountLimitsRequest.class, AccountLimitsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeAccountLimitsResult result = client.describeAccountLimits(request.withMarker(page));
+            response.setLimits(result.getLimits());
+            response.setNextPage(result.getNextMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
             name = "tags.list",
             path = "{region}/tags"
     )
@@ -228,6 +248,36 @@ public final class ElbV2Api {
                             .withResourceArns(resourceArns)
             );
             response.setTags(result.getTagDescriptions());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "tags.add",
+            path = "{region}/tags/add"
+    )
+    public AmazonResponse tagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            final AddTagsRequest request
+    ) throws AmazonUnparsedException {
+        return ElbV2Caller.get(com.amazonaws.services.elasticloadbalancingv2.model.AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTags(r.withResourceArns(request.getArns()).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "tags.remove",
+            path = "{region}/tags/remove"
+    )
+    public AmazonResponse tagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            final RemoveTagsRequest request
+    ) throws AmazonUnparsedException {
+        return ElbV2Caller.get(com.amazonaws.services.elasticloadbalancingv2.model.RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTags(r.withResourceArns(request.getArns()).withTagKeys(request.getTagKeys()));
         });
     }
 }

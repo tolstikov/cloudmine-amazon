@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.28</version>
+    <version>1.0.39</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -15,7 +15,7 @@
         <appengine.app.version>${endpoints.service.version}</appengine.app.version>
         <endpoints.service.name>cloudmine-amazon.endpoints.${appengine.app.id}.cloud.goog</endpoints.service.name>
         <endpoints.service.version>1970-01-01r0</endpoints.service.version>
-        <aws-java-sdk.version>1.11.241</aws-java-sdk.version>
+        <aws-java-sdk.version>1.11.340</aws-java-sdk.version>
         <google-api-client.version>1.22.0</google-api-client.version>
         <endpoints-framework.version>2.0.7</endpoints-framework.version>
         <endpoints-management.version>1.0.2</endpoints-management.version>
@@ -307,7 +307,26 @@
             <artifactId>aws-java-sdk-logs</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-batch</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-opsworks</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-guardduty</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-costexplorer</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -451,6 +470,7 @@
                         <param>com.cloudaware.cloudmine.amazon.apigateway.ApiGatewayApi</param>
                         <param>com.cloudaware.cloudmine.amazon.athena.AthenaApi</param>
                         <param>com.cloudaware.cloudmine.amazon.autoscaling.AutoScalingApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.batch.BatchApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudformation.CloudFormationApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudfront.CloudFrontApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudsearch.CloudSearchApi</param>
@@ -462,6 +482,7 @@
                         <param>com.cloudaware.cloudmine.amazon.codedeploy.CodeDeployApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codepipeline.CodePipelineApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codestar.CodeStarApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.costexplorer.CostExplorerApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directconnect.DirectConnectApi</param>
                         <param>com.cloudaware.cloudmine.amazon.directoryservice.DirectoryServiceApi</param>
                         <param>com.cloudaware.cloudmine.amazon.dynamodb.DynamoDbApi</param>
@@ -476,14 +497,17 @@
                         <param>com.cloudaware.cloudmine.amazon.emr.EmrApi</param>
                         <param>com.cloudaware.cloudmine.amazon.glacier.GlacierApi</param>
                         <param>com.cloudaware.cloudmine.amazon.glue.GlueApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.guardduty.GuardDutyApi</param>
                         <param>com.cloudaware.cloudmine.amazon.iam.IamApi</param>
                         <param>com.cloudaware.cloudmine.amazon.kms.KmsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.lambda.LambdaApi</param>
                         <param>com.cloudaware.cloudmine.amazon.lightsail.LightsailApi</param>
                         <param>com.cloudaware.cloudmine.amazon.organizations.OrganizationsApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.opsworks.OpsWorksApi</param>
                         <param>com.cloudaware.cloudmine.amazon.rds.RdsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.redshift.RedshiftApi</param>
                         <param>com.cloudaware.cloudmine.amazon.route53.Route53Api</param>
+                        <param>com.cloudaware.cloudmine.amazon.route53domains.Route53DomainsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.s3.S3Api</param>
                         <param>com.cloudaware.cloudmine.amazon.ses.SesApi</param>
                         <param>com.cloudaware.cloudmine.amazon.shield.ShieldApi</param>

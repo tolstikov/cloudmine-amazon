@@ -1,5 +1,6 @@
 package com.cloudaware.cloudmine.amazon.elasticsearch;
 
+import com.amazonaws.services.elasticsearch.model.AddTagsRequest;
 import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainConfigRequest;
 import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainConfigResult;
 import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainsRequest;
@@ -8,6 +9,8 @@ import com.amazonaws.services.elasticsearch.model.ListDomainNamesRequest;
 import com.amazonaws.services.elasticsearch.model.ListDomainNamesResult;
 import com.amazonaws.services.elasticsearch.model.ListTagsRequest;
 import com.amazonaws.services.elasticsearch.model.ListTagsResult;
+import com.amazonaws.services.elasticsearch.model.RemoveTagsRequest;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -85,7 +88,7 @@ public final class ElasticsearchApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "tags.get",
-            path = "{region}/tags/ARN"
+            path = "{region}/ARN/tags"
     )
     public TagsResponse tagsGet(
             @Named("credentials") final String credentials,
@@ -97,4 +100,37 @@ public final class ElasticsearchApi {
             response.setTags(result.getTagList());
         });
     }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "tags.add",
+            path = "{region}/ARN/tags"
+    )
+    public AmazonResponse tagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("arn") final String arn,
+            final TagsRequest request
+    ) throws AmazonUnparsedException {
+        return ElasticsearchCaller.get(AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTags(r.withARN(arn).withTagList(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "tags.remove",
+            path = "{region}/ARN/tags"
+    )
+    public AmazonResponse tagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("arn") final String arn,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return ElasticsearchCaller.get(RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTags(r.withARN(arn).withTagKeys(tagKeys));
+        });
+    }
+
 }

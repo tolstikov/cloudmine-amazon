@@ -10,6 +10,8 @@ import com.amazonaws.services.logs.model.DescribeSubscriptionFiltersRequest;
 import com.amazonaws.services.logs.model.DescribeSubscriptionFiltersResult;
 import com.amazonaws.services.logs.model.ListTagsLogGroupRequest;
 import com.amazonaws.services.logs.model.ListTagsLogGroupResult;
+import com.amazonaws.services.logs.model.TagLogGroupRequest;
+import com.amazonaws.services.logs.model.UntagLogGroupRequest;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -19,11 +21,13 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
 
+import java.util.List;
+
 @Api(
         name = "cloudwatchlogs",
-        canonicalName = "CloudWatch Logs",
+        canonicalName = "CloudWatchLogs",
         title = "Amazon CloudWatch Logs",
-        description = "Monitor Resources and Applications",
+        description = "Monitor, store, and access your log files",
         namespace = @ApiNamespace(
                 ownerDomain = "cloudaware.com",
                 ownerName = "CloudAware",
@@ -60,7 +64,7 @@ public final class CloudWatchLogsApi {
             name = "logGroups.logStreams.list",
             path = "{region}/log-groups/{logGroupName}/log-streams"
     )
-    public LogStreamsResponse logGroupLogStreamsList(
+    public LogStreamsResponse logGroupsLogStreamsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("logGroupName") final String logGroupName,
@@ -80,11 +84,10 @@ public final class CloudWatchLogsApi {
             name = "logGroups.tags.list",
             path = "{region}/log-groups/{logGroupName}/tags"
     )
-    public TagsResponse logGroupTagsList(
+    public TagsResponse logGroupsTagsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("logGroupName") final String logGroupName,
-            @Named("page") @Nullable final String page
+            @Named("logGroupName") final String logGroupName
     ) throws AmazonUnparsedException {
         return CloudWatchLogsCaller.get(ListTagsLogGroupRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListTagsLogGroupResult result = client.listTagsLogGroup(
@@ -95,11 +98,43 @@ public final class CloudWatchLogsApi {
     }
 
     @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "logGroups.tags.tag",
+            path = "{region}/log-groups/{logGroupName}/tags"
+    )
+    public TagsResponse logGroupsTagsTag(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("logGroupName") final String logGroupName,
+            final TagsRequest tagsRequest
+    ) throws AmazonUnparsedException {
+        return CloudWatchLogsCaller.get(TagLogGroupRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+            client.tagLogGroup(request.withLogGroupName(logGroupName).withTags(tagsRequest.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "logGroups.tags.untag",
+            path = "{region}/log-groups/{logGroupName}/tags"
+    )
+    public TagsResponse logGroupsTagsUntag(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("logGroupName") final String logGroupName,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return CloudWatchLogsCaller.get(UntagLogGroupRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+            client.untagLogGroup(request.withLogGroupName(logGroupName).withTags(tagKeys));
+        });
+    }
+
+    @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "logGroups.subscriptionFilters.list",
             path = "{region}/log-groups/{logGroupName}/subscription-filters"
     )
-    public SubscriptionFiltersResponse logGroupSubscriptionFiltersList(
+    public SubscriptionFiltersResponse logGroupsSubscriptionFiltersList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("logGroupName") final String logGroupName,

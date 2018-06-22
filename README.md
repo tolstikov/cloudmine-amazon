@@ -1,3 +1,4 @@
+[![Build Status](https://jenkins.cloudaware.com/buildStatus/icon?style=plastic&job=cloudmine-amazon%20deploy)](https://jenkins.cloudaware.com/job/cloudmine-amazon%20deploy)
 # About
 
 This project aims to solve following problems for AWS API Users:
@@ -275,6 +276,18 @@ To build client library:
 
 # Changelog
 
+* 1.0.40 - Route53 actualized
+* 1.0.39 - Redshift actualized
+* 1.0.38 - VPC actualized 
+* 1.0.37 - Cost Explorer added
+* 1.0.36 - S3 Server Side Encryption added
+* 1.0.35 - GuardDuty added
+* 1.0.34 - instanceState filter fro EMR ListInstances
+* 1.0.33 - OpsWorks added
+* 1.0.32 - SQS and CloudWatch Logs tags
+* 1.0.31 - Tag modification refactoring
+* 1.0.30 - Batch added
+* 1.0.29 - CloudWatch Logs added
 * 1.0.28 - API Gateway added
 * 1.0.27 - Glue added
 * 1.0.26 - StepFunctions added

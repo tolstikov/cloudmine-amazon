@@ -1,5 +1,6 @@
 package com.cloudaware.cloudmine.amazon.datapipeline;
 
+import com.amazonaws.services.datapipeline.model.AddTagsRequest;
 import com.amazonaws.services.datapipeline.model.DescribeObjectsRequest;
 import com.amazonaws.services.datapipeline.model.DescribeObjectsResult;
 import com.amazonaws.services.datapipeline.model.DescribePipelinesRequest;
@@ -8,6 +9,8 @@ import com.amazonaws.services.datapipeline.model.GetPipelineDefinitionRequest;
 import com.amazonaws.services.datapipeline.model.GetPipelineDefinitionResult;
 import com.amazonaws.services.datapipeline.model.ListPipelinesRequest;
 import com.amazonaws.services.datapipeline.model.ListPipelinesResult;
+import com.amazonaws.services.datapipeline.model.RemoveTagsRequest;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -107,4 +110,35 @@ public final class DataPipelineApi {
         });
     }
 
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "pipelines.tags.add",
+            path = "{region}/pipelines/{pipelineId}/tags"
+    )
+    public AmazonResponse pipelineTagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("pipelineId") final String pipelineId,
+            final com.cloudaware.cloudmine.amazon.datapipeline.AddTagsRequest request
+    ) throws AmazonUnparsedException {
+        return DataPipelineCaller.get(AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTags(r.withPipelineId(pipelineId).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "pipelines.tags.remove",
+            path = "{region}/pipelines/{pipelineId}/tags"
+    )
+    public AmazonResponse pipelineTagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("pipelineId") final String pipelineId,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return DataPipelineCaller.get(RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTags(r.withPipelineId(pipelineId).withTagKeys(tagKeys));
+        });
+    }
 }

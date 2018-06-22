@@ -67,7 +67,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "ThrottlingException".equals(errorCode)
                     || "TooManyRequestsException".equals(errorCode)
                     || "RequestLimitExceeded".equals(errorCode)
-                    || "LimitExceededException".equals(errorCode)) {
+                    || "LimitExceededException".equals(errorCode)
+                    || "RequestThrottled".equals(errorCode)) {
                 return new AmazonException(AmazonException.Category.THROTTLING, action, ex);
             }
             /**
@@ -91,6 +92,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Starting August 1 2017, you won't be able to view or manage (except terminate) "
                     + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
+                    || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
                     ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
@@ -136,6 +138,9 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "PipelineDeletedException".equals(errorCode)
                     || "PipelineNotFoundException".equals(errorCode)
                     || "ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state")
+                    || "ExecutionDoesNotExist".equals(errorCode)
+                    || "DeploymentDoesNotExistException".equals(errorCode)
+                    || "InvalidVpcID.NotFound".equals(errorCode)
                     ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
@@ -197,6 +202,6 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
     }
 
     public final void setNextPage(final String nextPage) {
-        this.nextPage = nextPage;
+        this.nextPage = (nextPage != null && !nextPage.isEmpty()) ? nextPage : null;
     }
 }

@@ -263,4 +263,22 @@ public final class S3Api {
             return new ObjectsResponse(AmazonResponse.parse(t, "s3:ListObjects"));
         }
     }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "buckets.encryptionConfiguration.get",
+            path = "{region}/bucket/{bucketName}/encryption-configuration"
+    )
+    public EncryptionConfigurationResponse bucketsEncryptionConfigurationGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("bucketName") final String bucketName
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
+            final com.amazonaws.services.s3.model.GetBucketEncryptionResult bucketEncryptionResult = clientWrapper.getClient().getBucketEncryption(bucketName);
+            return new EncryptionConfigurationResponse(bucketEncryptionResult.getServerSideEncryptionConfiguration());
+        } catch (Throwable t) {
+            return new EncryptionConfigurationResponse(AmazonResponse.parse(t, "s3:GetEncryptionConfiguration"));
+        }
+    }
 }

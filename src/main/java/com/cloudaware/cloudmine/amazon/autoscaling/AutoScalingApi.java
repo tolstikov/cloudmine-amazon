@@ -1,5 +1,7 @@
 package com.cloudaware.cloudmine.amazon.autoscaling;
 
+import com.amazonaws.services.autoscaling.model.DescribeAccountLimitsRequest;
+import com.amazonaws.services.autoscaling.model.DescribeAccountLimitsResult;
 import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsRequest;
 import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsResult;
 import com.amazonaws.services.autoscaling.model.DescribeLaunchConfigurationsRequest;
@@ -93,6 +95,24 @@ public final class AutoScalingApi {
             final DescribePoliciesResult result = client.describePolicies(request.withNextToken(page).withAutoScalingGroupName(groupName));
             response.setPolicies(result.getScalingPolicies());
             response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountLimits.get",
+            path = "{region}/account-limits"
+    )
+    public AccountLimitsResponse accountLimitsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region
+    ) throws AmazonUnparsedException {
+        return AutoScalingCaller.get(DescribeAccountLimitsRequest.class, AccountLimitsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeAccountLimitsResult result = client.describeAccountLimits(request);
+            response.setMaxNumberOfAutoScalingGroups(result.getMaxNumberOfAutoScalingGroups());
+            response.setNumberOfAutoScalingGroups(result.getNumberOfAutoScalingGroups());
+            response.setMaxNumberOfLaunchConfigurations(result.getMaxNumberOfLaunchConfigurations());
+            response.setNumberOfLaunchConfigurations(result.getNumberOfLaunchConfigurations());
         });
     }
 }

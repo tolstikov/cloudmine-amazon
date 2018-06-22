@@ -14,6 +14,9 @@ import com.amazonaws.services.lambda.model.ListTagsRequest;
 import com.amazonaws.services.lambda.model.ListTagsResult;
 import com.amazonaws.services.lambda.model.ListVersionsByFunctionRequest;
 import com.amazonaws.services.lambda.model.ListVersionsByFunctionResult;
+import com.amazonaws.services.lambda.model.TagResourceRequest;
+import com.amazonaws.services.lambda.model.UntagResourceRequest;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -22,6 +25,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+
+import java.util.List;
 
 /**
  * User: urmuzov
@@ -164,8 +169,8 @@ public final class LambdaApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "tags.get",
-            path = "{region}/tags/ARN"
+            name = "resources.tags.get",
+            path = "{region}/resources/ARN/tags"
     )
     public TagsResponse tagsGet(
             @Named("credentials") final String credentials,
@@ -178,6 +183,38 @@ public final class LambdaApi {
                             .withResource(arn)
             );
             response.setTags(result.getTags());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "resources.tags.tag",
+            path = "{region}/resources/ARN/tags"
+    )
+    public AmazonResponse createTags(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("arn") final String arn,
+            final TagsRequest request
+    ) throws AmazonUnparsedException {
+        return LambdaCaller.get(TagResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.tagResource(r.withResource(arn).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "resources.tags.untag",
+            path = "{region}/resources/ARN/tags"
+    )
+    public AmazonResponse tagsDelete(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("arn") final String arn,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return LambdaCaller.get(UntagResourceRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.untagResource(r.withResource(arn).withTagKeys(tagKeys));
         });
     }
 }

@@ -1,11 +1,14 @@
 package com.cloudaware.cloudmine.amazon.kinesisstreams;
 
+import com.amazonaws.services.kinesis.model.AddTagsToStreamRequest;
 import com.amazonaws.services.kinesis.model.DescribeStreamRequest;
 import com.amazonaws.services.kinesis.model.DescribeStreamResult;
 import com.amazonaws.services.kinesis.model.ListStreamsRequest;
 import com.amazonaws.services.kinesis.model.ListStreamsResult;
 import com.amazonaws.services.kinesis.model.ListTagsForStreamRequest;
 import com.amazonaws.services.kinesis.model.ListTagsForStreamResult;
+import com.amazonaws.services.kinesis.model.RemoveTagsFromStreamRequest;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -14,6 +17,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+
+import java.util.List;
 
 @Api(
         name = "kinesisstreams",
@@ -73,10 +78,10 @@ public final class KinesisStreamsApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "tags.list",
-            path = "{region}/tags"
+            name = "streams.tags.list",
+            path = "{region}/streams/{streamName}/tags"
     )
-    public TagsResponse tagsList(
+    public TagsResponse streamsTagsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("streamName") final String streamName,
@@ -93,6 +98,38 @@ public final class KinesisStreamsApi {
             }
 
             response.setTags(result.getTags());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "streams.tags.add",
+            path = "{region}/streams/{streamName}/tags"
+    )
+    public AmazonResponse streamsTagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("streamName") final String streamName,
+            final TagsRequest request
+    ) throws AmazonUnparsedException {
+        return KinesisStreamsCaller.get(AddTagsToStreamRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTagsToStream(r.withStreamName(streamName).withTags(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "streams.tags.remove",
+            path = "{region}/streams/{streamName}/tags"
+    )
+    public AmazonResponse streamsTagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("streamName") final String streamName,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return KinesisStreamsCaller.get(RemoveTagsFromStreamRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTagsFromStream(r.withStreamName(streamName).withTagKeys(tagKeys));
         });
     }
 }

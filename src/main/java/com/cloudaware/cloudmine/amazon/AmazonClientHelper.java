@@ -14,6 +14,8 @@ import com.amazonaws.services.athena.AmazonAthena;
 import com.amazonaws.services.athena.AmazonAthenaClient;
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
+import com.amazonaws.services.batch.AWSBatch;
+import com.amazonaws.services.batch.AWSBatchClient;
 import com.amazonaws.services.cloudformation.AmazonCloudFormation;
 import com.amazonaws.services.cloudformation.AmazonCloudFormationClient;
 import com.amazonaws.services.cloudfront.AmazonCloudFront;
@@ -36,6 +38,8 @@ import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
 import com.amazonaws.services.config.AmazonConfigClient;
+import com.amazonaws.services.costexplorer.AWSCostExplorer;
+import com.amazonaws.services.costexplorer.AWSCostExplorerClient;
 import com.amazonaws.services.datapipeline.DataPipeline;
 import com.amazonaws.services.datapipeline.DataPipelineClient;
 import com.amazonaws.services.dax.AmazonDax;
@@ -72,6 +76,8 @@ import com.amazonaws.services.glacier.AmazonGlacier;
 import com.amazonaws.services.glacier.AmazonGlacierClient;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
+import com.amazonaws.services.guardduty.AmazonGuardDuty;
+import com.amazonaws.services.guardduty.AmazonGuardDutyClient;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.iot.AWSIot;
@@ -90,6 +96,8 @@ import com.amazonaws.services.lightsail.AmazonLightsail;
 import com.amazonaws.services.lightsail.AmazonLightsailClient;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.AWSLogsClient;
+import com.amazonaws.services.opsworks.AWSOpsWorks;
+import com.amazonaws.services.opsworks.AWSOpsWorksClient;
 import com.amazonaws.services.organizations.AWSOrganizations;
 import com.amazonaws.services.organizations.AWSOrganizationsClient;
 import com.amazonaws.services.rds.AmazonRDS;
@@ -98,6 +106,8 @@ import com.amazonaws.services.redshift.AmazonRedshift;
 import com.amazonaws.services.redshift.AmazonRedshiftClient;
 import com.amazonaws.services.route53.AmazonRoute53;
 import com.amazonaws.services.route53.AmazonRoute53Client;
+import com.amazonaws.services.route53domains.AmazonRoute53Domains;
+import com.amazonaws.services.route53domains.AmazonRoute53DomainsClient;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
@@ -193,6 +203,29 @@ public final class AmazonClientHelper {
             // These regions don't have "athena" in available endpoints, but they have the service
             return;
         }
+        if ("ce".equals(endpointPrefix) && "us-east-1".equals(region)) {
+            // These regions don't have "ce" in available endpoints, but they have the service
+            return;
+        }
+        if ("guardduty".equals(endpointPrefix)
+                && "ap-south-1".equals(region)
+                || "ap-northeast-2".equals(region)
+                || "ap-southeast-1".equals(region)
+                || "ap-southeast-2".equals(region)
+                || "ap-northeast-1".equals(region)
+                || "ca-central-1".equals(region)
+                || "eu-central-1".equals(region)
+                || "eu-west-1".equals(region)
+                || "eu-west-2".equals(region)
+                || "us-east-1".equals(region)
+                || "us-east-2".equals(region)
+                || "us-west-1".equals(region)
+                || "us-west-2".equals(region)
+                || "sa-east-1".equals(region)
+                ) {
+            // These regions don't have "guardduty" in available endpoints, but they have the service
+            return;
+        }
         boolean found = false;
         for (final String availableEndpoint : availableEndpoints) {
             if (availableEndpoint.startsWith(endpointPrefix + ".") || availableEndpoint.startsWith(endpointPrefix + "-" + region)) {
@@ -219,6 +252,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonCloudWatch> getCw(final String region) {
         checkRegion(region);
         final AmazonCloudWatch client = AmazonCloudWatchClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSLogs> getCwLogs(final String region) {
+        checkRegion(region);
+        final AWSLogs client = AWSLogsClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
@@ -764,6 +808,18 @@ public final class AmazonClientHelper {
         return new ClientWrapper<>(client);
     }
 
+    public ClientWrapper<AWSCostExplorer> getCostExplorer() {
+        final String region = "us-east-1";
+        checkRegion(region);
+        final AWSCostExplorer client = AWSCostExplorerClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
     public ClientWrapper<DataPipeline> getDataPipeline(final String region) {
         checkRegion(region);
         final DataPipeline client = DataPipelineClient.builder()
@@ -871,6 +927,48 @@ public final class AmazonClientHelper {
                 .withRegion(region)
                 .build();
         checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSBatch> getBatch(final String region) {
+        checkRegion(region);
+        final AWSBatch client = AWSBatchClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSOpsWorks> getOpsWorks(final String region) {
+        checkRegion(region);
+        final AWSOpsWorks client = AWSOpsWorksClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonGuardDuty> getGuardDuty(final String region) {
+        checkRegion(region);
+        final AmazonGuardDuty client = AmazonGuardDutyClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonRoute53Domains> getRoute53Domains() {
+        final AmazonRoute53Domains client = AmazonRoute53DomainsClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.US_EAST_1)
+                .build();
         return new ClientWrapper<>(client);
     }
 }

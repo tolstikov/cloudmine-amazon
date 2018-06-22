@@ -5,7 +5,7 @@ import com.cloudaware.cloudmine.amazon.AmazonResponse;
 
 import java.util.List;
 
-public final class ParameterGroupResponse extends AmazonResponse {
+public final class ClusterParameterGroupsResponse extends AmazonResponse {
 
     private List<ClusterParameterGroup> parameterGroups;
 

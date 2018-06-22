@@ -1,5 +1,6 @@
 package com.cloudaware.cloudmine.amazon.codedeploy;
 
+import com.amazonaws.services.codedeploy.model.AddTagsToOnPremisesInstancesRequest;
 import com.amazonaws.services.codedeploy.model.BatchGetApplicationRevisionsRequest;
 import com.amazonaws.services.codedeploy.model.BatchGetApplicationRevisionsResult;
 import com.amazonaws.services.codedeploy.model.BatchGetApplicationsRequest;
@@ -30,7 +31,9 @@ import com.amazonaws.services.codedeploy.model.ListGitHubAccountTokenNamesReques
 import com.amazonaws.services.codedeploy.model.ListGitHubAccountTokenNamesResult;
 import com.amazonaws.services.codedeploy.model.ListOnPremisesInstancesRequest;
 import com.amazonaws.services.codedeploy.model.ListOnPremisesInstancesResult;
+import com.amazonaws.services.codedeploy.model.RemoveTagsFromOnPremisesInstancesRequest;
 import com.amazonaws.services.codedeploy.model.TimeRange;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -85,7 +88,7 @@ public final class CodeDeployApi {
     public ApplicationsResponse applicationsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("applicationNames") final List<String> applicationNames
+            @Named("applicationName") final List<String> applicationNames
     ) throws AmazonUnparsedException {
         return CodeDeployCaller.get(BatchGetApplicationsRequest.class, ApplicationsResponse.class, credentials, region).execute((client, request, response) -> {
             final BatchGetApplicationsResult result = client.batchGetApplications(request.withApplicationNames(applicationNames));
@@ -176,7 +179,7 @@ public final class CodeDeployApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("applicationName") final String applicationName,
-            @Named("deploymentGroupNames") final List<String> deploymentGroupNames
+            @Named("deploymentGroupName") final List<String> deploymentGroupNames
     ) throws AmazonUnparsedException {
         return CodeDeployCaller.get(BatchGetDeploymentGroupsRequest.class, DeploymentGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final BatchGetDeploymentGroupsResult result = client.batchGetDeploymentGroups(
@@ -199,10 +202,10 @@ public final class CodeDeployApi {
             @Named("region") final String region,
             @Named("applicationName") @Nullable final String applicationName,
             @Named("deploymentGroupName") @Nullable final String deploymentGroupName,
-            @Named("includeOnlyStatuses") @Nullable final List<String> includeOnlyStatuses,
+            @Named("includeOnlyStatus") @Nullable final List<String> includeOnlyStatuses,
             @Named("startDate") @Nullable final Date startDate,
             @Named("endDate") @Nullable final Date endDate,
-            @Named("page")@Nullable final String page
+            @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return CodeDeployCaller.get(ListDeploymentsRequest.class, DeploymentIdsResponse.class, credentials, region).execute((client, request, response) -> {
             final ListDeploymentsResult result = client.listDeployments(
@@ -226,7 +229,7 @@ public final class CodeDeployApi {
     public DeploymentsResponse deploymentsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("deploymentIds") @Nullable final List<String> deploymentIds
+            @Named("deploymentId") @Nullable final List<String> deploymentIds
     ) throws AmazonUnparsedException {
         return CodeDeployCaller.get(BatchGetDeploymentsRequest.class, DeploymentsResponse.class, credentials, region).execute((client, request, response) -> {
             final BatchGetDeploymentsResult result = client.batchGetDeployments(request.withDeploymentIds(deploymentIds));
@@ -253,10 +256,10 @@ public final class CodeDeployApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "deploymentConfig.get",
+            name = "deploymentConfigs.get",
             path = "{region}/deployment-configs/{deploymentConfigName}"
     )
-    public DeploymentConfigResponse deploymentConfigGet(
+    public DeploymentConfigResponse deploymentConfigsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("deploymentConfigName") final String deploymentConfigName
@@ -302,7 +305,7 @@ public final class CodeDeployApi {
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("deploymentId") final String deploymentId,
-            @Named("deploymentInstanceIds") final List<String> deploymentInstanceIds
+            @Named("deploymentInstanceId") final List<String> deploymentInstanceIds
     ) throws AmazonUnparsedException {
         return CodeDeployCaller.get(BatchGetDeploymentInstancesRequest.class, DeploymentInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final BatchGetDeploymentInstancesResult result = client.batchGetDeploymentInstances(
@@ -346,11 +349,41 @@ public final class CodeDeployApi {
     public OnPremisesInstancesResponse onPremisesInstancesList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("instanceNames") @Nullable final List<String> instanceNames
+            @Named("instanceName") @Nullable final List<String> instanceNames
     ) throws AmazonUnparsedException {
         return CodeDeployCaller.get(BatchGetOnPremisesInstancesRequest.class, OnPremisesInstancesResponse.class, credentials, region).execute((client, request, response) -> {
             final BatchGetOnPremisesInstancesResult result = client.batchGetOnPremisesInstances(request.withInstanceNames(instanceNames));
             response.setInstances(result.getInstanceInfos());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "onPremisesInstances.tags.add",
+            path = "{region}/on-premises-instances/tags/add"
+    )
+    public AmazonResponse onPremisesInstancesTagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            final TagsRequest tagsRequest
+    ) throws AmazonUnparsedException {
+        return CodeDeployCaller.get(AddTagsToOnPremisesInstancesRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
+            client.addTagsToOnPremisesInstances(request.withInstanceNames(tagsRequest.getInstanceNames()).withTags(tagsRequest.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "onPremisesInstances.tags.remove",
+            path = "{region}/on-premises-instances/tags/remove"
+    )
+    public AmazonResponse onPremisesInstancesTagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            final TagsRequest tagsRequest
+    ) throws AmazonUnparsedException {
+        return CodeDeployCaller.get(RemoveTagsFromOnPremisesInstancesRequest.class, AmazonResponse.class, credentials, region).execute((client, request, response) -> {
+            client.removeTagsFromOnPremisesInstances(request.withInstanceNames(tagsRequest.getInstanceNames()).withTags(tagsRequest.getTags()));
         });
     }
 
