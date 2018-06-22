@@ -271,17 +271,6 @@ public final class AmazonClientHelper {
         return new ClientWrapper<>(client);
     }
 
-    public ClientWrapper<AWSLogs> getCwLogs(final String region) {
-        checkRegion(region);
-        final AWSLogs client = AWSLogsClient.builder()
-                .withClientConfiguration(config)
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(region)
-                .build();
-        checkEndpoint(region, (AmazonWebServiceClient) client);
-        return new ClientWrapper<>(client);
-    }
-
     public ClientWrapper<AmazonRDS> getRds(final String region) {
         checkRegion(region);
         final AmazonRDS client = AmazonRDSClient.builder()
