@@ -5,8 +5,12 @@ import com.amazonaws.services.rds.model.DBClusterSnapshotAttributesResult;
 import com.amazonaws.services.rds.model.DBSnapshotAttributesResult;
 import com.amazonaws.services.rds.model.DescribeAccountAttributesRequest;
 import com.amazonaws.services.rds.model.DescribeAccountAttributesResult;
+import com.amazonaws.services.rds.model.DescribeDBClusterBacktracksRequest;
+import com.amazonaws.services.rds.model.DescribeDBClusterBacktracksResult;
 import com.amazonaws.services.rds.model.DescribeDBClusterParameterGroupsRequest;
 import com.amazonaws.services.rds.model.DescribeDBClusterParameterGroupsResult;
+import com.amazonaws.services.rds.model.DescribeDBClusterParametersRequest;
+import com.amazonaws.services.rds.model.DescribeDBClusterParametersResult;
 import com.amazonaws.services.rds.model.DescribeDBClusterSnapshotAttributesRequest;
 import com.amazonaws.services.rds.model.DescribeDBClusterSnapshotsRequest;
 import com.amazonaws.services.rds.model.DescribeDBClusterSnapshotsResult;
@@ -16,6 +20,8 @@ import com.amazonaws.services.rds.model.DescribeDBInstancesRequest;
 import com.amazonaws.services.rds.model.DescribeDBInstancesResult;
 import com.amazonaws.services.rds.model.DescribeDBParameterGroupsRequest;
 import com.amazonaws.services.rds.model.DescribeDBParameterGroupsResult;
+import com.amazonaws.services.rds.model.DescribeDBParametersRequest;
+import com.amazonaws.services.rds.model.DescribeDBParametersResult;
 import com.amazonaws.services.rds.model.DescribeDBSecurityGroupsRequest;
 import com.amazonaws.services.rds.model.DescribeDBSecurityGroupsResult;
 import com.amazonaws.services.rds.model.DescribeDBSnapshotAttributesRequest;
@@ -23,8 +29,12 @@ import com.amazonaws.services.rds.model.DescribeDBSnapshotsRequest;
 import com.amazonaws.services.rds.model.DescribeDBSnapshotsResult;
 import com.amazonaws.services.rds.model.DescribeDBSubnetGroupsRequest;
 import com.amazonaws.services.rds.model.DescribeDBSubnetGroupsResult;
+import com.amazonaws.services.rds.model.DescribeEventSubscriptionsRequest;
+import com.amazonaws.services.rds.model.DescribeEventSubscriptionsResult;
 import com.amazonaws.services.rds.model.DescribeEventsRequest;
 import com.amazonaws.services.rds.model.DescribeEventsResult;
+import com.amazonaws.services.rds.model.DescribeOptionGroupsRequest;
+import com.amazonaws.services.rds.model.DescribeOptionGroupsResult;
 import com.amazonaws.services.rds.model.DescribeReservedDBInstancesRequest;
 import com.amazonaws.services.rds.model.DescribeReservedDBInstancesResult;
 import com.amazonaws.services.rds.model.ListTagsForResourceRequest;
@@ -94,6 +104,24 @@ public final class RdsApi {
         return RdsCaller.get(DescribeDBParameterGroupsRequest.class, DbParameterGroupsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeDBParameterGroupsResult result = client.describeDBParameterGroups(request.withMarker(page));
             response.setDbParameterGroups(result.getDBParameterGroups());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "dbParameters.list",
+            path = "{region}/db-parameters"
+    )
+    public DbParametersResponse dbParametersList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("parameterGroupName") final String parameterGroupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RdsCaller.get(DescribeDBParametersRequest.class, DbParametersResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeDBParametersResult result = client.describeDBParameters(request.withDBParameterGroupName(parameterGroupName).withMarker(page));
+            response.setDbParameters(result.getParameters());
             response.setNextPage(result.getMarker());
         });
     }
@@ -184,6 +212,28 @@ public final class RdsApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
+            name = "dbClusterBacktracks.list",
+            path = "{region}/db-clusters-backtracks"
+    )
+    public DbClusterBacktracksResponse dbClusterBacktracksList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("dbClusterIdentifier") final String clusterIdentifier,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RdsCaller.get(DescribeDBClusterBacktracksRequest.class, DbClusterBacktracksResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeDBClusterBacktracksResult result = client.describeDBClusterBacktracks(
+                    request
+                            .withDBClusterIdentifier(clusterIdentifier)
+                            .withMarker(page)
+            );
+            response.setDbClusterBacktracks(result.getDBClusterBacktracks());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
             name = "dbClusterSnapshots.list",
             path = "{region}/db-cluster-snapshots"
     )
@@ -234,6 +284,45 @@ public final class RdsApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
+            name = "dbClusterParameters.list",
+            path = "{region}/db-cluster-parameters"
+    )
+    public DbClusterParametersResponse dbClusterParametersList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("parameterGroupName") final String parameterGroupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RdsCaller.get(DescribeDBClusterParametersRequest.class, DbClusterParametersResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeDBClusterParametersResult result = client.describeDBClusterParameters(
+                    request
+                            .withDBClusterParameterGroupName(parameterGroupName)
+                            .withMarker(page)
+            );
+            response.setDbClusterParameters(result.getParameters());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "optionGroups.list",
+            path = "{region}/option-groups"
+    )
+    public OptionGroupsResponse optionGroupsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RdsCaller.get(DescribeOptionGroupsRequest.class, OptionGroupsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeOptionGroupsResult result = client.describeOptionGroups(request.withMarker(page));
+            response.setGroups(result.getOptionGroupsList());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
             name = "reservedDbInstances.list",
             path = "{region}/reserved-db-instances"
     )
@@ -263,6 +352,23 @@ public final class RdsApi {
         return RdsCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeEventsResult result = client.describeEvents(request.withDuration(durationInMinutes).withMarker(page));
             response.setEvents(result.getEvents());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "eventSubscriptions.list",
+            path = "{region}/event-subscriptions"
+    )
+    public EventSubscriptionsResponse dbEventSubscriptionsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return RdsCaller.get(DescribeEventSubscriptionsRequest.class, EventSubscriptionsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeEventSubscriptionsResult result = client.describeEventSubscriptions(request.withMarker(page));
+            response.setEventSubscriptions(result.getEventSubscriptionsList());
             response.setNextPage(result.getMarker());
         });
     }
