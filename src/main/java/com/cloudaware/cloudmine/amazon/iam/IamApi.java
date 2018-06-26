@@ -6,6 +6,8 @@ import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedReque
 import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedResult;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyResult;
+import com.amazonaws.services.identitymanagement.model.GetCredentialReportRequest;
+import com.amazonaws.services.identitymanagement.model.GetCredentialReportResult;
 import com.amazonaws.services.identitymanagement.model.GetGroupPolicyRequest;
 import com.amazonaws.services.identitymanagement.model.GetGroupPolicyResult;
 import com.amazonaws.services.identitymanagement.model.GetLoginProfileRequest;
@@ -48,6 +50,8 @@ import com.amazonaws.services.identitymanagement.model.ListRolesRequest;
 import com.amazonaws.services.identitymanagement.model.ListRolesResult;
 import com.amazonaws.services.identitymanagement.model.ListSAMLProvidersRequest;
 import com.amazonaws.services.identitymanagement.model.ListSAMLProvidersResult;
+import com.amazonaws.services.identitymanagement.model.ListSSHPublicKeysRequest;
+import com.amazonaws.services.identitymanagement.model.ListSSHPublicKeysResult;
 import com.amazonaws.services.identitymanagement.model.ListServerCertificatesRequest;
 import com.amazonaws.services.identitymanagement.model.ListServerCertificatesResult;
 import com.amazonaws.services.identitymanagement.model.ListSigningCertificatesRequest;
@@ -68,6 +72,7 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 /**
  * User: urmuzov
@@ -656,6 +661,43 @@ public final class IamApi {
                             .withMarker(page)
             );
             response.setVirtualMfaDevices(result.getVirtualMFADevices());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "credentialReport.get",
+            path = "{partition}/credential-report"
+    )
+    public GetCredentialReportResponse credentialReportGet(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws UnsupportedEncodingException, AmazonUnparsedException {
+        return IamCaller.get(GetCredentialReportRequest.class, GetCredentialReportResponse.class, credentials, partition).execute((client, request, response) -> {
+            final GetCredentialReportResult result = client.getCredentialReport(request);
+            response.setContent(new String(result.getContent().array(), Charset.forName("UTF-8")));
+            response.setGeneratedTime(result.getGeneratedTime());
+            response.setReportFormat(result.getReportFormat());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "sshPublicKeys.list",
+            path = "{partition}/ssh-public-keys"
+    )
+    public ListSshPublicKeysResponse sshPublicKeysList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListSSHPublicKeysRequest.class, ListSshPublicKeysResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListSSHPublicKeysResult result = client.listSSHPublicKeys(
+                    request
+                            .withMarker(page)
+            );
+            response.setPublicKeys(result.getSSHPublicKeys());
             response.setNextPage(result.getMarker());
         });
     }

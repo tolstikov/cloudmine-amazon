@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.42 - IAM updated
 * 1.0.41 - RDS actualized
 * 1.0.40 - Route53 actualized
 * 1.0.39 - Redshift actualized
