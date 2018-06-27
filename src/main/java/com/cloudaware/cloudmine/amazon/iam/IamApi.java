@@ -684,17 +684,19 @@ public final class IamApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
-            name = "sshPublicKeys.list",
-            path = "{partition}/ssh-public-keys"
+            name = "users.sshPublicKeys.list",
+            path = "{partition}/users/{userName}/ssh-public-keys"
     )
-    public ListSshPublicKeysResponse sshPublicKeysList(
+    public ListSshPublicKeysResponse usersSshPublicKeysList(
             @Named("credentials") final String credentials,
             @Named("partition") final String partition,
+            @Named("userName") final String userName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return IamCaller.get(ListSSHPublicKeysRequest.class, ListSshPublicKeysResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListSSHPublicKeysResult result = client.listSSHPublicKeys(
                     request
+                            .withUserName(userName)
                             .withMarker(page)
             );
             response.setPublicKeys(result.getSSHPublicKeys());
