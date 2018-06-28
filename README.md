@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.44 - S3 requests added
 * 1.0.43 - IAM SSH Public Keys filter added
 * 1.0.42 - IAM updated
 * 1.0.41 - RDS actualized

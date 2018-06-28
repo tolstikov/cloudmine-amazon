@@ -281,4 +281,55 @@ public final class S3Api {
             return new EncryptionConfigurationResponse(AmazonResponse.parse(t, "s3:GetEncryptionConfiguration"));
         }
     }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "buckets.websiteConfiguration.get",
+            path = "{region}/bucket/{bucketName}/website-configuration"
+    )
+    public WebsiteConfigurationResponse bucketsWebsiteConfigurationGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("bucketName") final String bucketName
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
+            final com.amazonaws.services.s3.model.BucketWebsiteConfiguration result = clientWrapper.getClient().getBucketWebsiteConfiguration(bucketName);
+            if (result != null) {
+                return new WebsiteConfigurationResponse(
+                        result.getErrorDocument(),
+                        result.getRedirectAllRequestsTo(),
+                        result.getIndexDocumentSuffix(),
+                        result.getRoutingRules()
+                );
+            }
+
+            return new WebsiteConfigurationResponse();
+        } catch (Throwable t) {
+            return new WebsiteConfigurationResponse(AmazonResponse.parse(t, "s3:GetBucketWebsite"));
+        }
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "buckets.lifecycleConfiguration.get",
+            path = "{region}/bucket/{bucketName}/lifecycle-configuration"
+    )
+    public LifecycleConfigurationResponse bucketsLifecycleConfigurationGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("bucketName") final String bucketName
+    ) throws AmazonUnparsedException {
+        try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
+            final com.amazonaws.services.s3.model.BucketLifecycleConfiguration result = clientWrapper.getClient().getBucketLifecycleConfiguration(bucketName);
+            if (result != null) {
+                return new LifecycleConfigurationResponse(
+                        result.getRules()
+                );
+            }
+
+            return new LifecycleConfigurationResponse();
+        } catch (Throwable t) {
+            return new LifecycleConfigurationResponse(AmazonResponse.parse(t, "s3:GetLifecycleConfiguration"));
+        }
+    }
 }
