@@ -98,6 +98,8 @@ import com.amazonaws.services.lightsail.AmazonLightsail;
 import com.amazonaws.services.lightsail.AmazonLightsailClient;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.AWSLogsClient;
+import com.amazonaws.services.mq.AmazonMQ;
+import com.amazonaws.services.mq.AmazonMQClient;
 import com.amazonaws.services.opsworks.AWSOpsWorks;
 import com.amazonaws.services.opsworks.AWSOpsWorksClient;
 import com.amazonaws.services.organizations.AWSOrganizations;
@@ -141,11 +143,6 @@ import com.amazonaws.services.workspaces.AmazonWorkspacesClient;
 
 import java.util.Collection;
 
-/**
- * User: urmuzov
- * Date: 10/23/11
- * Time: 10:20 PM
- */
 public final class AmazonClientHelper {
     private static final int CONNECTION_TIMEOUT = 5 * 1000;
     private static final int SOCKET_TIMEOUT = 20 * 1000;
@@ -971,6 +968,15 @@ public final class AmazonClientHelper {
                 .withRegion(region)
                 .build();
         checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonMQ> getMq(final String region) {
+        final AmazonMQ client = AmazonMQClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
         return new ClientWrapper<>(client);
     }
 }
