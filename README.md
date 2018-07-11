@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.49 - DynamoDB actualized
 * 1.0.48 - Beanstalk actualized
 * 1.0.47 - Amazon MQ added
 * 1.0.46 - AWS Certificate Manager added
