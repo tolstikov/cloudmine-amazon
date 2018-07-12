@@ -51,7 +51,8 @@ import com.google.api.server.spi.config.Nullable;
 )
 public final class ElasticBeanstalkApi {
 
-    private static final int MAX_RECORDS = 100;
+    private static final int PLATFORM_MAX_RECORDS = 1000;
+    private static final int EVENT_MAX_RECORDS = 1000;
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
@@ -167,7 +168,7 @@ public final class ElasticBeanstalkApi {
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return ElasticBeanstalkCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeEventsResult result = client.describeEvents(request.withNextToken(page));
+            final DescribeEventsResult result = client.describeEvents(request.withNextToken(page).withMaxRecords(EVENT_MAX_RECORDS));
             response.setEvents(result.getEvents());
             response.setNextPage(result.getNextToken());
         });
@@ -203,7 +204,7 @@ public final class ElasticBeanstalkApi {
             final ListPlatformVersionsResult result = client.listPlatformVersions(
                     request
                             .withFilters(platformSummariesRequest.getFilters())
-                            .withMaxRecords(MAX_RECORDS)
+                            .withMaxRecords(PLATFORM_MAX_RECORDS)
                             .withNextToken(page));
             response.setPlatformSummaries(result.getPlatformSummaryList());
             response.setNextPage(result.getNextToken());

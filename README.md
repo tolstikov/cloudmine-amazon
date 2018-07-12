@@ -275,7 +275,7 @@ To build client library:
 3. `mvn package` or `mvn install`
 
 # Changelog
-
+* 1.0.50 - Beanstalk increase page sizes
 * 1.0.49 - DynamoDB actualized
 * 1.0.48 - Beanstalk actualized
 * 1.0.47 - Amazon MQ added
