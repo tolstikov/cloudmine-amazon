@@ -2,6 +2,7 @@ package com.cloudaware.cloudmine.amazon.iam;
 
 import com.amazonaws.services.identitymanagement.model.CreateAccessKeyRequest;
 import com.amazonaws.services.identitymanagement.model.CreateAccessKeyResult;
+import com.amazonaws.services.identitymanagement.model.GenerateCredentialReportRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedResult;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyRequest;
@@ -62,6 +63,7 @@ import com.amazonaws.services.identitymanagement.model.ListUsersRequest;
 import com.amazonaws.services.identitymanagement.model.ListUsersResult;
 import com.amazonaws.services.identitymanagement.model.ListVirtualMFADevicesRequest;
 import com.amazonaws.services.identitymanagement.model.ListVirtualMFADevicesResult;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -679,6 +681,22 @@ public final class IamApi {
             response.setContent(new String(result.getContent().array(), Charset.forName("UTF-8")));
             response.setGeneratedTime(result.getGeneratedTime());
             response.setReportFormat(result.getReportFormat());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "credentialReport.generate",
+            path = "{partition}/credential-report"
+    )
+    public AmazonResponse credentialReportGenerate(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            // without requests endpoint throws "org.eclipse.jetty.http.BadMessageException: 400: Unable to parse form content"
+            @SuppressWarnings("unused") final GenerateCredentialReportDummyRequest request
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(GenerateCredentialReportRequest.class, AmazonResponse.class, credentials, partition).execute((client, r, response) -> {
+            client.generateCredentialReport(r);
         });
     }
 
