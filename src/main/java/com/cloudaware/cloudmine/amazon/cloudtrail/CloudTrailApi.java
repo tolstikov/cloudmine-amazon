@@ -115,7 +115,7 @@ public final class CloudTrailApi {
     public TrailEventSelectorsResponse trailsEventSelectorsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
-            @Named("trailArn") final String trailName
+            @Named("trailName") final String trailName
     ) throws AmazonUnparsedException {
         return CloudTrailCaller.get(GetEventSelectorsRequest.class, TrailEventSelectorsResponse.class, credentials, region).execute((client, request, response) -> {
             final GetEventSelectorsResult result = client.getEventSelectors(
