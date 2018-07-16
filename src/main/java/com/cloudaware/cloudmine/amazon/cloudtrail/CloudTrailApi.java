@@ -2,11 +2,16 @@ package com.cloudaware.cloudmine.amazon.cloudtrail;
 
 import com.amazonaws.services.cloudtrail.model.DescribeTrailsRequest;
 import com.amazonaws.services.cloudtrail.model.DescribeTrailsResult;
+import com.amazonaws.services.cloudtrail.model.GetEventSelectorsRequest;
+import com.amazonaws.services.cloudtrail.model.GetEventSelectorsResult;
 import com.amazonaws.services.cloudtrail.model.GetTrailStatusRequest;
 import com.amazonaws.services.cloudtrail.model.GetTrailStatusResult;
+import com.amazonaws.services.cloudtrail.model.ListTagsRequest;
+import com.amazonaws.services.cloudtrail.model.ListTagsResult;
 import com.amazonaws.services.cloudtrail.model.LookupAttribute;
 import com.amazonaws.services.cloudtrail.model.LookupEventsRequest;
 import com.amazonaws.services.cloudtrail.model.LookupEventsResult;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -19,11 +24,6 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-/**
- * User: urmuzov
- * Date: 03.17.17
- * Time: 14:08
- */
 @Api(
         name = "cloudtrail",
         canonicalName = "CloudTrail",
@@ -104,6 +104,79 @@ public final class CloudTrailApi {
                     request.withName(name)
             );
             response.setTrailStatus(result);
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "trails.eventSelectors.get",
+            path = "{region}/trails/{trailName}/event-selectors"
+    )
+    public TrailEventSelectorsResponse trailsEventSelectorsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("trailArn") final String trailName
+    ) throws AmazonUnparsedException {
+        return CloudTrailCaller.get(GetEventSelectorsRequest.class, TrailEventSelectorsResponse.class, credentials, region).execute((client, request, response) -> {
+            final GetEventSelectorsResult result = client.getEventSelectors(
+                    request.withTrailName(trailName)
+            );
+            response.setTrailArn(result.getTrailARN());
+            response.setEventsSelectors(result.getEventSelectors());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "resources.tags.list",
+            path = "{region}/resources/tags"
+    )
+    public TagsResponse resourcesTagsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceArns") final List<String> resourceArns,
+            @Named("page") @Nullable final String page
+
+    ) throws AmazonUnparsedException {
+        return CloudTrailCaller.get(ListTagsRequest.class, TagsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListTagsResult result = client.listTags(
+                    request
+                            .withResourceIdList(resourceArns)
+                            .withNextToken(page)
+            );
+            response.setTags(result.getResourceTagList());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "resources.tags.add",
+            path = "{region}/resources/{resourceArn}/tags/add"
+    )
+    public AmazonResponse resourcesTagsAdd(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceArn") final String resourceArn,
+            final AddTagsRequest request
+    ) throws AmazonUnparsedException {
+        return CloudTrailCaller.get(com.amazonaws.services.cloudtrail.model.AddTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.addTags(r.withResourceId(resourceArn).withTagsList(request.getTags()));
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "resources.tags.remove",
+            path = "{region}/resources/{resourceArn}/tags/remove"
+    )
+    public AmazonResponse resourcesTagsRemove(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("resourceArn") final String resourceArn,
+            final RemoveTagsRequest request
+    ) throws AmazonUnparsedException {
+        return CloudTrailCaller.get(com.amazonaws.services.cloudtrail.model.RemoveTagsRequest.class, AmazonResponse.class, credentials, region).execute((client, r, response) -> {
+            client.removeTags(r.withResourceId(resourceArn).withTagsList(request.getTags()));
         });
     }
 }
