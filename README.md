@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.52 - CloudTrail actualized
 * 1.0.51 - IAM GenerateCredentialReport action added
 * 1.0.50 - Beanstalk increase page sizes
 * 1.0.49 - DynamoDB actualized
