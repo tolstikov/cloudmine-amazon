@@ -5,6 +5,8 @@ import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainCon
 import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainConfigResult;
 import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainsRequest;
 import com.amazonaws.services.elasticsearch.model.DescribeElasticsearchDomainsResult;
+import com.amazonaws.services.elasticsearch.model.DescribeReservedElasticsearchInstancesRequest;
+import com.amazonaws.services.elasticsearch.model.DescribeReservedElasticsearchInstancesResult;
 import com.amazonaws.services.elasticsearch.model.ListDomainNamesRequest;
 import com.amazonaws.services.elasticsearch.model.ListDomainNamesResult;
 import com.amazonaws.services.elasticsearch.model.ListTagsRequest;
@@ -18,6 +20,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.Nullable;
 
 import java.util.List;
 
@@ -82,6 +85,22 @@ public final class ElasticsearchApi {
         return ElasticsearchCaller.get(DescribeElasticsearchDomainConfigRequest.class, DomainConfigResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeElasticsearchDomainConfigResult result = client.describeElasticsearchDomainConfig(request.withDomainName(domainName));
             response.setDomainConfig(result.getDomainConfig());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "reservedInstances.list",
+            path = "{region}/reserved-instances"
+    )
+    public ReservedInstancesResponse reservedInstancesList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return ElasticsearchCaller.get(DescribeReservedElasticsearchInstancesRequest.class, ReservedInstancesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeReservedElasticsearchInstancesResult result = client.describeReservedElasticsearchInstances(request.withNextToken(page));
+            response.setReservedInstances(result.getReservedElasticsearchInstances());
         });
     }
 
