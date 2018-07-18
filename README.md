@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.54 - EMR Security Configuration Added
 * 1.0.53 - Elasticsearch actualized
 * 1.0.52 - CloudTrail actualized
 * 1.0.51 - IAM GenerateCredentialReport action added
