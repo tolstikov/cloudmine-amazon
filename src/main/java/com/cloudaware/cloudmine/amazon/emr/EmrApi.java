@@ -5,6 +5,8 @@ import com.amazonaws.services.elasticmapreduce.model.AddJobFlowStepsResult;
 import com.amazonaws.services.elasticmapreduce.model.AddTagsRequest;
 import com.amazonaws.services.elasticmapreduce.model.DescribeClusterRequest;
 import com.amazonaws.services.elasticmapreduce.model.DescribeClusterResult;
+import com.amazonaws.services.elasticmapreduce.model.DescribeSecurityConfigurationRequest;
+import com.amazonaws.services.elasticmapreduce.model.DescribeSecurityConfigurationResult;
 import com.amazonaws.services.elasticmapreduce.model.DescribeStepRequest;
 import com.amazonaws.services.elasticmapreduce.model.DescribeStepResult;
 import com.amazonaws.services.elasticmapreduce.model.ListBootstrapActionsRequest;
@@ -17,6 +19,8 @@ import com.amazonaws.services.elasticmapreduce.model.ListInstanceGroupsRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListInstanceGroupsResult;
 import com.amazonaws.services.elasticmapreduce.model.ListInstancesRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListInstancesResult;
+import com.amazonaws.services.elasticmapreduce.model.ListSecurityConfigurationsRequest;
+import com.amazonaws.services.elasticmapreduce.model.ListSecurityConfigurationsResult;
 import com.amazonaws.services.elasticmapreduce.model.ListStepsRequest;
 import com.amazonaws.services.elasticmapreduce.model.ListStepsResult;
 import com.amazonaws.services.elasticmapreduce.model.RemoveTagsRequest;
@@ -323,6 +327,45 @@ public final class EmrApi {
                             .withSteps(steps.getStepConfigs())
             );
             response.setStepIds(result.getStepIds());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "securityConfigurations.list",
+            path = "{region}/security-configurations"
+    )
+    public SecurityConfigurationsResponse securityConfigurationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return EmrCaller.get(ListSecurityConfigurationsRequest.class, SecurityConfigurationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListSecurityConfigurationsResult result = client.listSecurityConfigurations(
+                    request.withMarker(page)
+            );
+            response.setSecurityConfigurationSummaries(result.getSecurityConfigurations());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "securityConfigurations.get",
+            path = "{region}/security-configurations/{securityConfigurationName}"
+    )
+    public SecurityConfigurationResponse securityConfigurationsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("securityConfigurationName") final String securityConfigurationName
+    ) throws AmazonUnparsedException {
+        return EmrCaller.get(DescribeSecurityConfigurationRequest.class, SecurityConfigurationResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeSecurityConfigurationResult result = client.describeSecurityConfiguration(
+                    request.withName(securityConfigurationName)
+            );
+            response.setName(result.getName());
+            response.setSecurityConfiguration(result.getSecurityConfiguration());
+            response.setCreationDateTime(result.getCreationDateTime());
         });
     }
 
