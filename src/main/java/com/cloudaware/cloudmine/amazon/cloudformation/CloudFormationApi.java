@@ -5,14 +5,28 @@ import com.amazonaws.services.cloudformation.model.CreateStackResult;
 import com.amazonaws.services.cloudformation.model.DeleteStackRequest;
 import com.amazonaws.services.cloudformation.model.DescribeStackEventsRequest;
 import com.amazonaws.services.cloudformation.model.DescribeStackEventsResult;
+import com.amazonaws.services.cloudformation.model.DescribeStackInstanceRequest;
+import com.amazonaws.services.cloudformation.model.DescribeStackInstanceResult;
 import com.amazonaws.services.cloudformation.model.DescribeStackResourceRequest;
 import com.amazonaws.services.cloudformation.model.DescribeStackResourceResult;
+import com.amazonaws.services.cloudformation.model.DescribeStackSetOperationRequest;
+import com.amazonaws.services.cloudformation.model.DescribeStackSetOperationResult;
+import com.amazonaws.services.cloudformation.model.DescribeStackSetRequest;
+import com.amazonaws.services.cloudformation.model.DescribeStackSetResult;
 import com.amazonaws.services.cloudformation.model.DescribeStacksRequest;
 import com.amazonaws.services.cloudformation.model.DescribeStacksResult;
+import com.amazonaws.services.cloudformation.model.GetStackPolicyRequest;
+import com.amazonaws.services.cloudformation.model.GetStackPolicyResult;
 import com.amazonaws.services.cloudformation.model.GetTemplateRequest;
 import com.amazonaws.services.cloudformation.model.GetTemplateResult;
+import com.amazonaws.services.cloudformation.model.ListStackInstancesRequest;
+import com.amazonaws.services.cloudformation.model.ListStackInstancesResult;
 import com.amazonaws.services.cloudformation.model.ListStackResourcesRequest;
 import com.amazonaws.services.cloudformation.model.ListStackResourcesResult;
+import com.amazonaws.services.cloudformation.model.ListStackSetOperationsRequest;
+import com.amazonaws.services.cloudformation.model.ListStackSetOperationsResult;
+import com.amazonaws.services.cloudformation.model.ListStackSetsRequest;
+import com.amazonaws.services.cloudformation.model.ListStackSetsResult;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
@@ -48,6 +62,8 @@ import java.util.Map;
         apiKeyRequired = AnnotationBoolean.TRUE
 )
 public final class CloudFormationApi {
+
+    private static final int STACK_SET_INSTANCES_MAX_RESULTS = 100;
 
     private static List<com.amazonaws.services.cloudformation.model.Tag> reconvertTagsCf(final Map<String, String> tags) {
         final List<com.amazonaws.services.cloudformation.model.Tag> out = Lists.newArrayList();
@@ -98,6 +114,22 @@ public final class CloudFormationApi {
         return CloudFormationCaller.get(GetTemplateRequest.class, StackTemplateResponse.class, credentials, region).execute((client, request, response) -> {
             final GetTemplateResult result = client.getTemplate(request.withStackName(stackName));
             response.setTemplateBody(result.getTemplateBody());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stacks.policies.get",
+            path = "{region}/stacks/{stackName}/policy"
+    )
+    public StackPolicyResponse stacksPoliciesGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("stackName") final String stackName
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(GetStackPolicyRequest.class, StackPolicyResponse.class, credentials, region).execute((client, request, response) -> {
+            final GetStackPolicyResult result = client.getStackPolicy(request.withStackName(stackName));
+            response.setPolicyBody(result.getStackPolicyBody());
         });
     }
 
@@ -204,6 +236,134 @@ public final class CloudFormationApi {
                             .withLogicalResourceId(logicalResourceId)
             );
             response.setStackResource(result.getStackResourceDetail());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stackSets.list",
+            path = "{region}/stack-sets"
+    )
+    public StackSetsResponse stackSetsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(ListStackSetsRequest.class, StackSetsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListStackSetsResult result = client.listStackSets(
+                    request
+                            .withNextToken(page)
+            );
+            response.setStackSets(result.getSummaries());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stackSets.get",
+            path = "{region}/stack-sets/{stackSetName}"
+    )
+    public StackSetResponse stackSetsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("stackSetName") final String stackSetName
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(DescribeStackSetRequest.class, StackSetResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeStackSetResult result = client.describeStackSet(
+                    request
+                            .withStackSetName(stackSetName)
+            );
+            response.setStackSet(result.getStackSet());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stackSets.operations.list",
+            path = "{region}/stack-sets/{stackSetName}/operations"
+    )
+    public StackSetOperationsResponse stackSetsOperationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("stackSetName") final String stackSetName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(ListStackSetOperationsRequest.class, StackSetOperationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListStackSetOperationsResult result = client.listStackSetOperations(
+                    request
+                            .withStackSetName(stackSetName)
+                            .withNextToken(page)
+            );
+            response.setOperations(result.getSummaries());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stackSets.operations.get",
+            path = "{region}/stack-sets/{stackSetName}/operations/{operationId}"
+    )
+    public StackSetOperationResponse stackSetsOperationsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("stackSetName") final String stackSetName,
+            @Named("operationId") final String operationId
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(DescribeStackSetOperationRequest.class, StackSetOperationResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeStackSetOperationResult result = client.describeStackSetOperation(
+                    request
+                            .withStackSetName(stackSetName)
+                            .withOperationId(operationId)
+            );
+            response.setOperation(result.getStackSetOperation());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stackSets.instances.list",
+            path = "{region}/stack-sets/{stackSetName}/instances"
+    )
+    public StackSetInstancesResponse stackSetsInstancesList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("stackSetName") final String stackSetName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(ListStackInstancesRequest.class, StackSetInstancesResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListStackInstancesResult result = client.listStackInstances(
+                    request
+                            .withStackSetName(stackSetName)
+                            .withNextToken(page)
+                            .withMaxResults(STACK_SET_INSTANCES_MAX_RESULTS)
+            );
+            response.setInstances(result.getSummaries());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "stackSets.instances.get",
+            path = "{region}/stack-sets/{stackSetName}/instances/{instanceAccountId}/{instanceRegion}"
+    )
+    public StackSetInstanceResponse stackSetsInstancesGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("stackSetName") final String stackSetName,
+            @Named("instanceAccountId") final String instanceAccountId,
+            @Named("instanceRegion") final String instanceRegion
+    ) throws AmazonUnparsedException {
+        return CloudFormationCaller.get(DescribeStackInstanceRequest.class, StackSetInstanceResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeStackInstanceResult result = client.describeStackInstance(
+                    request
+                            .withStackSetName(stackSetName)
+                            .withStackInstanceAccount(instanceAccountId)
+                            .withStackInstanceRegion(instanceRegion)
+            );
+            response.setInstance(result.getStackInstance());
         });
     }
 }
