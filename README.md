@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.56 - CloudFront actualized
 * 1.0.55 - CloudFormation actualized
 * 1.0.54 - EMR Security Configuration Added
 * 1.0.53 - Elasticsearch actualized
