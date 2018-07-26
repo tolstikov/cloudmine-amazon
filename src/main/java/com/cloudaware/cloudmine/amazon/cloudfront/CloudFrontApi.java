@@ -12,6 +12,10 @@ import com.amazonaws.services.cloudfront.model.ListCloudFrontOriginAccessIdentit
 import com.amazonaws.services.cloudfront.model.ListCloudFrontOriginAccessIdentitiesResult;
 import com.amazonaws.services.cloudfront.model.ListDistributionsRequest;
 import com.amazonaws.services.cloudfront.model.ListDistributionsResult;
+import com.amazonaws.services.cloudfront.model.ListFieldLevelEncryptionConfigsRequest;
+import com.amazonaws.services.cloudfront.model.ListFieldLevelEncryptionConfigsResult;
+import com.amazonaws.services.cloudfront.model.ListFieldLevelEncryptionProfilesRequest;
+import com.amazonaws.services.cloudfront.model.ListFieldLevelEncryptionProfilesResult;
 import com.amazonaws.services.cloudfront.model.ListInvalidationsRequest;
 import com.amazonaws.services.cloudfront.model.ListInvalidationsResult;
 import com.amazonaws.services.cloudfront.model.ListStreamingDistributionsRequest;
@@ -183,4 +187,39 @@ public final class CloudFrontApi {
             response.setOriginAccessIdentity(result.getCloudFrontOriginAccessIdentity());
         });
     }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "fieldLevelEncryptionConfigs.list",
+            path = "field-level-encryption-configs"
+    )
+    public FieldLevelEncryptionConfigsResponse fieldLevelEncryptionConfigsList(
+            @Named("credentials") final String credentials,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CloudFrontCaller.get(ListFieldLevelEncryptionConfigsRequest.class, FieldLevelEncryptionConfigsResponse.class, credentials).execute((client, request, response) -> {
+            final ListFieldLevelEncryptionConfigsResult result = client.listFieldLevelEncryptionConfigs(
+                    request.withMarker(page));
+            response.setFieldLevelEncryptionConfigSummaries(result.getFieldLevelEncryptionList().getItems());
+            response.setNextPage(result.getFieldLevelEncryptionList().getNextMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "fieldLevelEncryptionProfiles.list",
+            path = "field-level-encryption-profiles"
+    )
+    public FieldLevelEncryptionProfilesResponse fieldLevelEncryptionProfilesList(
+            @Named("credentials") final String credentials,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CloudFrontCaller.get(ListFieldLevelEncryptionProfilesRequest.class, FieldLevelEncryptionProfilesResponse.class, credentials).execute((client, request, response) -> {
+            final ListFieldLevelEncryptionProfilesResult result = client.listFieldLevelEncryptionProfiles(
+                    request.withMarker(page));
+            response.setFieldLevelEncryptionProfileSummaries(result.getFieldLevelEncryptionProfileList().getItems());
+            response.setNextPage(result.getFieldLevelEncryptionProfileList().getNextMarker());
+        });
+    }
+
 }
