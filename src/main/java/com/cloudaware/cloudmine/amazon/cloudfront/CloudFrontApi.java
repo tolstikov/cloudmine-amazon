@@ -18,6 +18,8 @@ import com.amazonaws.services.cloudfront.model.ListFieldLevelEncryptionProfilesR
 import com.amazonaws.services.cloudfront.model.ListFieldLevelEncryptionProfilesResult;
 import com.amazonaws.services.cloudfront.model.ListInvalidationsRequest;
 import com.amazonaws.services.cloudfront.model.ListInvalidationsResult;
+import com.amazonaws.services.cloudfront.model.ListPublicKeysRequest;
+import com.amazonaws.services.cloudfront.model.ListPublicKeysResult;
 import com.amazonaws.services.cloudfront.model.ListStreamingDistributionsRequest;
 import com.amazonaws.services.cloudfront.model.ListStreamingDistributionsResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
@@ -219,6 +221,23 @@ public final class CloudFrontApi {
                     request.withMarker(page));
             response.setFieldLevelEncryptionProfileSummaries(result.getFieldLevelEncryptionProfileList().getItems());
             response.setNextPage(result.getFieldLevelEncryptionProfileList().getNextMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "publicKeys.list",
+            path = "public-keys"
+    )
+    public PublicKeysResponse publicKeysList(
+            @Named("credentials") final String credentials,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CloudFrontCaller.get(ListPublicKeysRequest.class, PublicKeysResponse.class, credentials).execute((client, request, response) -> {
+            final ListPublicKeysResult result = client.listPublicKeys(
+                    request.withMarker(page));
+            response.setPublicKeySummaries(result.getPublicKeyList().getItems());
+            response.setNextPage(result.getPublicKeyList().getNextMarker());
         });
     }
 
