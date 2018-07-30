@@ -2,6 +2,8 @@ package com.cloudaware.cloudmine.amazon.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.model.DescribeBackupRequest;
 import com.amazonaws.services.dynamodbv2.model.DescribeBackupResult;
+import com.amazonaws.services.dynamodbv2.model.DescribeContinuousBackupsRequest;
+import com.amazonaws.services.dynamodbv2.model.DescribeContinuousBackupsResult;
 import com.amazonaws.services.dynamodbv2.model.DescribeGlobalTableRequest;
 import com.amazonaws.services.dynamodbv2.model.DescribeGlobalTableResult;
 import com.amazonaws.services.dynamodbv2.model.DescribeTableRequest;
@@ -86,6 +88,24 @@ public final class DynamoDbApi {
                     request.withTableName(tableName)
             );
             response.setTable(result.getTable());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "tables.continuousBackups.get",
+            path = "{region}/tables/{tableName}/continuous-backups"
+    )
+    public TableContinuousBackupsResponse tablesContinuousBackupsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("tableName") final String tableName
+    ) throws AmazonUnparsedException {
+        return DynamoDbCaller.get(DescribeContinuousBackupsRequest.class, TableContinuousBackupsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeContinuousBackupsResult result = client.describeContinuousBackups(
+                    request.withTableName(tableName)
+            );
+            response.setContinuousBackups(result.getContinuousBackupsDescription());
         });
     }
 
