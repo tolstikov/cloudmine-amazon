@@ -10,10 +10,14 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.retry.PredefinedRetryPolicies;
 import com.amazonaws.services.apigateway.AmazonApiGateway;
 import com.amazonaws.services.apigateway.AmazonApiGatewayClient;
+import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScaling;
+import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScalingClient;
 import com.amazonaws.services.athena.AmazonAthena;
 import com.amazonaws.services.athena.AmazonAthenaClient;
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
+import com.amazonaws.services.autoscalingplans.AWSAutoScalingPlans;
+import com.amazonaws.services.autoscalingplans.AWSAutoScalingPlansClient;
 import com.amazonaws.services.batch.AWSBatch;
 import com.amazonaws.services.batch.AWSBatchClient;
 import com.amazonaws.services.certificatemanager.AWSCertificateManager;
@@ -488,6 +492,28 @@ public final class AmazonClientHelper {
     public ClientWrapper<AmazonAutoScaling> getAutoScaling(final String region) {
         checkRegion(region);
         final AmazonAutoScaling client = AmazonAutoScalingClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSAutoScalingPlans> getAutoScalingPlans(final String region) {
+        checkRegion(region);
+        final AWSAutoScalingPlans client = AWSAutoScalingPlansClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSApplicationAutoScaling> getApplicationAutoScaling(final String region) {
+        checkRegion(region);
+        final AWSApplicationAutoScaling client = AWSApplicationAutoScalingClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
