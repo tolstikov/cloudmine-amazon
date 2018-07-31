@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.58 - Application AutoScaling added, AWS Auto Scaling Plans added
 * 1.0.57 - DynamoDB DescribeContinuousBackups method added
 * 1.0.56 - CloudFront actualized
 * 1.0.55 - CloudFormation actualized
