@@ -6,8 +6,16 @@ import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsRequest
 import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsResult;
 import com.amazonaws.services.autoscaling.model.DescribeLaunchConfigurationsRequest;
 import com.amazonaws.services.autoscaling.model.DescribeLaunchConfigurationsResult;
+import com.amazonaws.services.autoscaling.model.DescribeLifecycleHooksRequest;
+import com.amazonaws.services.autoscaling.model.DescribeLifecycleHooksResult;
+import com.amazonaws.services.autoscaling.model.DescribeNotificationConfigurationsRequest;
+import com.amazonaws.services.autoscaling.model.DescribeNotificationConfigurationsResult;
 import com.amazonaws.services.autoscaling.model.DescribePoliciesRequest;
 import com.amazonaws.services.autoscaling.model.DescribePoliciesResult;
+import com.amazonaws.services.autoscaling.model.DescribeScalingActivitiesRequest;
+import com.amazonaws.services.autoscaling.model.DescribeScalingActivitiesResult;
+import com.amazonaws.services.autoscaling.model.DescribeScheduledActionsRequest;
+import com.amazonaws.services.autoscaling.model.DescribeScheduledActionsResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -113,6 +121,76 @@ public final class AutoScalingApi {
             response.setNumberOfAutoScalingGroups(result.getNumberOfAutoScalingGroups());
             response.setMaxNumberOfLaunchConfigurations(result.getMaxNumberOfLaunchConfigurations());
             response.setNumberOfLaunchConfigurations(result.getNumberOfLaunchConfigurations());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "lifecycleHooks.list",
+            path = "{region}/lifecycle-hooks"
+    )
+    public LifecycleHooksResponse lifecycleHooksList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("groupName") final String groupName
+    ) throws AmazonUnparsedException {
+        return AutoScalingCaller.get(DescribeLifecycleHooksRequest.class, LifecycleHooksResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeLifecycleHooksResult result = client.describeLifecycleHooks(request.withAutoScalingGroupName(groupName));
+            response.setLifecycleHooks(result.getLifecycleHooks());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "notificationConfigurations.list",
+            path = "{region}/notification-configurations"
+    )
+    public NotificationConfigurationsResponse notificationConfigurationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("groupName") @Nullable final String groupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return AutoScalingCaller.get(DescribeNotificationConfigurationsRequest.class, NotificationConfigurationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeNotificationConfigurationsResult result = client.describeNotificationConfigurations(request.withAutoScalingGroupNames(groupName).withNextToken(page));
+            response.setNotificationConfigurations(result.getNotificationConfigurations());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "scalingActivities.list",
+            path = "{region}/scaling-activities"
+    )
+    public ScalingActivitiesResponse scalingActivitiesList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("groupName") @Nullable final String groupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return AutoScalingCaller.get(DescribeScalingActivitiesRequest.class, ScalingActivitiesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeScalingActivitiesResult result = client.describeScalingActivities(request.withAutoScalingGroupName(groupName).withNextToken(page));
+            response.setActivities(result.getActivities());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "scheduledActions.list",
+            path = "{region}/scheduled-actions"
+    )
+    public ScheduledActionsResponse scheduledActionsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("groupName") @Nullable final String groupName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return AutoScalingCaller.get(DescribeScheduledActionsRequest.class, ScheduledActionsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeScheduledActionsResult result = client.describeScheduledActions(request.withAutoScalingGroupName(groupName).withNextToken(page));
+            response.setActions(result.getScheduledUpdateGroupActions());
+            response.setNextPage(result.getNextToken());
         });
     }
 }
