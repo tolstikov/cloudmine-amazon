@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.60 - EC2 AutoScaling actualized
 * 1.0.59 - SES actualized
 * 1.0.58 - Application AutoScaling added, AWS Auto Scaling Plans added
 * 1.0.57 - DynamoDB DescribeContinuousBackups method added
