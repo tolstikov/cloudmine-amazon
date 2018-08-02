@@ -65,7 +65,7 @@ public final class AutoScalingPlansApi {
             final DescribeScalingPlanResourcesResult result = client.describeScalingPlanResources(
                     request.withScalingPlanName(scalingPlanName).withScalingPlanVersion(scalingPlanVersion).withNextToken(page)
             );
-            response.setScalingPlans(result.getScalingPlanResources());
+            response.setScalingPlanResources(result.getScalingPlanResources());
             response.setNextPage(result.getNextToken());
         });
     }
