@@ -6,13 +6,13 @@ import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import java.util.List;
 
 public final class ScalingPlanResourcesResponse extends AmazonResponse {
-    private List<ScalingPlanResource> scalingPlans;
+    private List<ScalingPlanResource> scalingPlanResources;
 
-    public List<ScalingPlanResource> getScalingPlans() {
-        return scalingPlans;
+    public List<ScalingPlanResource> getScalingPlanResources() {
+        return scalingPlanResources;
     }
 
-    public void setScalingPlans(final List<ScalingPlanResource> scalingPlans) {
-        this.scalingPlans = scalingPlans;
+    public void setScalingPlanResources(final List<ScalingPlanResource> scalingPlanResources) {
+        this.scalingPlanResources = scalingPlanResources;
     }
 }
