@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.62 - AppStream 2.0 added
 * 1.0.61 - fix names
 * 1.0.60 - EC2 AutoScaling actualized
 * 1.0.59 - SES actualized

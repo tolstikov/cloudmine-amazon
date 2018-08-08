@@ -12,6 +12,8 @@ import com.amazonaws.services.apigateway.AmazonApiGateway;
 import com.amazonaws.services.apigateway.AmazonApiGatewayClient;
 import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScaling;
 import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScalingClient;
+import com.amazonaws.services.appstream.AmazonAppStream;
+import com.amazonaws.services.appstream.AmazonAppStreamClient;
 import com.amazonaws.services.athena.AmazonAthena;
 import com.amazonaws.services.athena.AmazonAthenaClient;
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
@@ -225,7 +227,7 @@ public final class AmazonClientHelper {
                 || "us-west-1".equals(region)
                 || "us-west-2".equals(region)
                 || "sa-east-1".equals(region)
-                ) {
+        ) {
             // These regions don't have "guardduty" in available endpoints, but they have the service
             return;
         }
@@ -999,6 +1001,15 @@ public final class AmazonClientHelper {
 
     public ClientWrapper<AmazonMQ> getMq(final String region) {
         final AmazonMQ client = AmazonMQClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonAppStream> getAmazonAppStream(final String region) {
+        final AmazonAppStream client = AmazonAppStreamClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
