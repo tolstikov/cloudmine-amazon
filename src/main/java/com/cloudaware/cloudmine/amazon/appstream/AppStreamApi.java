@@ -135,11 +135,12 @@ public final class AppStreamApi {
     public SessionsResponse fleetsSessionsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
+            @Named("fleetName") final String fleetName,
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return AppStreamCaller.get(DescribeSessionsRequest.class, SessionsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSessionsResult result = client.describeSessions(
-                    request.withNextToken(page)
+                    request.withFleetName(fleetName).withNextToken(page)
             );
             response.setSessions(result.getSessions());
             response.setNextPage(result.getNextToken());
