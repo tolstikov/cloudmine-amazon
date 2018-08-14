@@ -353,6 +353,11 @@
             <version>${aws-java-sdk.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-events</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
@@ -507,6 +512,7 @@
                         <param>com.cloudaware.cloudmine.amazon.cloudsearch.CloudSearchApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudtrail.CloudTrailApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudwatch.CloudWatchApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.cloudwatchevents.CloudWatchEventsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudwatchlogs.CloudWatchLogsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codebuild.CodeBuildApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codecommit.CodeCommitApi</param>
