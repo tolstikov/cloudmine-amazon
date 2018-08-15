@@ -276,6 +276,8 @@ To build client library:
 
 # Changelog
 
+* 1.0.64 - Change google-api-client version
+* 1.0.63 - CloudWatchEvents added
 * 1.0.62 - AppStream 2.0 added
 * 1.0.61 - fix names
 * 1.0.60 - EC2 AutoScaling actualized
