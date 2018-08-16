@@ -11,6 +11,7 @@ import com.amazonaws.services.kinesis.model.RemoveTagsFromStreamRequest;
 import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
+import com.google.api.client.util.DateTime;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -18,6 +19,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Api(
@@ -72,6 +74,14 @@ public final class KinesisStreamsApi {
                             .withStreamName(streamName)
                             .withLimit(10000)
             );
+            try {
+                DateTime.parseRfc3339(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(result.getStreamDescription().getStreamCreationTimestamp()));
+            } catch (NumberFormatException e) {
+                // it throws on client side
+                // java.lang.NumberFormatException: Invalid date/time format: 50057-08-05T14:40:00+05:00
+                result.getStreamDescription().setStreamCreationTimestamp(null);
+            }
+
             response.setStream(result.getStreamDescription());
         });
     }
