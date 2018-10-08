@@ -27,6 +27,8 @@ import com.amazonaws.services.identitymanagement.model.GetUserRequest;
 import com.amazonaws.services.identitymanagement.model.GetUserResult;
 import com.amazonaws.services.identitymanagement.model.ListAccessKeysRequest;
 import com.amazonaws.services.identitymanagement.model.ListAccessKeysResult;
+import com.amazonaws.services.identitymanagement.model.ListAccountAliasesRequest;
+import com.amazonaws.services.identitymanagement.model.ListAccountAliasesResult;
 import com.amazonaws.services.identitymanagement.model.ListAttachedGroupPoliciesRequest;
 import com.amazonaws.services.identitymanagement.model.ListAttachedGroupPoliciesResult;
 import com.amazonaws.services.identitymanagement.model.ListAttachedRolePoliciesRequest;
@@ -76,11 +78,6 @@ import com.google.api.server.spi.config.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-/**
- * User: urmuzov
- * Date: 03.17.17
- * Time: 14:08
- */
 @Api(
         name = "iam",
         canonicalName = "Iam",
@@ -97,6 +94,36 @@ import java.nio.charset.Charset;
         apiKeyRequired = AnnotationBoolean.TRUE
 )
 public final class IamApi {
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountAliases.list",
+            path = "{partition}/account-aliases"
+    )
+    public AccountAliasesResponse accountAliasesList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListAccountAliasesRequest.class, AccountAliasesResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListAccountAliasesResult result = client.listAccountAliases(request);
+            response.setAccountAliases(result.getAccountAliases());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountPasswordPolicy.get",
+            path = "{partition}/account-password-policy"
+    )
+    public AccountPasswordPolicyResponse accountPasswordPolicyGet(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(GetAccountPasswordPolicyRequest.class, AccountPasswordPolicyResponse.class, credentials, partition).execute((client, request, response) -> {
+            final GetAccountPasswordPolicyResult result = client.getAccountPasswordPolicy(request);
+            response.setPasswordPolicy(result.getPasswordPolicy());
+        });
+    }
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
@@ -407,21 +434,6 @@ public final class IamApi {
             );
             response.setMfaDevices(result.getMFADevices());
             response.setNextPage(result.getMarker());
-        });
-    }
-
-    @ApiMethod(
-            httpMethod = ApiMethod.HttpMethod.GET,
-            name = "passwordPolicy.get",
-            path = "{partition}/password-policy"
-    )
-    public PasswordPolicyResponse passwordPolicyGet(
-            @Named("credentials") final String credentials,
-            @Named("partition") final String partition
-    ) throws AmazonUnparsedException {
-        return IamCaller.get(GetAccountPasswordPolicyRequest.class, PasswordPolicyResponse.class, credentials, partition).execute((client, request, response) -> {
-            final GetAccountPasswordPolicyResult result = client.getAccountPasswordPolicy(request);
-            response.setPasswordPolicy(result.getPasswordPolicy());
         });
     }
 
