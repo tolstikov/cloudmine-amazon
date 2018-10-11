@@ -565,20 +565,20 @@ public final class S3Api {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "buckets.objects.parts.list",
-            path = "{region}/buckets/{bucketName}/objects/{key}/parts"
+            path = "{region}/buckets/{bucketName}/objects/{objectKey}/parts"
     )
     public PartsResponse bucketsObjectsPartsList(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("bucketName") final String bucketName,
-            @Named("key") final String key,
+            @Named("objectKey") final String objectKey,
             @Named("uploadId") final String uploadId,
             @Named("page") @Nullable final String page,
             @Named("pageSize") @Nullable final Integer pageSize
     ) throws AmazonUnparsedException {
         try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
             final PartListing result = clientWrapper.getClient().listParts(
-                    new ListPartsRequest(bucketName, key, uploadId).withMaxParts(pageSize).withPartNumberMarker(Integer.parseInt(page))
+                    new ListPartsRequest(bucketName, objectKey, uploadId).withMaxParts(pageSize).withPartNumberMarker(Integer.parseInt(page))
             );
             if (result != null) {
                 return new PartsResponse(result, result.getNextPartNumberMarker().toString());
@@ -592,18 +592,18 @@ public final class S3Api {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "buckets.objects.acl.get",
-            path = "{region}/buckets/{bucketName}/objects/{key}/acl"
+            path = "{region}/buckets/{bucketName}/objects/{objectKey}/acl"
     )
     public AclResponse bucketsObjectsAclGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("bucketName") final String bucketName,
-            @Named("key") final String key,
+            @Named("objectKey") final String objectKey,
             @Named("versionId") @Nullable final String versionId
     ) throws AmazonUnparsedException {
         try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
             final AccessControlList acl = clientWrapper.getClient()
-                    .getObjectAcl(new GetObjectAclRequest(bucketName, key, versionId));
+                    .getObjectAcl(new GetObjectAclRequest(bucketName, objectKey, versionId));
             final AccessControlListParsableByGoogleParser aclParseable = new AccessControlListParsableByGoogleParser();
             aclParseable.setRequesterCharged(acl.isRequesterCharged());
             aclParseable.setGrants(Lists.newArrayList());
@@ -623,18 +623,18 @@ public final class S3Api {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "buckets.objects.tags.get",
-            path = "{region}/buckets/{bucketName}/objects/{key}/tags"
+            path = "{region}/buckets/{bucketName}/objects/{objectKey}/tags"
     )
     public ObjectTagsResponse bucketsObjectsTagsGet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("bucketName") final String bucketName,
-            @Named("key") final String key,
+            @Named("objectKey") final String objectKey,
             @Named("versionId") @Nullable final String versionId
     ) throws AmazonUnparsedException {
         try (ClientWrapper<AmazonS3> clientWrapper = new AmazonClientHelper(credentials).getS3(region)) {
             final GetObjectTaggingResult result = clientWrapper.getClient().getObjectTagging(
-                    new GetObjectTaggingRequest(bucketName, key, versionId)
+                    new GetObjectTaggingRequest(bucketName, objectKey, versionId)
             );
             return new ObjectTagsResponse(result == null ? null : result.getTagSet());
         } catch (Throwable t) {
@@ -645,13 +645,13 @@ public final class S3Api {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.POST,
             name = "buckets.objects.tags.set",
-            path = "{region}/buckets/{bucketName}/objects/{key}/tags"
+            path = "{region}/buckets/{bucketName}/objects/{objectKey}/tags"
     )
     public AmazonResponse bucketsObjectsTagsSet(
             @Named("credentials") final String credentials,
             @Named("region") final String region,
             @Named("bucketName") final String bucketName,
-            @Named("key") final String key,
+            @Named("objectKey") final String objectKey,
             @Named("versionId") @Nullable final String versionId,
             final TagsRequest tagsRequest
     ) throws AmazonUnparsedException {
@@ -662,7 +662,7 @@ public final class S3Api {
             clientWrapper.getClient().setObjectTagging(
                     new SetObjectTaggingRequest(
                             bucketName,
-                            key,
+                            objectKey,
                             versionId,
                             new ObjectTagging(
                                     tagsRequest.getTags().entrySet().stream()
