@@ -1,5 +1,7 @@
 package com.cloudaware.cloudmine.amazon.glacier;
 
+import com.amazonaws.services.glacier.model.GetVaultAccessPolicyRequest;
+import com.amazonaws.services.glacier.model.GetVaultAccessPolicyResult;
 import com.amazonaws.services.glacier.model.ListVaultsRequest;
 import com.amazonaws.services.glacier.model.ListVaultsResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
@@ -51,6 +53,24 @@ public final class GlacierApi {
             );
             response.setVaults(result.getVaultList());
             response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "vaults.accessPolicy.get",
+            path = "{region}/vaults/{vaultName}/access-policy"
+    )
+    public VaultAccessPolicyResponse vaultsAccessPolicyGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("vaultName") final String vaultName
+    ) throws AmazonUnparsedException {
+        return GlacierCaller.get(GetVaultAccessPolicyRequest.class, VaultAccessPolicyResponse.class, credentials, region).execute((client, request, response) -> {
+            final GetVaultAccessPolicyResult result = client.getVaultAccessPolicy(
+                    request.withVaultName(vaultName)
+            );
+            response.setPolicy(result.getPolicy());
         });
     }
 }
