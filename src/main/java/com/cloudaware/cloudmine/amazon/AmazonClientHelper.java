@@ -367,6 +367,8 @@ public final class AmazonClientHelper {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("iam.amazonaws.com", "us-east-1");
         } else if ("aws-us-gov".equals(partition)) {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("iam.us-gov.amazonaws.com", "us-gov-west-1");
+        } else if ("aws-cn".equals(partition)) {
+            endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("iam.cn-north-1.amazonaws.com.cn", "cn-north-1");
         } else {
             throw new IllegalArgumentException("Unsupported AWS Partition '" + partition + "'");
         }
@@ -653,6 +655,8 @@ public final class AmazonClientHelper {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("sts.amazonaws.com", "us-east-1");
         } else if ("aws-us-gov".equals(partition)) {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("sts.us-gov-west-1.amazonaws.com", "us-gov-west-1");
+        } else if ("aws-cn".equals(partition)) {
+            endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("sts.cn-north-1.amazonaws.com.cn", "cn-north-1");
         } else {
             throw new IllegalArgumentException("Unsupported AWS Partition '" + partition + "'");
         }
