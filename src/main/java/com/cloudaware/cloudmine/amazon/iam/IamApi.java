@@ -95,6 +95,8 @@ import java.nio.charset.Charset;
 )
 public final class IamApi {
 
+    private static final int MAX_ITEMS = 1000;
+
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "accountAliases.list",
@@ -430,7 +432,10 @@ public final class IamApi {
     ) throws AmazonUnparsedException {
         return IamCaller.get(ListMFADevicesRequest.class, MfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListMFADevicesResult result = client.listMFADevices(
-                    request.withUserName(userName).withMarker(page)
+                    request
+                            .withUserName(userName)
+                            .withMarker(page)
+                            .withMaxItems(MAX_ITEMS)
             );
             response.setMfaDevices(result.getMFADevices());
             response.setNextPage(result.getMarker());
@@ -661,6 +666,27 @@ public final class IamApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
+            name = "mfaDevices.list",
+            path = "{partition}/mfa-devices"
+    )
+    public MfaDevicesResponse mfaDevicesList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListMFADevicesRequest.class, MfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListMFADevicesResult result = client.listMFADevices(
+                    request
+                            .withMarker(page)
+                            .withMaxItems(MAX_ITEMS)
+            );
+            response.setMfaDevices(result.getMFADevices());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
             name = "virtualMfaDevices.list",
             path = "{partition}/virtual-mfa-devices"
     )
@@ -673,6 +699,7 @@ public final class IamApi {
             final ListVirtualMFADevicesResult result = client.listVirtualMFADevices(
                     request
                             .withMarker(page)
+                            .withMaxItems(MAX_ITEMS)
             );
             response.setVirtualMfaDevices(result.getVirtualMFADevices());
             response.setNextPage(result.getMarker());
