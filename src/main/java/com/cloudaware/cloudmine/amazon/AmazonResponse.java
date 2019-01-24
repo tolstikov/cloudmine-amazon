@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException;
 public class AmazonResponse<T extends AmazonWebServiceResult> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmazonResponse.class);
+    private static final int BAD_GATEWAY = 502;
     private static final int HTTP_TEMPORARY_UNAVAILABLE = 503;
     private static final int HTTP_GATEWAY_TIMEOUT = 504;
     private AmazonException exception;
@@ -163,6 +164,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "DirectConnectServerException".equals(errorCode)
                     || "KMSInternalException".equals(errorCode)
                     || "HttpConnectionTimeoutException".equals(errorCode)
+                    // null (Service: AWSLambda; Status Code: 502; Error Code: null)
+                    || ("lambda:ListFunctions".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)
                     //null (Service: AWSElasticBeanstalk; Status Code: 504; Error Code: 504 GATEWAY_TIMEOUT)
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_GATEWAY_TIMEOUT)) {
