@@ -143,6 +143,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "InvalidVpcID.NotFound".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not enabled for"))
                     || "ConfigurationSetDoesNotExist".equals(errorCode)
+                    || "RuleSetDoesNotExist".equals(errorCode)
             ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
