@@ -56,7 +56,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "InvalidAccessKeyId".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Access Denied")) // Strange exception from Beastalk which contains another exception in message
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("is not authorized to perform")) // another Beanstalk exception
-                    ) {
+            ) {
                 return new AmazonException(AmazonException.Category.NO_ACCESS, action, ex);
             }
             /**
@@ -93,7 +93,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
-                    ) {
+            ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
             /**
@@ -142,7 +142,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "DeploymentDoesNotExistException".equals(errorCode)
                     || "InvalidVpcID.NotFound".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not enabled for"))
-                    ) {
+                    || "ConfigurationSetDoesNotExist".equals(errorCode)
+            ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
             /**
