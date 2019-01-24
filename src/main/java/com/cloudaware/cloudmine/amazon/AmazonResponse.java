@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException;
 public class AmazonResponse<T extends AmazonWebServiceResult> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmazonResponse.class);
+    private static final int BAD_GATEWAY = 502;
     private static final int HTTP_TEMPORARY_UNAVAILABLE = 503;
     private static final int HTTP_GATEWAY_TIMEOUT = 504;
     private AmazonException exception;
@@ -56,7 +57,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "InvalidAccessKeyId".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Access Denied")) // Strange exception from Beastalk which contains another exception in message
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("is not authorized to perform")) // another Beanstalk exception
-                    ) {
+            ) {
                 return new AmazonException(AmazonException.Category.NO_ACCESS, action, ex);
             }
             /**
@@ -93,7 +94,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
-                    ) {
+                    || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeCustomerGateways".equals(action))
+            ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
             /**
@@ -142,7 +144,9 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "DeploymentDoesNotExistException".equals(errorCode)
                     || "InvalidVpcID.NotFound".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not enabled for"))
-                    ) {
+                    || "ConfigurationSetDoesNotExist".equals(errorCode)
+                    || "RuleSetDoesNotExist".equals(errorCode)
+            ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
             /**
@@ -160,6 +164,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "DirectConnectServerException".equals(errorCode)
                     || "KMSInternalException".equals(errorCode)
                     || "HttpConnectionTimeoutException".equals(errorCode)
+                    // null (Service: AWSLambda; Status Code: 502; Error Code: null)
+                    || ("lambda:ListFunctions".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)
                     //null (Service: AWSElasticBeanstalk; Status Code: 504; Error Code: 504 GATEWAY_TIMEOUT)
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_GATEWAY_TIMEOUT)) {
