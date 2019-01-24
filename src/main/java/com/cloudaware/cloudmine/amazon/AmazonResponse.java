@@ -93,6 +93,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
+                    || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeCustomerGateways".equals(action))
             ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
