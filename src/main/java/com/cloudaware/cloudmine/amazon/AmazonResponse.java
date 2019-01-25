@@ -95,6 +95,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
                     || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeCustomerGateways".equals(action))
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not"))
             ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
@@ -143,7 +144,6 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "ExecutionDoesNotExist".equals(errorCode)
                     || "DeploymentDoesNotExistException".equals(errorCode)
                     || "InvalidVpcID.NotFound".equals(errorCode)
-                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not enabled for"))
                     || "ConfigurationSetDoesNotExist".equals(errorCode)
                     || "RuleSetDoesNotExist".equals(errorCode)
             ) {
