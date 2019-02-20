@@ -8,6 +8,8 @@ import com.amazonaws.services.ec2.model.DescribeAccountAttributesRequest;
 import com.amazonaws.services.ec2.model.DescribeAccountAttributesResult;
 import com.amazonaws.services.ec2.model.DescribeAddressesRequest;
 import com.amazonaws.services.ec2.model.DescribeAddressesResult;
+import com.amazonaws.services.ec2.model.DescribeCapacityReservationsRequest;
+import com.amazonaws.services.ec2.model.DescribeCapacityReservationsResult;
 import com.amazonaws.services.ec2.model.DescribeClassicLinkInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeClassicLinkInstancesResult;
 import com.amazonaws.services.ec2.model.DescribeCustomerGatewaysRequest;
@@ -24,6 +26,8 @@ import com.amazonaws.services.ec2.model.DescribeImagesRequest;
 import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.model.DescribeInstanceAttributeRequest;
 import com.amazonaws.services.ec2.model.DescribeInstanceAttributeResult;
+import com.amazonaws.services.ec2.model.DescribeInstanceCreditSpecificationsRequest;
+import com.amazonaws.services.ec2.model.DescribeInstanceCreditSpecificationsResult;
 import com.amazonaws.services.ec2.model.DescribeInstanceStatusRequest;
 import com.amazonaws.services.ec2.model.DescribeInstanceStatusResult;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
@@ -964,6 +968,41 @@ public final class Ec2Api {
         return Ec2Caller.get(DescribeSpotFleetRequestsRequest.class, SpotFleetRequestsResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeSpotFleetRequestsResult result = client.describeSpotFleetRequests(request.withNextToken(page));
             response.setSpotFleetRequestConfigs(result.getSpotFleetRequestConfigs());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "instanceCreditSpecifications.list",
+            path = "{region}/instance-credit-specifications"
+    )
+    public InstanceCreditSpecificationsResponse instanceCreditSpecificationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("instanceIds") final List<String> instanceIds,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeInstanceCreditSpecificationsRequest.class, InstanceCreditSpecificationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeInstanceCreditSpecificationsResult result = client.describeInstanceCreditSpecifications(request.withInstanceIds(instanceIds).withNextToken(page));
+            response.setInstanceCreditSpecifications(result.getInstanceCreditSpecifications());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "capacityReservations.list",
+            path = "{region}/capacity-reservations"
+    )
+    public CapacityReservationsResponse capacityReservationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeCapacityReservationsRequest.class, CapacityReservationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeCapacityReservationsResult result = client.describeCapacityReservations(request.withNextToken(page));
+            response.setCapacityReservations(result.getCapacityReservations());
             response.setNextPage(result.getNextToken());
         });
     }
