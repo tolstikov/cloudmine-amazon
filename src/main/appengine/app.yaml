@@ -12,8 +12,8 @@ runtime_config:
    server: jetty9
 
 automatic_scaling:
-  min_num_instances: 6
-  max_num_instances: 20
+  min_num_instances: ${module.cloudmine-amazon.instancesMin}
+  max_num_instances: ${module.cloudmine-amazon.instancesMax}
   cool_down_period_sec: 60
   cpu_utilization:
     target_utilization: 0.5
