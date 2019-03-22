@@ -50,6 +50,8 @@ import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
 import com.amazonaws.services.config.AmazonConfigClient;
+import com.amazonaws.services.costandusagereport.AWSCostAndUsageReport;
+import com.amazonaws.services.costandusagereport.AWSCostAndUsageReportClient;
 import com.amazonaws.services.costexplorer.AWSCostExplorer;
 import com.amazonaws.services.costexplorer.AWSCostExplorerClient;
 import com.amazonaws.services.datapipeline.DataPipeline;
@@ -847,6 +849,18 @@ public final class AmazonClientHelper {
         final String region = "us-east-1";
         checkRegion(region);
         final AWSCostExplorer client = AWSCostExplorerClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCostAndUsageReport> getCostAndUsageReport() {
+        final String region = "us-east-1";
+        checkRegion(region);
+        final AWSCostAndUsageReport client = AWSCostAndUsageReportClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)

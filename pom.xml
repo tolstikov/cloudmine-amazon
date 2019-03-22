@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.71</version>
+    <version>1.0.72</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -365,6 +365,11 @@
             <version>${aws-java-sdk.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-costandusagereport</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
@@ -581,6 +586,7 @@
                         <param>com.cloudaware.cloudmine.amazon.autoscalingplans.AutoScalingPlansApi</param>
                         <param>com.cloudaware.cloudmine.amazon.appstream.AppStreamApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudhsmv2.CloudHsmv2Api</param>
+                        <param>com.cloudaware.cloudmine.amazon.costandusagereport.CostAndUsageReportApi</param>
                     </apis>
                 </configuration>
                 <executions>
