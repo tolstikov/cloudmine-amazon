@@ -96,6 +96,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
                     || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeCustomerGateways".equals(action))
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not"))
+                    || "DeploymentNotStartedException".equals(errorCode)
             ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
@@ -140,12 +141,17 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("ValidationError".equals(errorCode) && errorMessage.startsWith("Group") && errorMessage.contains("not found"))
                     || "PipelineDeletedException".equals(errorCode)
                     || "PipelineNotFoundException".equals(errorCode)
-                    || "ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state")
+                    || ("ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state"))
                     || "ExecutionDoesNotExist".equals(errorCode)
                     || "DeploymentDoesNotExistException".equals(errorCode)
                     || "InvalidVpcID.NotFound".equals(errorCode)
                     || "ConfigurationSetDoesNotExist".equals(errorCode)
                     || "RuleSetDoesNotExist".equals(errorCode)
+                    || ("ValidationError".equals(errorCode) && errorMessage.contains("AutoScalingGroup name not found"))
+                    || "TableNotFoundException".equals(errorCode)
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("DBInstance") && errorMessage.contains("not found"))
+                    || "StackSetNotFoundException".equals(errorCode)
+                    || "DBSnapshotNotFound".equals(errorCode)
             ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
