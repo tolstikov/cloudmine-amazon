@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.73 - AppMesh added
 * 1.0.72 - Cost And Usage Report list added
 * 1.0.71 - IAM, MFA Devises list added
 * 1.0.70 - Glacier VaultAccessPolicy added
