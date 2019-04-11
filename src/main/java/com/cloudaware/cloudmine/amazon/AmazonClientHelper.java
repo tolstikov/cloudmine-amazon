@@ -12,6 +12,8 @@ import com.amazonaws.services.apigateway.AmazonApiGateway;
 import com.amazonaws.services.apigateway.AmazonApiGatewayClient;
 import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScaling;
 import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScalingClient;
+import com.amazonaws.services.appmesh.AWSAppMesh;
+import com.amazonaws.services.appmesh.AWSAppMeshClient;
 import com.amazonaws.services.appstream.AmazonAppStream;
 import com.amazonaws.services.appstream.AmazonAppStreamClient;
 import com.amazonaws.services.athena.AmazonAthena;
@@ -1052,6 +1054,15 @@ public final class AmazonClientHelper {
 
     public ClientWrapper<AWSCloudHSMV2> getAwsCloudHsmv2(final String region) {
         final AWSCloudHSMV2 client = AWSCloudHSMV2Client.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSAppMesh> getAwsAppMesh(final String region) {
+        final AWSAppMesh client = AWSAppMeshClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)

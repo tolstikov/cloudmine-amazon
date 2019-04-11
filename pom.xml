@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.72</version>
+    <version>1.0.73</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -17,7 +17,7 @@
         <endpoints.service.version>1970-01-01r0</endpoints.service.version>
         <module.cloudmine-amazon.instancesMin>6</module.cloudmine-amazon.instancesMin>
         <module.cloudmine-amazon.instancesMax>30</module.cloudmine-amazon.instancesMax>
-        <aws-java-sdk.version>1.11.493</aws-java-sdk.version>
+        <aws-java-sdk.version>1.11.534</aws-java-sdk.version>
         <google-api-client.version>1.22.0</google-api-client.version>
         <endpoints-framework.version>2.0.7</endpoints-framework.version>
         <endpoints-management.version>1.0.2</endpoints-management.version>
@@ -370,6 +370,11 @@
             <version>${aws-java-sdk.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-appmesh</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
@@ -586,6 +591,7 @@
                         <param>com.cloudaware.cloudmine.amazon.autoscalingplans.AutoScalingPlansApi</param>
                         <param>com.cloudaware.cloudmine.amazon.appstream.AppStreamApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudhsmv2.CloudHsmv2Api</param>
+                        <param>com.cloudaware.cloudmine.amazon.appmesh.AppMeshApi</param>
                         <param>com.cloudaware.cloudmine.amazon.costandusagereport.CostAndUsageReportApi</param>
                     </apis>
                 </configuration>
