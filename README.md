@@ -276,6 +276,7 @@ To build client library:
 
 # Changelog
 
+* 1.0.75 - CodeDeploy deploymentTarget endpoints added
 * 1.0.74 - includeShadowTrails flag added to CloudTrail trails.list
 * 1.0.73 - AppMesh added
 * 1.0.72 - Cost And Usage Report list added

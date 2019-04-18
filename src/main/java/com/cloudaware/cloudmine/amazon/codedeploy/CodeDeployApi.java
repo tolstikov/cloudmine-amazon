@@ -9,6 +9,8 @@ import com.amazonaws.services.codedeploy.model.BatchGetDeploymentGroupsRequest;
 import com.amazonaws.services.codedeploy.model.BatchGetDeploymentGroupsResult;
 import com.amazonaws.services.codedeploy.model.BatchGetDeploymentInstancesRequest;
 import com.amazonaws.services.codedeploy.model.BatchGetDeploymentInstancesResult;
+import com.amazonaws.services.codedeploy.model.BatchGetDeploymentTargetsRequest;
+import com.amazonaws.services.codedeploy.model.BatchGetDeploymentTargetsResult;
 import com.amazonaws.services.codedeploy.model.BatchGetDeploymentsRequest;
 import com.amazonaws.services.codedeploy.model.BatchGetDeploymentsResult;
 import com.amazonaws.services.codedeploy.model.BatchGetOnPremisesInstancesRequest;
@@ -25,6 +27,8 @@ import com.amazonaws.services.codedeploy.model.ListDeploymentGroupsRequest;
 import com.amazonaws.services.codedeploy.model.ListDeploymentGroupsResult;
 import com.amazonaws.services.codedeploy.model.ListDeploymentInstancesRequest;
 import com.amazonaws.services.codedeploy.model.ListDeploymentInstancesResult;
+import com.amazonaws.services.codedeploy.model.ListDeploymentTargetsRequest;
+import com.amazonaws.services.codedeploy.model.ListDeploymentTargetsResult;
 import com.amazonaws.services.codedeploy.model.ListDeploymentsRequest;
 import com.amazonaws.services.codedeploy.model.ListDeploymentsResult;
 import com.amazonaws.services.codedeploy.model.ListGitHubAccountTokenNamesRequest;
@@ -315,6 +319,41 @@ public final class CodeDeployApi {
             );
             response.setInstances(result.getInstancesSummary());
             response.setErrorMessage(result.getErrorMessage());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "deployments.deploymentTargetIds.list",
+            path = "{region}/deployments/{deploymentId}/deployment-target-ids"
+    )
+    public DeploymentTargetIdsResponse deploymentsDeploymentTargetIdsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("deploymentId") final String deploymentId,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return CodeDeployCaller.get(ListDeploymentTargetsRequest.class, DeploymentTargetIdsResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListDeploymentTargetsResult result = client.listDeploymentTargets(request.withDeploymentId(deploymentId).withNextToken(page));
+            response.setDeploymentTargetIds(result.getTargetIds());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "deployments.deploymentTargets.list",
+            path = "{region}/deployments/{deploymentId}/deployment-targets"
+    )
+    public DeploymentTargetsResponse deploymentsDeploymentTargetsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("deploymentId") final String deploymentId,
+            @Named("deploymentTargetId") final List<String> deploymentTargetIds
+    ) throws AmazonUnparsedException {
+        return CodeDeployCaller.get(BatchGetDeploymentTargetsRequest.class, DeploymentTargetsResponse.class, credentials, region).execute((client, request, response) -> {
+            final BatchGetDeploymentTargetsResult result = client.batchGetDeploymentTargets(request.withDeploymentId(deploymentId).withTargetIds(deploymentTargetIds));
+            response.setDeploymentTargets(result.getDeploymentTargets());
         });
     }
 
