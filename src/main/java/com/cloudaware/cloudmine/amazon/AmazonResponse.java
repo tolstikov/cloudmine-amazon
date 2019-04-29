@@ -152,6 +152,8 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("DBInstance") && errorMessage.contains("not found"))
                     || "StackSetNotFoundException".equals(errorCode)
                     || "DBSnapshotNotFound".equals(errorCode)
+                    || "NotFoundException".equals(errorCode) && errorMessage.contains("Mesh") && errorMessage.contains("is missing")
+                    || "NotFoundException".equals(errorCode) && errorMessage.contains(":appmesh:") && errorMessage.contains("does not exist")
             ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }

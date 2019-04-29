@@ -81,9 +81,13 @@ public final class CloudTrailApi {
     )
     public TrailsResponse trailsList(
             @Named("credentials") final String credentials,
-            @Named("region") final String region
+            @Named("region") final String region,
+            @Named("includeShadowTrails") @Nullable final Boolean includeShadowTrails
     ) throws AmazonUnparsedException {
         return CloudTrailCaller.get(DescribeTrailsRequest.class, TrailsResponse.class, credentials, region).execute((client, request, response) -> {
+            if (includeShadowTrails != null) {
+                request.setIncludeShadowTrails(includeShadowTrails);
+            }
             final DescribeTrailsResult result = client.describeTrails(request);
             response.setTrails(result.getTrailList());
         });

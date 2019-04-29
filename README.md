@@ -276,7 +276,10 @@ To build client library:
 
 # Changelog
 
-* 1.0.73 - x-google-allow for ESP
+* 1.0.76 - x-google-allow for ESP
+* 1.0.75 - CodeDeploy deploymentTarget endpoints added
+* 1.0.74 - includeShadowTrails flag added to CloudTrail trails.list
+* 1.0.73 - AppMesh added
 * 1.0.72 - Cost And Usage Report list added
 * 1.0.71 - IAM, MFA Devises list added
 * 1.0.70 - Glacier VaultAccessPolicy added
