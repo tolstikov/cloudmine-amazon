@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.75</version>
+    <version>1.0.76</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -517,7 +517,7 @@
             <plugin>
                 <groupId>com.cloudaware</groupId>
                 <artifactId>endpoints-maven-plugin</artifactId>
-                <version>1.0.2</version>
+                <version>1.0.4</version>
                 <configuration>
                     <apis>
                         <param>com.cloudaware.cloudmine.amazon.apigateway.ApiGatewayApi</param>
