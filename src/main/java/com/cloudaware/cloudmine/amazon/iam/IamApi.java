@@ -7,6 +7,8 @@ import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedReque
 import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedResult;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyResult;
+import com.amazonaws.services.identitymanagement.model.GetAccountSummaryRequest;
+import com.amazonaws.services.identitymanagement.model.GetAccountSummaryResult;
 import com.amazonaws.services.identitymanagement.model.GetCredentialReportRequest;
 import com.amazonaws.services.identitymanagement.model.GetCredentialReportResult;
 import com.amazonaws.services.identitymanagement.model.GetGroupPolicyRequest;
@@ -738,5 +740,20 @@ public final class IamApi {
             response.setPublicKeys(result.getSSHPublicKeys());
             response.setNextPage(result.getMarker());
         });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountSummary.get",
+            path = "{partition}/account-summary"
+    )
+    public GetAccountSummaryResponse accountSummaryGet(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+            return IamCaller.get(GetAccountSummaryRequest.class, GetAccountSummaryResponse.class, credentials, partition).execute((client, request, response) -> {
+                final GetAccountSummaryResult result = client.getAccountSummary();
+                response.setSummaryMap(result.getSummaryMap());
+            });
     }
 }
