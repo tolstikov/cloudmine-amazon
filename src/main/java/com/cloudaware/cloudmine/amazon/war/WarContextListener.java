@@ -8,8 +8,13 @@ public class WarContextListener extends com.google.inject.servlet.GuiceServletCo
     @Override
     protected Injector getInjector() {
         return Guice.createInjector(
-                new GuiceSssModule()
+                new GuiceSssModule() {
+                    @Override
+                    protected void configureServlets() {
+                        super.configureServlets();
+                        filter("/*").through(AuthFilter.class);
+                    }
+                }
         );
     }
-
 }

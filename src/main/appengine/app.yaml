@@ -21,7 +21,3 @@ automatic_scaling:
 resources:
   cpu: 1
   memory_gb: 3
-
-endpoints_api_service:
-  name: ${endpoints.service.name}
-  config_id: ${endpoints.service.version}
