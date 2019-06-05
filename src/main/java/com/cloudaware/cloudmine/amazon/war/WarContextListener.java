@@ -12,7 +12,7 @@ public class WarContextListener extends com.google.inject.servlet.GuiceServletCo
                     @Override
                     protected void configureServlets() {
                         super.configureServlets();
-                        filter("/*").through(AuthFilter.class);
+                        filterRegex("/_ah/api/(?!explorer)(?!static)(?!discovery).*").through(AuthFilter.class);
                     }
                 }
         );
