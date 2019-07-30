@@ -95,8 +95,12 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
                     || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeCustomerGateways".equals(action))
+                    || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeVpnConnections".equals(action))
+                    || ("UnknownOperationException".equals(errorCode) && "dynamodb:ListGlobalTables".equals(action))
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not"))
                     || "DeploymentNotStartedException".equals(errorCode)
+                    || ("OperationNotPermitted".equals(errorCode) && "ec2:DescribeEgressOnlyInternetGateways".equals(action))
+                    || ("ValidationError".equals(errorCode) && "cloudformation:ListStackSets".equals(action))
             ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
@@ -129,6 +133,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "FileSystemNotFound".equals(errorCode)
                     || "ResourceNotFoundException".equals(errorCode)
                     || "NotFound".equals(errorCode)
+                    || "NotFoundException".equals(errorCode)
                     || "NoSuchBucket".equals(errorCode)
                     || "NoSuchDistribution".equals(errorCode)
                     || "NoSuchConfigRuleException".equals(errorCode)
@@ -152,8 +157,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("DBInstance") && errorMessage.contains("not found"))
                     || "StackSetNotFoundException".equals(errorCode)
                     || "DBSnapshotNotFound".equals(errorCode)
-                    || "NotFoundException".equals(errorCode) && errorMessage.contains("Mesh") && errorMessage.contains("is missing")
-                    || "NotFoundException".equals(errorCode) && errorMessage.contains(":appmesh:") && errorMessage.contains("does not exist")
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains(":elasticbeanstalk:") && errorMessage.contains("does not exist"))
             ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
@@ -174,6 +178,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "HttpConnectionTimeoutException".equals(errorCode)
                     // null (Service: AWSLambda; Status Code: 502; Error Code: null)
                     || ("lambda:ListFunctions".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
+                    || ("ds:DescribeDirectories".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)
                     //null (Service: AWSElasticBeanstalk; Status Code: 504; Error Code: 504 GATEWAY_TIMEOUT)
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_GATEWAY_TIMEOUT)) {
