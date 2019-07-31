@@ -55,6 +55,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "InsufficientPrivilegesException".equals(errorCode)
                     || "InvalidClientTokenId".equals(errorCode)
                     || "InvalidAccessKeyId".equals(errorCode)
+                    || "FailedResourceAccessException".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Access Denied")) // Strange exception from Beastalk which contains another exception in message
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("is not authorized to perform")) // another Beanstalk exception
             ) {
@@ -157,7 +158,10 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("DBInstance") && errorMessage.contains("not found"))
                     || "StackSetNotFoundException".equals(errorCode)
                     || "DBSnapshotNotFound".equals(errorCode)
+                    || "BackupNotFoundException".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains(":elasticbeanstalk:") && errorMessage.contains("does not exist"))
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("No Solution Stack named"))
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Unable to resolve Ref. No data on parameter value"))
             ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
@@ -175,6 +179,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "ClientUnavailable".equals(errorCode)
                     || "DirectConnectServerException".equals(errorCode)
                     || "KMSInternalException".equals(errorCode)
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Invalid Environment Configuration specification"))
                     || "HttpConnectionTimeoutException".equals(errorCode)
                     // null (Service: AWSLambda; Status Code: 502; Error Code: null)
                     || ("lambda:ListFunctions".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
