@@ -2,10 +2,15 @@ package com.cloudaware.cloudmine.amazon.iam;
 
 import com.amazonaws.services.identitymanagement.model.CreateAccessKeyRequest;
 import com.amazonaws.services.identitymanagement.model.CreateAccessKeyResult;
+import com.amazonaws.services.identitymanagement.model.GenerateCredentialReportRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccessKeyLastUsedResult;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyRequest;
 import com.amazonaws.services.identitymanagement.model.GetAccountPasswordPolicyResult;
+import com.amazonaws.services.identitymanagement.model.GetAccountSummaryRequest;
+import com.amazonaws.services.identitymanagement.model.GetAccountSummaryResult;
+import com.amazonaws.services.identitymanagement.model.GetCredentialReportRequest;
+import com.amazonaws.services.identitymanagement.model.GetCredentialReportResult;
 import com.amazonaws.services.identitymanagement.model.GetGroupPolicyRequest;
 import com.amazonaws.services.identitymanagement.model.GetGroupPolicyResult;
 import com.amazonaws.services.identitymanagement.model.GetLoginProfileRequest;
@@ -24,6 +29,8 @@ import com.amazonaws.services.identitymanagement.model.GetUserRequest;
 import com.amazonaws.services.identitymanagement.model.GetUserResult;
 import com.amazonaws.services.identitymanagement.model.ListAccessKeysRequest;
 import com.amazonaws.services.identitymanagement.model.ListAccessKeysResult;
+import com.amazonaws.services.identitymanagement.model.ListAccountAliasesRequest;
+import com.amazonaws.services.identitymanagement.model.ListAccountAliasesResult;
 import com.amazonaws.services.identitymanagement.model.ListAttachedGroupPoliciesRequest;
 import com.amazonaws.services.identitymanagement.model.ListAttachedGroupPoliciesResult;
 import com.amazonaws.services.identitymanagement.model.ListAttachedRolePoliciesRequest;
@@ -44,20 +51,35 @@ import com.amazonaws.services.identitymanagement.model.ListPolicyVersionsRequest
 import com.amazonaws.services.identitymanagement.model.ListPolicyVersionsResult;
 import com.amazonaws.services.identitymanagement.model.ListRolePoliciesRequest;
 import com.amazonaws.services.identitymanagement.model.ListRolePoliciesResult;
+import com.amazonaws.services.identitymanagement.model.ListRoleTagsRequest;
+import com.amazonaws.services.identitymanagement.model.ListRoleTagsResult;
 import com.amazonaws.services.identitymanagement.model.ListRolesRequest;
 import com.amazonaws.services.identitymanagement.model.ListRolesResult;
 import com.amazonaws.services.identitymanagement.model.ListSAMLProvidersRequest;
 import com.amazonaws.services.identitymanagement.model.ListSAMLProvidersResult;
+import com.amazonaws.services.identitymanagement.model.ListSSHPublicKeysRequest;
+import com.amazonaws.services.identitymanagement.model.ListSSHPublicKeysResult;
 import com.amazonaws.services.identitymanagement.model.ListServerCertificatesRequest;
 import com.amazonaws.services.identitymanagement.model.ListServerCertificatesResult;
 import com.amazonaws.services.identitymanagement.model.ListSigningCertificatesRequest;
 import com.amazonaws.services.identitymanagement.model.ListSigningCertificatesResult;
 import com.amazonaws.services.identitymanagement.model.ListUserPoliciesRequest;
 import com.amazonaws.services.identitymanagement.model.ListUserPoliciesResult;
+import com.amazonaws.services.identitymanagement.model.ListUserTagsRequest;
+import com.amazonaws.services.identitymanagement.model.ListUserTagsResult;
 import com.amazonaws.services.identitymanagement.model.ListUsersRequest;
 import com.amazonaws.services.identitymanagement.model.ListUsersResult;
 import com.amazonaws.services.identitymanagement.model.ListVirtualMFADevicesRequest;
 import com.amazonaws.services.identitymanagement.model.ListVirtualMFADevicesResult;
+import com.amazonaws.services.identitymanagement.model.TagRoleRequest;
+import com.amazonaws.services.identitymanagement.model.TagRoleResult;
+import com.amazonaws.services.identitymanagement.model.TagUserRequest;
+import com.amazonaws.services.identitymanagement.model.TagUserResult;
+import com.amazonaws.services.identitymanagement.model.UntagRoleRequest;
+import com.amazonaws.services.identitymanagement.model.UntagRoleResult;
+import com.amazonaws.services.identitymanagement.model.UntagUserRequest;
+import com.amazonaws.services.identitymanagement.model.UntagUserResult;
+import com.cloudaware.cloudmine.amazon.AmazonResponse;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -68,12 +90,9 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.List;
 
-/**
- * User: urmuzov
- * Date: 03.17.17
- * Time: 14:08
- */
 @Api(
         name = "iam",
         canonicalName = "Iam",
@@ -90,6 +109,38 @@ import java.io.UnsupportedEncodingException;
         apiKeyRequired = AnnotationBoolean.TRUE
 )
 public final class IamApi {
+
+    private static final int MAX_ITEMS = 1000;
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountAliases.list",
+            path = "{partition}/account-aliases"
+    )
+    public AccountAliasesResponse accountAliasesList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListAccountAliasesRequest.class, AccountAliasesResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListAccountAliasesResult result = client.listAccountAliases(request);
+            response.setAccountAliases(result.getAccountAliases());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountPasswordPolicy.get",
+            path = "{partition}/account-password-policy"
+    )
+    public AccountPasswordPolicyResponse accountPasswordPolicyGet(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(GetAccountPasswordPolicyRequest.class, AccountPasswordPolicyResponse.class, credentials, partition).execute((client, request, response) -> {
+            final GetAccountPasswordPolicyResult result = client.getAccountPasswordPolicy(request);
+            response.setPasswordPolicy(result.getPasswordPolicy());
+        });
+    }
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
@@ -172,6 +223,60 @@ public final class IamApi {
             final ListAccessKeysResult result = client.listAccessKeys(request.withUserName(userName).withMarker(page));
             response.setAccessKeys(result.getAccessKeyMetadata());
             response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "users.tags.list",
+            path = "{partition}/users/{userName}/tags"
+    )
+    public TagsResponse usersTagsList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("userName") final String userName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListUserTagsRequest.class, TagsResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListUserTagsResult result = client.listUserTags(request.withUserName(userName).withMarker(page));
+            response.setTags(result.getTags());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "users.tags.tag",
+            path = "{partition}/users/{userName}/tags"
+    )
+    public AmazonResponse usersTagsTag(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("userName") final String userName,
+            final TagsRequest tagsRequest
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(TagUserRequest.class, AmazonResponse.class, credentials, partition).execute((client, request, response) -> {
+            final TagUserResult result = client.tagUser(
+                    request.withUserName(userName).withTags(tagsRequest.getTags())
+            );
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "users.tags.untag",
+            path = "{partition}/users/{userName}/tags"
+    )
+    public AmazonResponse usersTagsUntag(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("userName") final String userName,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(UntagUserRequest.class, AmazonResponse.class, credentials, partition).execute((client, request, response) -> {
+            final UntagUserResult result = client.untagUser(
+                    request.withUserName(userName).withTagKeys(tagKeys)
+            );
         });
     }
 
@@ -396,25 +501,13 @@ public final class IamApi {
     ) throws AmazonUnparsedException {
         return IamCaller.get(ListMFADevicesRequest.class, MfaDevicesResponse.class, credentials, partition).execute((client, request, response) -> {
             final ListMFADevicesResult result = client.listMFADevices(
-                    request.withUserName(userName).withMarker(page)
+                    request
+                            .withUserName(userName)
+                            .withMarker(page)
+                            .withMaxItems(MAX_ITEMS)
             );
             response.setMfaDevices(result.getMFADevices());
             response.setNextPage(result.getMarker());
-        });
-    }
-
-    @ApiMethod(
-            httpMethod = ApiMethod.HttpMethod.GET,
-            name = "passwordPolicy.get",
-            path = "{partition}/password-policy"
-    )
-    public PasswordPolicyResponse passwordPolicyGet(
-            @Named("credentials") final String credentials,
-            @Named("partition") final String partition
-    ) throws AmazonUnparsedException {
-        return IamCaller.get(GetAccountPasswordPolicyRequest.class, PasswordPolicyResponse.class, credentials, partition).execute((client, request, response) -> {
-            final GetAccountPasswordPolicyResult result = client.getAccountPasswordPolicy(request);
-            response.setPasswordPolicy(result.getPasswordPolicy());
         });
     }
 
@@ -552,6 +645,68 @@ public final class IamApi {
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
+            name = "roles.tags.list",
+            path = "{partition}/roles/{roleName}/tags"
+    )
+    public TagsResponse rolesTagsList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("roleName") final String roleName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListRoleTagsRequest.class, TagsResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListRoleTagsResult result = client.listRoleTags(
+                    request
+                            .withRoleName(roleName)
+                            .withMarker(page)
+            );
+            response.setTags(result.getTags());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "roles.tags.tag",
+            path = "{partition}/roles/{roleName}/tags"
+    )
+    public AmazonResponse rolesTagsTag(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("roleName") final String roleName,
+            final TagsRequest tagsRequest
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(TagRoleRequest.class, AmazonResponse.class, credentials, partition).execute((client, request, response) -> {
+            final TagRoleResult result = client.tagRole(
+                    request
+                            .withRoleName(roleName)
+                            .withTags(tagsRequest.getTags())
+            );
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.DELETE,
+            name = "roles.tags.untag",
+            path = "{partition}/roles/{roleName}/tags"
+    )
+    public AmazonResponse rolesTagsUntag(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("roleName") final String roleName,
+            @Named("tagKey") final List<String> tagKeys
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(UntagRoleRequest.class, AmazonResponse.class, credentials, partition).execute((client, request, response) -> {
+            final UntagRoleResult result = client.untagRole(
+                    request
+                            .withRoleName(roleName)
+                            .withTagKeys(tagKeys)
+            );
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
             name = "samlProviders.list",
             path = "{partition}/saml-providers"
     )
@@ -654,9 +809,80 @@ public final class IamApi {
             final ListVirtualMFADevicesResult result = client.listVirtualMFADevices(
                     request
                             .withMarker(page)
+                            .withMaxItems(MAX_ITEMS)
             );
             response.setVirtualMfaDevices(result.getVirtualMFADevices());
             response.setNextPage(result.getMarker());
         });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "credentialReport.get",
+            path = "{partition}/credential-report"
+    )
+    public GetCredentialReportResponse credentialReportGet(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws UnsupportedEncodingException, AmazonUnparsedException {
+        return IamCaller.get(GetCredentialReportRequest.class, GetCredentialReportResponse.class, credentials, partition).execute((client, request, response) -> {
+            final GetCredentialReportResult result = client.getCredentialReport(request);
+            response.setContent(new String(result.getContent().array(), Charset.forName("UTF-8")));
+            response.setGeneratedTime(result.getGeneratedTime());
+            response.setReportFormat(result.getReportFormat());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "credentialReport.generate",
+            path = "{partition}/credential-report"
+    )
+    public AmazonResponse credentialReportGenerate(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            // without requests endpoint throws "org.eclipse.jetty.http.BadMessageException: 400: Unable to parse form content"
+            @SuppressWarnings("unused") final GenerateCredentialReportDummyRequest request
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(GenerateCredentialReportRequest.class, AmazonResponse.class, credentials, partition).execute((client, r, response) -> {
+            client.generateCredentialReport(r);
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "users.sshPublicKeys.list",
+            path = "{partition}/users/{userName}/ssh-public-keys"
+    )
+    public ListSshPublicKeysResponse usersSshPublicKeysList(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition,
+            @Named("userName") final String userName,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return IamCaller.get(ListSSHPublicKeysRequest.class, ListSshPublicKeysResponse.class, credentials, partition).execute((client, request, response) -> {
+            final ListSSHPublicKeysResult result = client.listSSHPublicKeys(
+                    request
+                            .withUserName(userName)
+                            .withMarker(page)
+            );
+            response.setPublicKeys(result.getSSHPublicKeys());
+            response.setNextPage(result.getMarker());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "accountSummary.get",
+            path = "{partition}/account-summary"
+    )
+    public GetAccountSummaryResponse accountSummaryGet(
+            @Named("credentials") final String credentials,
+            @Named("partition") final String partition
+    ) throws AmazonUnparsedException {
+            return IamCaller.get(GetAccountSummaryRequest.class, GetAccountSummaryResponse.class, credentials, partition).execute((client, request, response) -> {
+                final GetAccountSummaryResult result = client.getAccountSummary();
+                response.setSummaryMap(result.getSummaryMap());
+            });
     }
 }

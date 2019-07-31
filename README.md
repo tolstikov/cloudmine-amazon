@@ -276,6 +276,43 @@ To build client library:
 
 # Changelog
 
+* 1.0.77 - IAM, User Tags and Role Tags added
+* 1.0.76 - x-google-allow for ESP
+* 1.0.75 - CodeDeploy deploymentTarget endpoints added
+* 1.0.74 - includeShadowTrails flag added to CloudTrail trails.list
+* 1.0.73 - AppMesh added
+* 1.0.72 - Cost And Usage Report list added
+* 1.0.71 - IAM, MFA Devises list added
+* 1.0.70 - Glacier VaultAccessPolicy added
+* 1.0.69 - S3 lacking methods added
+* 1.0.68 - IAM, added account aliases List
+* 1.0.67 - CloudHSM added
+* 1.0.66 - EC2 Spot added, NAT Gateways page fix
+* 1.0.65 - Kinesis ignore invalid dates
+* 1.0.64 - Change google-api-client version
+* 1.0.63 - CloudWatchEvents added
+* 1.0.62 - AppStream 2.0 added
+* 1.0.61 - fix names
+* 1.0.60 - EC2 AutoScaling actualized
+* 1.0.59 - SES actualized
+* 1.0.58 - Application AutoScaling added, AWS Auto Scaling Plans added
+* 1.0.57 - DynamoDB DescribeContinuousBackups method added
+* 1.0.56 - CloudFront actualized
+* 1.0.55 - CloudFormation actualized
+* 1.0.54 - EMR Security Configuration Added
+* 1.0.53 - Elasticsearch actualized
+* 1.0.52 - CloudTrail actualized
+* 1.0.51 - IAM GenerateCredentialReport action added
+* 1.0.50 - Beanstalk increase page sizes
+* 1.0.49 - DynamoDB actualized
+* 1.0.48 - Beanstalk actualized
+* 1.0.47 - Amazon MQ added
+* 1.0.46 - AWS Certificate Manager added
+* 1.0.45 - Workspaces actualized
+* 1.0.44 - S3 requests added
+* 1.0.43 - IAM SSH Public Keys filter added
+* 1.0.42 - IAM updated
+* 1.0.41 - RDS actualized
 * 1.0.40 - Route53 actualized
 * 1.0.39 - Redshift actualized
 * 1.0.38 - VPC actualized 

@@ -7,7 +7,7 @@
 
     <groupId>com.cloudaware.cloudmine</groupId>
     <artifactId>cloudmine-amazon-server</artifactId>
-    <version>1.0.39</version>
+    <version>1.0.77</version>
     <name>cloudmine-amazon-server</name>
 
     <properties>
@@ -15,7 +15,9 @@
         <appengine.app.version>${endpoints.service.version}</appengine.app.version>
         <endpoints.service.name>cloudmine-amazon.endpoints.${appengine.app.id}.cloud.goog</endpoints.service.name>
         <endpoints.service.version>1970-01-01r0</endpoints.service.version>
-        <aws-java-sdk.version>1.11.340</aws-java-sdk.version>
+        <module.cloudmine-amazon.instancesMin>6</module.cloudmine-amazon.instancesMin>
+        <module.cloudmine-amazon.instancesMax>30</module.cloudmine-amazon.instancesMax>
+        <aws-java-sdk.version>1.11.560</aws-java-sdk.version>
         <google-api-client.version>1.22.0</google-api-client.version>
         <endpoints-framework.version>2.0.7</endpoints-framework.version>
         <endpoints-management.version>1.0.2</endpoints-management.version>
@@ -24,12 +26,28 @@
         <jackson.version>2.7.5</jackson.version>
         <slf4j.version>1.7.13</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aws.apiKey>yourkey</aws.apiKey>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-cloudhsmv2</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-autoscaling</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-autoscalingplans</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-applicationautoscaling</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
         <dependency>
@@ -328,6 +346,36 @@
             <version>${aws-java-sdk.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-acm</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-mq</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-appstream</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-events</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-costandusagereport</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-appmesh</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
@@ -398,6 +446,12 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -417,6 +471,22 @@
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.outputDirectory}/cloudmine-amazon.properties</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -464,7 +534,7 @@
             <plugin>
                 <groupId>com.cloudaware</groupId>
                 <artifactId>endpoints-maven-plugin</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.4</version>
                 <configuration>
                     <apis>
                         <param>com.cloudaware.cloudmine.amazon.apigateway.ApiGatewayApi</param>
@@ -476,6 +546,7 @@
                         <param>com.cloudaware.cloudmine.amazon.cloudsearch.CloudSearchApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudtrail.CloudTrailApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudwatch.CloudWatchApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.cloudwatchevents.CloudWatchEventsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.cloudwatchlogs.CloudWatchLogsApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codebuild.CodeBuildApi</param>
                         <param>com.cloudaware.cloudmine.amazon.codecommit.CodeCommitApi</param>
@@ -531,6 +602,14 @@
                         <param>com.cloudaware.cloudmine.amazon.dynamodbaccelerator.DynamoDbAcceleratorApi</param>
                         <param>com.cloudaware.cloudmine.amazon.iot.IotApi</param>
                         <param>com.cloudaware.cloudmine.amazon.ecr.EcrApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.certificatemanager.CertificateManagerApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.mq.MqApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.applicationautoscaling.ApplicationAutoScalingApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.autoscalingplans.AutoScalingPlansApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.appstream.AppStreamApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.cloudhsmv2.CloudHsmv2Api</param>
+                        <param>com.cloudaware.cloudmine.amazon.appmesh.AppMeshApi</param>
+                        <param>com.cloudaware.cloudmine.amazon.costandusagereport.CostAndUsageReportApi</param>
                     </apis>
                 </configuration>
                 <executions>

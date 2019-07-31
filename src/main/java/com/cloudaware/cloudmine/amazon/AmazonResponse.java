@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException;
 public class AmazonResponse<T extends AmazonWebServiceResult> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmazonResponse.class);
+    private static final int BAD_GATEWAY = 502;
     private static final int HTTP_TEMPORARY_UNAVAILABLE = 503;
     private static final int HTTP_GATEWAY_TIMEOUT = 504;
     private AmazonException exception;
@@ -54,9 +55,10 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "InsufficientPrivilegesException".equals(errorCode)
                     || "InvalidClientTokenId".equals(errorCode)
                     || "InvalidAccessKeyId".equals(errorCode)
+                    || "FailedResourceAccessException".equals(errorCode)
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.startsWith("Access Denied")) // Strange exception from Beastalk which contains another exception in message
                     || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("is not authorized to perform")) // another Beanstalk exception
-                    ) {
+            ) {
                 return new AmazonException(AmazonException.Category.NO_ACCESS, action, ex);
             }
             /**
@@ -93,7 +95,14 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     + "Elastic Beanstalk environments running legacy platforms"))
                     || "AWSOrganizationsNotInUseException".equals(errorCode)
                     || ("UnsupportedOperation".equals(errorCode) && errorMessage.contains("The operation is not supported in this region!"))
-                    ) {
+                    || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeCustomerGateways".equals(action))
+                    || ("UnsupportedOperation".equals(errorCode) && "ec2:DescribeVpnConnections".equals(action))
+                    || ("UnknownOperationException".equals(errorCode) && "dynamodb:ListGlobalTables".equals(action))
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Backtrack is not"))
+                    || "DeploymentNotStartedException".equals(errorCode)
+                    || ("OperationNotPermitted".equals(errorCode) && "ec2:DescribeEgressOnlyInternetGateways".equals(action))
+                    || ("ValidationError".equals(errorCode) && "cloudformation:ListStackSets".equals(action))
+            ) {
                 return new AmazonException(AmazonException.Category.SERVICE_DISABLED, action, ex);
             }
             /**
@@ -125,6 +134,7 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "FileSystemNotFound".equals(errorCode)
                     || "ResourceNotFoundException".equals(errorCode)
                     || "NotFound".equals(errorCode)
+                    || "NotFoundException".equals(errorCode)
                     || "NoSuchBucket".equals(errorCode)
                     || "NoSuchDistribution".equals(errorCode)
                     || "NoSuchConfigRuleException".equals(errorCode)
@@ -137,11 +147,22 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || ("ValidationError".equals(errorCode) && errorMessage.startsWith("Group") && errorMessage.contains("not found"))
                     || "PipelineDeletedException".equals(errorCode)
                     || "PipelineNotFoundException".equals(errorCode)
-                    || "ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state")
+                    || ("ClientException".equals(errorCode) && "ds:DescribeEventTopics".equals(action) && errorMessage.contains("is in Deleting state"))
                     || "ExecutionDoesNotExist".equals(errorCode)
                     || "DeploymentDoesNotExistException".equals(errorCode)
                     || "InvalidVpcID.NotFound".equals(errorCode)
-                    ) {
+                    || "ConfigurationSetDoesNotExist".equals(errorCode)
+                    || "RuleSetDoesNotExist".equals(errorCode)
+                    || ("ValidationError".equals(errorCode) && errorMessage.contains("AutoScalingGroup name not found"))
+                    || "TableNotFoundException".equals(errorCode)
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("DBInstance") && errorMessage.contains("not found"))
+                    || "StackSetNotFoundException".equals(errorCode)
+                    || "DBSnapshotNotFound".equals(errorCode)
+                    || "BackupNotFoundException".equals(errorCode)
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains(":elasticbeanstalk:") && errorMessage.contains("does not exist"))
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("No Solution Stack named"))
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Unable to resolve Ref. No data on parameter value"))
+            ) {
                 return new AmazonException(AmazonException.Category.OBJECT_NOT_FOUND, action, ex);
             }
             /**
@@ -158,7 +179,11 @@ public class AmazonResponse<T extends AmazonWebServiceResult> {
                     || "ClientUnavailable".equals(errorCode)
                     || "DirectConnectServerException".equals(errorCode)
                     || "KMSInternalException".equals(errorCode)
+                    || ("InvalidParameterValue".equals(errorCode) && errorMessage.contains("Invalid Environment Configuration specification"))
                     || "HttpConnectionTimeoutException".equals(errorCode)
+                    // null (Service: AWSLambda; Status Code: 502; Error Code: null)
+                    || ("lambda:ListFunctions".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
+                    || ("ds:DescribeDirectories".equals(action) && (statusCode == BAD_GATEWAY || statusCode == HTTP_GATEWAY_TIMEOUT))
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_TEMPORARY_UNAVAILABLE)
                     //null (Service: AWSElasticBeanstalk; Status Code: 504; Error Code: 504 GATEWAY_TIMEOUT)
                     || (errorType == AmazonServiceException.ErrorType.Unknown && statusCode == HTTP_GATEWAY_TIMEOUT)) {

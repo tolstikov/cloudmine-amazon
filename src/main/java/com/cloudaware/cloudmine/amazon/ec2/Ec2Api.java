@@ -8,6 +8,8 @@ import com.amazonaws.services.ec2.model.DescribeAccountAttributesRequest;
 import com.amazonaws.services.ec2.model.DescribeAccountAttributesResult;
 import com.amazonaws.services.ec2.model.DescribeAddressesRequest;
 import com.amazonaws.services.ec2.model.DescribeAddressesResult;
+import com.amazonaws.services.ec2.model.DescribeCapacityReservationsRequest;
+import com.amazonaws.services.ec2.model.DescribeCapacityReservationsResult;
 import com.amazonaws.services.ec2.model.DescribeClassicLinkInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeClassicLinkInstancesResult;
 import com.amazonaws.services.ec2.model.DescribeCustomerGatewaysRequest;
@@ -24,6 +26,8 @@ import com.amazonaws.services.ec2.model.DescribeImagesRequest;
 import com.amazonaws.services.ec2.model.DescribeImagesResult;
 import com.amazonaws.services.ec2.model.DescribeInstanceAttributeRequest;
 import com.amazonaws.services.ec2.model.DescribeInstanceAttributeResult;
+import com.amazonaws.services.ec2.model.DescribeInstanceCreditSpecificationsRequest;
+import com.amazonaws.services.ec2.model.DescribeInstanceCreditSpecificationsResult;
 import com.amazonaws.services.ec2.model.DescribeInstanceStatusRequest;
 import com.amazonaws.services.ec2.model.DescribeInstanceStatusResult;
 import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
@@ -50,6 +54,14 @@ import com.amazonaws.services.ec2.model.DescribeSnapshotAttributeRequest;
 import com.amazonaws.services.ec2.model.DescribeSnapshotAttributeResult;
 import com.amazonaws.services.ec2.model.DescribeSnapshotsRequest;
 import com.amazonaws.services.ec2.model.DescribeSnapshotsResult;
+import com.amazonaws.services.ec2.model.DescribeSpotDatafeedSubscriptionRequest;
+import com.amazonaws.services.ec2.model.DescribeSpotDatafeedSubscriptionResult;
+import com.amazonaws.services.ec2.model.DescribeSpotFleetInstancesRequest;
+import com.amazonaws.services.ec2.model.DescribeSpotFleetInstancesResult;
+import com.amazonaws.services.ec2.model.DescribeSpotFleetRequestsRequest;
+import com.amazonaws.services.ec2.model.DescribeSpotFleetRequestsResult;
+import com.amazonaws.services.ec2.model.DescribeSpotInstanceRequestsRequest;
+import com.amazonaws.services.ec2.model.DescribeSpotInstanceRequestsResult;
 import com.amazonaws.services.ec2.model.DescribeSubnetsRequest;
 import com.amazonaws.services.ec2.model.DescribeSubnetsResult;
 import com.amazonaws.services.ec2.model.DescribeVolumeStatusRequest;
@@ -891,7 +903,107 @@ public final class Ec2Api {
         return Ec2Caller.get(DescribeNatGatewaysRequest.class, NatGatewaysResponse.class, credentials, region).execute((client, request, response) -> {
             final DescribeNatGatewaysResult result = client.describeNatGateways(request.withNextToken(page));
             response.setNatGateways(result.getNatGateways());
-            response.setNextPage(page);
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "spotInstanceRequests.list",
+            path = "{region}/spot-instance-requests"
+    )
+    public SpotInstanceRequestsResponse spotInstanceRequestsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeSpotInstanceRequestsRequest.class, SpotInstanceRequestsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeSpotInstanceRequestsResult result = client.describeSpotInstanceRequests();
+            response.setSpotInstanceResponses(result.getSpotInstanceRequests());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "spotDatafeedSubscription.get",
+            path = "{region}/spot-datafeed-subscription"
+    )
+    public SpotDatafeedSubscriptionResponse spotDatafeedSubscription(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeSpotDatafeedSubscriptionRequest.class, SpotDatafeedSubscriptionResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeSpotDatafeedSubscriptionResult result = client.describeSpotDatafeedSubscription();
+            response.setSpotDatafeedSubscription(result.getSpotDatafeedSubscription());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "spotFleetInstances.list",
+            path = "{region}/spot-fleet-instances"
+    )
+    public SpotFleetInstancesResponse spotFleetInstancesList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("requestId") final String requestId,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeSpotFleetInstancesRequest.class, SpotFleetInstancesResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeSpotFleetInstancesResult result = client.describeSpotFleetInstances(request.withSpotFleetRequestId(requestId).withNextToken(page));
+            response.setActiveInstances(result.getActiveInstances());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "spotFleetRequests.list",
+            path = "{region}/spot-fleet-requests"
+    )
+    public SpotFleetRequestsResponse spotFleetRequestsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeSpotFleetRequestsRequest.class, SpotFleetRequestsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeSpotFleetRequestsResult result = client.describeSpotFleetRequests(request.withNextToken(page));
+            response.setSpotFleetRequestConfigs(result.getSpotFleetRequestConfigs());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "instanceCreditSpecifications.list",
+            path = "{region}/instance-credit-specifications"
+    )
+    public InstanceCreditSpecificationsResponse instanceCreditSpecificationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("instanceIds") final List<String> instanceIds,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeInstanceCreditSpecificationsRequest.class, InstanceCreditSpecificationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeInstanceCreditSpecificationsResult result = client.describeInstanceCreditSpecifications(request.withInstanceIds(instanceIds).withNextToken(page));
+            response.setInstanceCreditSpecifications(result.getInstanceCreditSpecifications());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "capacityReservations.list",
+            path = "{region}/capacity-reservations"
+    )
+    public CapacityReservationsResponse capacityReservationsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeCapacityReservationsRequest.class, CapacityReservationsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeCapacityReservationsResult result = client.describeCapacityReservations(request.withNextToken(page));
+            response.setCapacityReservations(result.getCapacityReservations());
+            response.setNextPage(result.getNextToken());
         });
     }
 }

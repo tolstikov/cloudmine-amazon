@@ -14,8 +14,12 @@ import com.amazonaws.services.elasticbeanstalk.model.DescribeEnvironmentsRequest
 import com.amazonaws.services.elasticbeanstalk.model.DescribeEnvironmentsResult;
 import com.amazonaws.services.elasticbeanstalk.model.DescribeEventsRequest;
 import com.amazonaws.services.elasticbeanstalk.model.DescribeEventsResult;
+import com.amazonaws.services.elasticbeanstalk.model.DescribePlatformVersionRequest;
+import com.amazonaws.services.elasticbeanstalk.model.DescribePlatformVersionResult;
 import com.amazonaws.services.elasticbeanstalk.model.ListAvailableSolutionStacksRequest;
 import com.amazonaws.services.elasticbeanstalk.model.ListAvailableSolutionStacksResult;
+import com.amazonaws.services.elasticbeanstalk.model.ListPlatformVersionsRequest;
+import com.amazonaws.services.elasticbeanstalk.model.ListPlatformVersionsResult;
 import com.cloudaware.cloudmine.amazon.AmazonUnparsedException;
 import com.cloudaware.cloudmine.amazon.Constants;
 import com.google.api.server.spi.config.AnnotationBoolean;
@@ -46,6 +50,9 @@ import com.google.api.server.spi.config.Nullable;
         apiKeyRequired = AnnotationBoolean.TRUE
 )
 public final class ElasticBeanstalkApi {
+
+    private static final int PLATFORM_MAX_RECORDS = 1000;
+    private static final int EVENT_MAX_RECORDS = 1000;
 
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
@@ -97,7 +104,7 @@ public final class ElasticBeanstalkApi {
     @ApiMethod(
             httpMethod = ApiMethod.HttpMethod.GET,
             name = "applications.configurationSettings.get",
-            path = "{region}/applications/APPLICATION_NAME/configuration-settings"
+            path = "{region}/applications/{applicationName}/configuration-settings"
     )
     public ConfigurationSettingsResponse applicationsConfigurationSettingsGet(
             @Named("credentials") final String credentials,
@@ -161,7 +168,7 @@ public final class ElasticBeanstalkApi {
             @Named("page") @Nullable final String page
     ) throws AmazonUnparsedException {
         return ElasticBeanstalkCaller.get(DescribeEventsRequest.class, EventsResponse.class, credentials, region).execute((client, request, response) -> {
-            final DescribeEventsResult result = client.describeEvents(request.withNextToken(page));
+            final DescribeEventsResult result = client.describeEvents(request.withNextToken(page).withMaxRecords(EVENT_MAX_RECORDS));
             response.setEvents(result.getEvents());
             response.setNextPage(result.getNextToken());
         });
@@ -179,6 +186,44 @@ public final class ElasticBeanstalkApi {
         return ElasticBeanstalkCaller.get(ListAvailableSolutionStacksRequest.class, SolutionStacksResponse.class, credentials, region).execute((client, request, response) -> {
             final ListAvailableSolutionStacksResult result = client.listAvailableSolutionStacks(request);
             response.setSolutionStacks(result.getSolutionStackDetails());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.POST,
+            name = "platforms.list",
+            path = "{region}/platforms"
+    )
+    public PlatformSummariesResponse platformsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("page") @Nullable final String page,
+            @Nullable final PlatformSummariesRequest platformSummariesRequest
+    ) throws AmazonUnparsedException {
+        return ElasticBeanstalkCaller.get(ListPlatformVersionsRequest.class, PlatformSummariesResponse.class, credentials, region).execute((client, request, response) -> {
+            final ListPlatformVersionsResult result = client.listPlatformVersions(
+                    request
+                            .withFilters(platformSummariesRequest.getFilters())
+                            .withMaxRecords(PLATFORM_MAX_RECORDS)
+                            .withNextToken(page));
+            response.setPlatformSummaries(result.getPlatformSummaryList());
+            response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "platforms.get",
+            path = "{region}/platforms/{platformArn}"
+    )
+    public PlatformDescriptionResponse platformsGet(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region,
+            @Named("platformArn") final String platformArn
+    ) throws AmazonUnparsedException {
+        return ElasticBeanstalkCaller.get(DescribePlatformVersionRequest.class, PlatformDescriptionResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribePlatformVersionResult result = client.describePlatformVersion(request.withPlatformArn(platformArn));
+            response.setPlatformDescription(result.getPlatformDescription());
         });
     }
 }

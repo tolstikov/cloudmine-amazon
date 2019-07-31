@@ -10,22 +10,36 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.retry.PredefinedRetryPolicies;
 import com.amazonaws.services.apigateway.AmazonApiGateway;
 import com.amazonaws.services.apigateway.AmazonApiGatewayClient;
+import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScaling;
+import com.amazonaws.services.applicationautoscaling.AWSApplicationAutoScalingClient;
+import com.amazonaws.services.appmesh.AWSAppMesh;
+import com.amazonaws.services.appmesh.AWSAppMeshClient;
+import com.amazonaws.services.appstream.AmazonAppStream;
+import com.amazonaws.services.appstream.AmazonAppStreamClient;
 import com.amazonaws.services.athena.AmazonAthena;
 import com.amazonaws.services.athena.AmazonAthenaClient;
 import com.amazonaws.services.autoscaling.AmazonAutoScaling;
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient;
+import com.amazonaws.services.autoscalingplans.AWSAutoScalingPlans;
+import com.amazonaws.services.autoscalingplans.AWSAutoScalingPlansClient;
 import com.amazonaws.services.batch.AWSBatch;
 import com.amazonaws.services.batch.AWSBatchClient;
+import com.amazonaws.services.certificatemanager.AWSCertificateManager;
+import com.amazonaws.services.certificatemanager.AWSCertificateManagerClient;
 import com.amazonaws.services.cloudformation.AmazonCloudFormation;
 import com.amazonaws.services.cloudformation.AmazonCloudFormationClient;
 import com.amazonaws.services.cloudfront.AmazonCloudFront;
 import com.amazonaws.services.cloudfront.AmazonCloudFrontClient;
+import com.amazonaws.services.cloudhsmv2.AWSCloudHSMV2;
+import com.amazonaws.services.cloudhsmv2.AWSCloudHSMV2Client;
 import com.amazonaws.services.cloudsearchv2.AmazonCloudSearch;
 import com.amazonaws.services.cloudsearchv2.AmazonCloudSearchClient;
 import com.amazonaws.services.cloudtrail.AWSCloudTrail;
 import com.amazonaws.services.cloudtrail.AWSCloudTrailClient;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
+import com.amazonaws.services.cloudwatchevents.AmazonCloudWatchEvents;
+import com.amazonaws.services.cloudwatchevents.AmazonCloudWatchEventsClient;
 import com.amazonaws.services.codebuild.AWSCodeBuild;
 import com.amazonaws.services.codebuild.AWSCodeBuildClient;
 import com.amazonaws.services.codecommit.AWSCodeCommit;
@@ -38,6 +52,8 @@ import com.amazonaws.services.codestar.AWSCodeStar;
 import com.amazonaws.services.codestar.AWSCodeStarClient;
 import com.amazonaws.services.config.AmazonConfig;
 import com.amazonaws.services.config.AmazonConfigClient;
+import com.amazonaws.services.costandusagereport.AWSCostAndUsageReport;
+import com.amazonaws.services.costandusagereport.AWSCostAndUsageReportClient;
 import com.amazonaws.services.costexplorer.AWSCostExplorer;
 import com.amazonaws.services.costexplorer.AWSCostExplorerClient;
 import com.amazonaws.services.datapipeline.DataPipeline;
@@ -96,6 +112,8 @@ import com.amazonaws.services.lightsail.AmazonLightsail;
 import com.amazonaws.services.lightsail.AmazonLightsailClient;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.AWSLogsClient;
+import com.amazonaws.services.mq.AmazonMQ;
+import com.amazonaws.services.mq.AmazonMQClient;
 import com.amazonaws.services.opsworks.AWSOpsWorks;
 import com.amazonaws.services.opsworks.AWSOpsWorksClient;
 import com.amazonaws.services.organizations.AWSOrganizations;
@@ -139,11 +157,6 @@ import com.amazonaws.services.workspaces.AmazonWorkspacesClient;
 
 import java.util.Collection;
 
-/**
- * User: urmuzov
- * Date: 10/23/11
- * Time: 10:20 PM
- */
 public final class AmazonClientHelper {
     private static final int CONNECTION_TIMEOUT = 5 * 1000;
     private static final int SOCKET_TIMEOUT = 20 * 1000;
@@ -222,7 +235,7 @@ public final class AmazonClientHelper {
                 || "us-west-1".equals(region)
                 || "us-west-2".equals(region)
                 || "sa-east-1".equals(region)
-                ) {
+        ) {
             // These regions don't have "guardduty" in available endpoints, but they have the service
             return;
         }
@@ -263,6 +276,17 @@ public final class AmazonClientHelper {
     public ClientWrapper<AWSLogs> getCwLogs(final String region) {
         checkRegion(region);
         final AWSLogs client = AWSLogsClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonCloudWatchEvents> getCwEvents(final String region) {
+        checkRegion(region);
+        final AmazonCloudWatchEvents client = AmazonCloudWatchEventsClient.builder()
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(region)
@@ -347,6 +371,8 @@ public final class AmazonClientHelper {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("iam.amazonaws.com", "us-east-1");
         } else if ("aws-us-gov".equals(partition)) {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("iam.us-gov.amazonaws.com", "us-gov-west-1");
+        } else if ("aws-cn".equals(partition)) {
+            endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("iam.cn-north-1.amazonaws.com.cn", "cn-north-1");
         } else {
             throw new IllegalArgumentException("Unsupported AWS Partition '" + partition + "'");
         }
@@ -497,6 +523,28 @@ public final class AmazonClientHelper {
         return new ClientWrapper<>(client);
     }
 
+    public ClientWrapper<AWSAutoScalingPlans> getAutoScalingPlans(final String region) {
+        checkRegion(region);
+        final AWSAutoScalingPlans client = AWSAutoScalingPlansClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSApplicationAutoScaling> getApplicationAutoScaling(final String region) {
+        checkRegion(region);
+        final AWSApplicationAutoScaling client = AWSApplicationAutoScalingClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
     public ClientWrapper<AWSCloudTrail> getCloudTrail(final String region) {
         checkRegion(region);
         final AWSCloudTrail client = AWSCloudTrailClient.builder()
@@ -611,6 +659,8 @@ public final class AmazonClientHelper {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("sts.amazonaws.com", "us-east-1");
         } else if ("aws-us-gov".equals(partition)) {
             endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("sts.us-gov-west-1.amazonaws.com", "us-gov-west-1");
+        } else if ("aws-cn".equals(partition)) {
+            endpointConfiguration = new AwsClientBuilder.EndpointConfiguration("sts.cn-north-1.amazonaws.com.cn", "cn-north-1");
         } else {
             throw new IllegalArgumentException("Unsupported AWS Partition '" + partition + "'");
         }
@@ -809,6 +859,18 @@ public final class AmazonClientHelper {
         return new ClientWrapper<>(client);
     }
 
+    public ClientWrapper<AWSCostAndUsageReport> getCostAndUsageReport() {
+        final String region = "us-east-1";
+        checkRegion(region);
+        final AWSCostAndUsageReport client = AWSCostAndUsageReportClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
     public ClientWrapper<DataPipeline> getDataPipeline(final String region) {
         checkRegion(region);
         final DataPipeline client = DataPipelineClient.builder()
@@ -957,6 +1019,53 @@ public final class AmazonClientHelper {
                 .withClientConfiguration(config)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(Regions.US_EAST_1)
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCertificateManager> getCertificateManager(final String region) {
+        checkRegion(region);
+        final AWSCertificateManager client = AWSCertificateManagerClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        checkEndpoint(region, (AmazonWebServiceClient) client);
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonMQ> getMq(final String region) {
+        final AmazonMQ client = AmazonMQClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AmazonAppStream> getAmazonAppStream(final String region) {
+        final AmazonAppStream client = AmazonAppStreamClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSCloudHSMV2> getAwsCloudHsmv2(final String region) {
+        final AWSCloudHSMV2 client = AWSCloudHSMV2Client.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
+                .build();
+        return new ClientWrapper<>(client);
+    }
+
+    public ClientWrapper<AWSAppMesh> getAwsAppMesh(final String region) {
+        final AWSAppMesh client = AWSAppMeshClient.builder()
+                .withClientConfiguration(config)
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(region)
                 .build();
         return new ClientWrapper<>(client);
     }
