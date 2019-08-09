@@ -17,7 +17,7 @@
         <endpoints.service.version>1970-01-01r0</endpoints.service.version>
         <module.cloudmine-amazon.instancesMin>6</module.cloudmine-amazon.instancesMin>
         <module.cloudmine-amazon.instancesMax>30</module.cloudmine-amazon.instancesMax>
-        <aws-java-sdk.version>1.11.560</aws-java-sdk.version>
+        <aws-java-sdk.version>1.11.601</aws-java-sdk.version>
         <google-api-client.version>1.22.0</google-api-client.version>
         <endpoints-framework.version>2.0.7</endpoints-framework.version>
         <endpoints-management.version>1.0.2</endpoints-management.version>
@@ -453,7 +453,18 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>checkstyle-backport-jre6-maven</id>
+            <name>checkstyle-backport-jre6-maven</name>
+            <url>http://rnveach.github.io/checkstyle-backport-jre6/maven2</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>goldmine-releases</id>
+            <name>goldmine-releases</name>
+            <url>https://nexus.cloudaware.com/content/repositories/releases/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <finalName>${project.artifactId}</finalName>
         <!-- For hot reload of the web application when using an IDE Eclipse / IDEA -->

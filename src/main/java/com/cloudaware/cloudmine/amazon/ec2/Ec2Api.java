@@ -44,6 +44,8 @@ import com.amazonaws.services.ec2.model.DescribeNetworkInterfacesRequest;
 import com.amazonaws.services.ec2.model.DescribeNetworkInterfacesResult;
 import com.amazonaws.services.ec2.model.DescribePlacementGroupsRequest;
 import com.amazonaws.services.ec2.model.DescribePlacementGroupsResult;
+import com.amazonaws.services.ec2.model.DescribeRegionsRequest;
+import com.amazonaws.services.ec2.model.DescribeRegionsResult;
 import com.amazonaws.services.ec2.model.DescribeReservedInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeReservedInstancesResult;
 import com.amazonaws.services.ec2.model.DescribeRouteTablesRequest;
@@ -1004,6 +1006,21 @@ public final class Ec2Api {
             final DescribeCapacityReservationsResult result = client.describeCapacityReservations(request.withNextToken(page));
             response.setCapacityReservations(result.getCapacityReservations());
             response.setNextPage(result.getNextToken());
+        });
+    }
+
+    @ApiMethod(
+            httpMethod = ApiMethod.HttpMethod.GET,
+            name = "regions.list",
+            path = "regions"
+    )
+    public RegionsResponse regionsList(
+            @Named("credentials") final String credentials,
+            @Named("region") final String region
+    ) throws AmazonUnparsedException {
+        return Ec2Caller.get(DescribeRegionsRequest.class, RegionsResponse.class, credentials, region).execute((client, request, response) -> {
+            final DescribeRegionsResult result = client.describeRegions(request.withAllRegions(true));
+            response.setRegions(result.getRegions());
         });
     }
 }
